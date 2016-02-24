@@ -1,4 +1,4 @@
-View site: https://html-themes.gitlab.io/genius/
+View site: http://html-themes.gitlab.io/genius/
 
 ----
 
