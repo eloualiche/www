@@ -12,3 +12,7 @@ View site: http://html-themes.gitlab.io/genius/
 
 - Default
 - GitLab CI: [`.gitlab-ci.yml`](https://gitlab.com/html-themes/genius/blob/master/.gitlab-ci.yml)
+
+## More Info
+
+ - View [Wiki](https://gitlab.com/html-themes/genius/wikis/home)
