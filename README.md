@@ -2,7 +2,7 @@ View site: http://html-themes.gitlab.io/genius/
 
 ----
 
-# GitLab Pages - Plain HTML Example
+# GitLab Pages - website
 
 ## Template: [Genius](http://www.templatemo.com/tm-402-genius)
 
