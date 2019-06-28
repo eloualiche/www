@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8"/>
     <title>Tikz and Investment</title>
-    <link rel="stylesheet" href="../tufte.css"/>
-    <link rel="stylesheet" href="../latex.css"/>
+    <!-- <link rel="stylesheet" href="../tufte.css"/> -->
+    <link rel="stylesheet" href="../css/tuftesque.css"/>
+    <link rel="stylesheet" href="../css/latex.css"/>
+    <link rel="stylesheet" href="../css/github-gist-lucy.css" rel="stylesheet" id="theme-stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123382366-1"></script>
@@ -17,9 +19,16 @@
     </script>
   </head>
 
+<script src="../js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<style>
+  body { background-color: #fffff8; }
+</style>
+
+
   <body>
     <article>
-      <h1 id="tufte-css">Using <code>TikZ</code> and <code>PGFPlots</code> for an Investments Class</h1>
+      <h1 id="tufte-css">Using TikZ and PGFPlots for an Investments Class</h1>
       <!-- <p class="subtitle">Erik Loualiche</p> -->
 
       <section>
@@ -48,7 +57,7 @@
           <img src="../tikz-img/opt_portfolio.svg" alt="Optimal Portfolio with a Capital Allocation Line" />
         </figure>
 
-<pre class="code">
+<pre class="latex"><code>
 \begin{axis}[
     height=7cm, width=12cm,
     axis x line=bottom, axis y line=left,
@@ -82,8 +91,7 @@
     \node[color=red] at (axis cs:27, 25) [anchor=south west] {\textbf{U}};
     \node[pin={[pin edge={thick}, pin distance=2cm]90:{Optimal Porfolio}}] at (axis cs:10,7.5) {};
 \end{axis}
-</pre>
-
+</code></pre>
 
 
 
@@ -97,7 +105,7 @@
           <label for="mn-exports-imports" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-exports-imports" class="margin-toggle"/><span class="marginnote">Efficient Frontier: two assets</span>
           <img src="../tikz-img/efficient_frontier1.svg" alt="Optimal Portfolio with a Capital Allocation Line" />
         </figure>
-<pre class="code">
+<pre class="latex"><code>
 \begin{axis}[
   height=7cm, width=12cm,
   axis x line=bottom, axis y line=left,
@@ -126,7 +134,8 @@
   {11 * t + (1-t) * 5} );
 \node[rotate=18, color=red] at (axis cs:50, 20) [anchor=south east] {\textbf{Efficient Frontier}};
 \end{axis}
-</pre>
+</code></pre>
+
 </p>
 
 
@@ -136,7 +145,7 @@
           <img src="../tikz-img/efficient_frontier2.svg" alt="Optimal Portfolio with a Capital Allocation Line" />
         </figure>
 
-<pre class="code">
+<pre class="latex"><code>
 \begin{axis}[
   height=7cm, width=12cm,
   axis x line=bottom, axis y line=left,
@@ -174,7 +183,8 @@
 \node[rotate = 25, color=black] at (axis cs:30, 15) [anchor=south west] {\textbf{Optimal CAL}};
 \node[pin={[pin edge={thick}, text width=3cm, pin distance=2cm]90:{{\centering Mean Variance Efficient Porfolio}}}] at (axis cs:16, 10.5) {};
 \end{axis}
-</pre>
+</code></pre>
+
 </p>
 </section>
 
@@ -187,7 +197,7 @@
           <img src="../tikz-img/sml.svg" alt="" />
         </figure>
 
-<pre class="code">
+<pre class="latex"><code>
 \begin{axis}[
   height=7cm, width=12cm,
   axis x line=bottom, axis y line=left,
@@ -232,7 +242,8 @@
 \node[rotate=23] at (axis cs:2.4, 23) [anchor=south east] {\textbf{Security Market Line}};
 \node[pin={[pin edge={thick}, pin distance=2cm]90:{Market Porfolio}}] at (axis cs:1,11.5) {};
 \end{axis}
-</pre>
+</code></pre>
+
 </p>
 </section>
 
@@ -247,7 +258,7 @@
         </figure>
   </figure>
 
-  <pre class="code">
+<pre class="latex"><code>
   \begin{tikzpicture}
     \begin{groupplot}[
       group style={group size=2 by 1, horizontal sep=2cm}, no markers,
@@ -332,7 +343,8 @@
   \draw[dashed] (ko1) -- (ko2) ;
   \draw[dashed] (ms1) -- (ms2) ;
 \end{tikzpicture}
-</pre>
+</code></pre>
+
 </section>
 
 
