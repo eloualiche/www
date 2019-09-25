@@ -290,7 +290,13 @@ a:active {
 	font-weight: bold;
 }
 
-
+/* PHOTOGRAPH */
+ .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /*width: 50%;*/
+} 
 
 /* Footer */
 
