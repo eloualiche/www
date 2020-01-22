@@ -11,14 +11,17 @@
 
 <link rel="shortcut icon" href="images/nu.ico" />
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123382366-1"></script>
+<!-- Goat Counter  -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  (function() {
+    var script = document.createElement('script');
+    window.counter = 'https://loulou.goatcounter.com/count'
+    script.async = 1;
+    script.src = '//gc.zgo.at/count.js';
 
-  gtag('config', 'UA-123382366-1');
+    var ins = document.getElementsByTagName('script')[0];
+    ins.parentNode.insertBefore(script, ins)
+  })();
 </script>
 
 
