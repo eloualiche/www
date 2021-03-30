@@ -14972,10 +14972,25 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Kleibergen-Paap-F-statistics">Kleibergen-Paap F-statistics<a class="anchor-link" href="#Kleibergen-Paap-F-statistics">&#182;</a></h1><p>This notebook describes how the Kleibergen-Paap first-stage F-statistics can be misleading when using <code>ivreg2</code> and <code>ivreghdfe</code> in <code>stata</code>.
-We illustrate how we this was an issue in julia's <code>FixedEffectModels</code> package (which mimicked stata) and how to fix it.</p>
-<p>We find that the issue appears with instruments interacted with fixed effects.</p>
-<h5 id="tl;dr;-We-found-potential-mistakes-in-stata's-ivreg2-and-ivreghdfe-for-special-cases.-We-found-a-way-to-fix-it,-and-stata-maintainers-should-look-into-patching-it."><strong>tl;dr;</strong> We found potential mistakes in stata's <code>ivreg2</code> and <code>ivreghdfe</code> for special cases. We found a way to fix it, and stata maintainers should look into patching it.<a class="anchor-link" href="#tl;dr;-We-found-potential-mistakes-in-stata's-ivreg2-and-ivreghdfe-for-special-cases.-We-found-a-way-to-fix-it,-and-stata-maintainers-should-look-into-patching-it.">&#182;</a></h5>
+<h1 id="Kleibergen-Paap-F-statistics-in-stata-and-julia">Kleibergen-Paap F-statistics in stata and julia<a class="anchor-link" href="#Kleibergen-Paap-F-statistics-in-stata-and-julia">&#182;</a></h1>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Authors:-Matthieu-Gomez;-Valentin-Haddad;-Erik-Loualiche">Authors: Matthieu Gomez; Valentin Haddad; Erik Loualiche<a class="anchor-link" href="#Authors:-Matthieu-Gomez;-Valentin-Haddad;-Erik-Loualiche">&#182;</a></h4>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>This notebook describes how the Kleibergen-Paap first-stage F-statistics can be misleading when using <code>ivreg2</code> and <code>ivreghdfe</code> in <code>stata</code>.</p>
+<p>In julia the <code>FixedEffectModels</code> package deals with this type of regressions and usually mimicks stata. We found the issue was due to a specific case in the Kleibergen-Paap original paper and were able to patch it <a href="https://github.com/matthieugomez/Vcov.jl/pull/5">here</a>.
+We find that the issue appears with instruments interacted with fixed effects.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h5 id="tl;dr;-We-found-potential-mistakes-in-stata's-ivreg2-and-ivreghdfe-for-special-cases.-We-found-a-way-to-fix-it-in-julia's-FixedEffectModels;-stata-developers-should-look-into-patching-it."><strong>tl;dr;</strong> We found potential mistakes in stata's <code>ivreg2</code> and <code>ivreghdfe</code> for special cases. We found a way to fix it in julia's <code>FixedEffectModels</code>; stata developers should look into patching it.<a class="anchor-link" href="#tl;dr;-We-found-potential-mistakes-in-stata's-ivreg2-and-ivreghdfe-for-special-cases.-We-found-a-way-to-fix-it-in-julia's-FixedEffectModels;-stata-developers-should-look-into-patching-it.">&#182;</a></h5>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
@@ -14983,7 +14998,7 @@ We illustrate how we this was an issue in julia's <code>FixedEffectModels</code>
 <h2 id="Framework">Framework<a class="anchor-link" href="#Framework">&#182;</a></h2><p>We consider a model with two groups indexed by $k \in \{1,2\}$. We are interested in the following regression:
 \begin{align} 
   Y_{i,k} &amp;= \alpha_{k} + \beta_1 X_{i,1} + \beta_2 X_{i,2} + \varepsilon_{i} \\
-  X_{i,k} &amp;= \delta{k} + \gamma_k Z_{i,k} + u_{i,k} 
+  X_{i,k} &amp;= \delta_{k} + \gamma_k Z_{i,k} + u_{i,k} 
 \end{align}</p>
 <p>The $X$s are endogenous regressors and the $Z$s are instruments. 
 We are interested in a two-stage-least-squares regression of $Y$ on $X$ using the exogenous variation of the $Z$.</p>
@@ -15003,7 +15018,11 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">import</span> <span class="n">Pkg</span><span class="p">;</span>
-<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Vcov&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;0.4.2&quot;</span><span class="p">);</span> <span class="c"># this new version has the fix</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;FixedEffectModels&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;1.4.2&quot;</span><span class="p">);</span> <span class="c"># this new version has the fix</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Vcov&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;0.4.2&quot;</span><span class="p">);</span>              <span class="c"># this new version has the fix</span>
+
+<span class="c"># if you want to run the version without the fix (mimicks stata)</span>
+<span class="c"># Pkg.add(name=&quot;Vcov&quot;, version=&quot;1.4.0&quot;); </span>
 <span class="c"># Pkg.add(name=&quot;Vcov&quot;, version=&quot;0.4.0&quot;); # if you want to run the version without the fix (mimicks stata)</span>
 
 <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="s">&quot;Revise&quot;</span><span class="p">,</span> <span class="s">&quot;DataFrames&quot;</span><span class="p">,</span> <span class="s">&quot;Random&quot;</span><span class="p">,</span> <span class="s">&quot;CSV&quot;</span><span class="p">]);</span>
@@ -15092,6 +15111,7 @@ We introduce a small $\epsilon$ to add noise to the instrument. This will be use
   <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
 
   <span class="n">N_id</span>   <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="c"># N_rows = 10;</span>
   <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
   <span class="n">df_example</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">N_id</span>
@@ -15172,7 +15192,7 @@ We introduce a small $\epsilon$ to add noise to the instrument. This will be use
 <h2 id="Running-the-regression:-julia">Running the regression: julia<a class="anchor-link" href="#Running-the-regression:-julia">&#182;</a></h2><p>We run two sets of regressions. These ones have the bug fix and should run correctly.</p>
 <p>The first regression is the one described above. The second one uses the noisy instruments rather than the original instruments.
  The noisy instruments are defined as $Z_{i,k}^{(\epsilon)} = Z_{i,k} + \epsilon \cdot \text{Uniform}$.</p>
-<p>What is interesting is how the Kleibergen-Paap statistics stay close as we peturb the data slightly.</p>
+<p>What is interesting is how the Kleibergen-Paap statistics stay close as we perturb the data slightly.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
