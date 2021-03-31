@@ -22,6 +22,7 @@
 <title>KP-statistics</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
+
 <style type="text/css">
     pre { line-height: 125%; margin: 0; }
 td.linenos pre { color: #000000; background-color: #f0f0f0; padding: 0 5px 0 5px; }
@@ -15107,11 +15108,8 @@ We introduce a small $\epsilon$ to add noise to the instrument. This will be use
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">gen_df</span><span class="p">(</span><span class="n">ϵ</span><span class="p">;</span> <span class="n">seed</span><span class="o">::</span><span class="kt">Int</span><span class="o">=</span><span class="mi">107</span><span class="p">,</span> <span class="n">N_rows</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-
   <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-
   <span class="n">N_id</span>   <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-  <span class="c"># N_rows = 10;</span>
   <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
   <span class="n">df_example</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">N_id</span>
@@ -15124,7 +15122,6 @@ We introduce a small $\epsilon$ to add noise to the instrument. This will be use
     <span class="n">df_example</span> <span class="o">=</span> <span class="n">vcat</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="n">df_tmp</span><span class="p">)</span>
   <span class="k">end</span>  
 
-  <span class="c"># df_example = unstack(select(df_example, :obs, :id, :X), :id, :X, renamecols=x-&gt;Symbol(:X, Int(x)))</span>
   <span class="n">df_example1</span> <span class="o">=</span> <span class="n">unstack</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="o">:</span><span class="n">obs</span><span class="p">,</span> <span class="o">:</span><span class="n">id</span><span class="p">,</span> <span class="o">:</span><span class="n">X</span><span class="p">),</span> <span class="p">[</span><span class="o">:</span><span class="n">obs</span><span class="p">,</span> <span class="o">:</span><span class="n">id</span><span class="p">,</span> <span class="o">:</span><span class="n">X</span><span class="p">],</span> <span class="o">:</span><span class="n">id</span><span class="p">,</span> <span class="o">:</span><span class="n">X</span><span class="p">,</span> <span class="n">renamecols</span><span class="o">=</span><span class="n">x</span><span class="o">-&gt;</span><span class="kt">Symbol</span><span class="p">(</span><span class="o">:</span><span class="n">X</span><span class="p">,</span> <span class="kt">Int</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
   <span class="n">df_example2</span> <span class="o">=</span> <span class="n">unstack</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="o">:</span><span class="n">obs</span><span class="p">,</span> <span class="o">:</span><span class="n">id</span><span class="p">,</span> <span class="o">:</span><span class="n">Z</span><span class="p">),</span> <span class="p">[</span><span class="o">:</span><span class="n">obs</span><span class="p">,</span> <span class="o">:</span><span class="n">id</span><span class="p">,</span> <span class="o">:</span><span class="n">Z</span><span class="p">],</span> <span class="o">:</span><span class="n">id</span><span class="p">,</span> <span class="o">:</span><span class="n">Z</span><span class="p">,</span> <span class="n">renamecols</span><span class="o">=</span><span class="n">x</span><span class="o">-&gt;</span><span class="kt">Symbol</span><span class="p">(</span><span class="o">:</span><span class="n">Z</span><span class="p">,</span> <span class="kt">Int</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 
