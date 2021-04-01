@@ -15026,9 +15026,10 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 <span class="c"># Pkg.add(name=&quot;Vcov&quot;, version=&quot;1.4.0&quot;); </span>
 <span class="c"># Pkg.add(name=&quot;Vcov&quot;, version=&quot;0.4.0&quot;); # if you want to run the version without the fix (mimicks stata)</span>
 
-<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="s">&quot;Revise&quot;</span><span class="p">,</span> <span class="s">&quot;DataFrames&quot;</span><span class="p">,</span> <span class="s">&quot;Random&quot;</span><span class="p">,</span> <span class="s">&quot;CSV&quot;</span><span class="p">]);</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="s">&quot;Revise&quot;</span><span class="p">,</span> <span class="s">&quot;DataFrames&quot;</span><span class="p">,</span> <span class="s">&quot;Random&quot;</span><span class="p">,</span> <span class="s">&quot;CSV&quot;</span><span class="p">,</span> <span class="s">&quot;Suppressor&quot;</span><span class="p">]);</span>
 <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="s">&quot;Plots&quot;</span><span class="p">,</span> <span class="s">&quot;PGFPlotsX&quot;</span><span class="p">,</span> <span class="s">&quot;LaTeXStrings&quot;</span><span class="p">]);</span>
 <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="s">&quot;FixedEffectModels&quot;</span><span class="p">,</span> <span class="s">&quot;RegressionTables&quot;</span><span class="p">]);</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;RCall&quot;</span><span class="p">);</span>
 <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&quot;https://github.com/jmboehm/StataCall.jl#master&quot;</span><span class="p">);</span>
 </pre></div>
 
@@ -15062,6 +15063,12 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 <span class="ansi-green-intense-fg ansi-bold">   Resolving</span> package versions...
 <span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Project.toml`
 <span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Manifest.toml`
+<span class="ansi-green-intense-fg ansi-bold">   Resolving</span> package versions...
+<span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Project.toml`
+<span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Manifest.toml`
+<span class="ansi-green-intense-fg ansi-bold">   Resolving</span> package versions...
+<span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Project.toml`
+<span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Manifest.toml`
 <span class="ansi-green-intense-fg ansi-bold">    Updating</span> git-repo `https://github.com/jmboehm/StataCall.jl#master`
 <span class="ansi-green-intense-fg ansi-bold">   Resolving</span> package versions...
 <span class="ansi-green-intense-fg ansi-bold">  No Changes</span> to `~/.julia/environments/v1.6/Project.toml`
@@ -15080,11 +15087,13 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">Revise</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">Printf</span>
+<span class="k">using</span> <span class="n">Revise</span><span class="p">,</span> <span class="n">Suppressor</span>
 <span class="k">using</span> <span class="n">DataFrames</span><span class="p">,</span> <span class="n">CSV</span><span class="p">,</span> <span class="n">Random</span>
 <span class="k">using</span> <span class="n">Plots</span><span class="p">,</span> <span class="n">LaTeXStrings</span>
 <span class="k">using</span> <span class="n">FixedEffectModels</span>
 <span class="k">using</span> <span class="n">StataCall</span><span class="p">,</span> <span class="n">RegressionTables</span>
+<span class="k">using</span> <span class="n">RCall</span>
 
 <span class="n">pgfplotsx</span><span class="p">();</span>
 </pre></div>
@@ -15198,9 +15207,9 @@ We introduce a small $\epsilon$ to add noise to the instrument. This will be use
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="nd">@formula</span><span class="p">(</span><span class="n">Y</span> <span class="o">~</span> <span class="n">fe</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">X1</span> <span class="o">+</span> <span class="n">X2</span> <span class="o">~</span> <span class="n">Z1</span> <span class="o">+</span> <span class="n">Z2</span><span class="p">)</span> <span class="p">),</span> <span class="n">Vcov</span><span class="o">.</span><span class="n">robust</span><span class="p">()</span> <span class="p">)</span>
-<span class="n">r2</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="nd">@formula</span><span class="p">(</span><span class="n">Y</span> <span class="o">~</span> <span class="n">fe</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">X1</span> <span class="o">+</span> <span class="n">X2</span> <span class="o">~</span> <span class="n">Z1eps</span> <span class="o">+</span> <span class="n">Z2eps</span><span class="p">)</span> <span class="p">),</span> <span class="n">Vcov</span><span class="o">.</span><span class="n">robust</span><span class="p">()</span> <span class="p">)</span>
-<span class="n">regtable</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">;</span> <span class="n">regression_statistics</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="n">f_kp</span><span class="p">],</span>  <span class="n">renderSettings</span> <span class="o">=</span> <span class="n">asciiOutput</span><span class="p">())</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="nd">@formula</span><span class="p">(</span><span class="n">Y</span> <span class="o">~</span> <span class="n">fe</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">X1</span> <span class="o">+</span> <span class="n">X2</span> <span class="o">~</span> <span class="n">Z1</span> <span class="o">+</span> <span class="n">Z2</span><span class="p">)</span> <span class="p">),</span> <span class="n">Vcov</span><span class="o">.</span><span class="n">robust</span><span class="p">()</span> <span class="p">);</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="n">df_example</span><span class="p">,</span> <span class="nd">@formula</span><span class="p">(</span><span class="n">Y</span> <span class="o">~</span> <span class="n">fe</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">X1</span> <span class="o">+</span> <span class="n">X2</span> <span class="o">~</span> <span class="n">Z1eps</span> <span class="o">+</span> <span class="n">Z2eps</span><span class="p">)</span> <span class="p">),</span> <span class="n">Vcov</span><span class="o">.</span><span class="n">robust</span><span class="p">()</span> <span class="p">);</span>
+<span class="n">regtable</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">;</span> <span class="n">regression_statistics</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="n">f_kp</span><span class="p">],</span>  <span class="n">renderSettings</span> <span class="o">=</span> <span class="n">asciiOutput</span><span class="p">()</span> <span class="p">);</span>
 </pre></div>
 
      </div>
@@ -15705,7 +15714,11 @@ To set it up you need to make sure that julia has access to your path, see the <
     <span class="n">df_example</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c"># replace the last argument by false to see the stata-log</span>
 
 <span class="c"># returns the F-stats </span>
-<span class="kt">Float64</span><span class="p">(</span><span class="n">dfOut</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="kt">Float64</span><span class="p">(</span><span class="n">dfOut</span><span class="o">.</span><span class="n">Feps</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="kt">Float64</span><span class="p">(</span><span class="n">dfOut</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="kt">Float64</span><span class="p">(</span><span class="n">dfOut</span><span class="o">.</span><span class="n">Feps</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="n">msg</span> <span class="o">=</span>  <span class="s">&quot;</span><span class="se">\n</span><span class="s">F-statistics estimated with ivreg2 and exact instruments: F = &quot;</span> <span class="o">*</span> <span class="nd">@sprintf</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%.2f</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">dfOut</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span>
+       <span class="s">&quot;</span><span class="se">\n</span><span class="s">F-statistics estimated with ivreg2 and ϵ-perturbed instruments: F = &quot;</span> <span class="o">*</span> <span class="nd">@sprintf</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%.2f</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">dfOut</span><span class="o">.</span><span class="n">Feps</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> 
+<span class="nd">@info</span> <span class="n">msg</span>
 </pre></div>
 
      </div>
@@ -15721,15 +15734,16 @@ To set it up you need to make sure that julia has access to your path, see the <
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>(0.0, 14.409210205078125)</pre>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>┌ Info: 
+│ F-statistics estimated with ivreg2 and exact instruments: F = 0.00
+│ F-statistics estimated with ivreg2 and ϵ-perturbed instruments: F = 14.41
+└ @ Main In[8]:11
+</pre>
 </div>
-
 </div>
 
 </div>
@@ -15762,7 +15776,11 @@ The peturbation still works well.</p>
     <span class="n">df_example</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c"># replace the last argument by false to see the stata-log</span>
 
 <span class="c"># returns the F-stats </span>
-<span class="n">dfOut</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">(</span><span class="n">dfOut</span><span class="o">.</span><span class="n">Feps</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">Fout</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span> <span class="n">ismissing</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">?</span> <span class="n">string</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="nd">@sprintf</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%.2f</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="p">[</span><span class="n">dfOut</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">(</span><span class="n">dfOut</span><span class="o">.</span><span class="n">Feps</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="p">)</span>
+
+<span class="n">msg</span> <span class="o">=</span>  <span class="s">&quot;</span><span class="se">\n</span><span class="s">F-statistics estimated with ivreghdfe and exact instruments: F = &quot;</span> <span class="o">*</span> <span class="n">Fout</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span>
+       <span class="s">&quot;</span><span class="se">\n</span><span class="s">F-statistics estimated with ivreghdfe and ϵ-perturbed instruments: F = &quot;</span> <span class="o">*</span> <span class="n">Fout</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> 
+<span class="nd">@info</span> <span class="n">msg</span>
 </pre></div>
 
      </div>
@@ -15778,15 +15796,16 @@ The peturbation still works well.</p>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>(missing, 14.409210205078125)</pre>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>┌ Info: 
+│ F-statistics estimated with ivreghdfe and exact instruments: F = missing
+│ F-statistics estimated with ivreghdfe and ϵ-perturbed instruments: F = 14.41
+└ @ Main In[9]:11
+</pre>
 </div>
-
 </div>
 
 </div>
@@ -15798,6 +15817,209 @@ The peturbation still works well.</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>The fix to the covariance estimator only consisted of a few lines to handle a special case. You can see the commit <a href="https://github.com/matthieugomez/Vcov.jl/pull/5">here</a>.</p>
 <p>Ideally this would be implemented in the stata code as well.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Running-the-regression:-R">Running the regression: R<a class="anchor-link" href="#Running-the-regression:-R">&#182;</a></h2><p>We use the <code>RCall</code> package to run commands in R (to run it make sure that your R environment is in the path, and of course install the relevant packages)</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># Load all relevant libraries to R (make sure they are installed in your R)</span>
+<span class="nd">@rput</span> <span class="n">df_example</span>
+<span class="nd">@suppress</span> <span class="k">begin</span>
+<span class="n">R</span><span class="s">&quot;&quot;&quot;   </span>
+<span class="s">    library(data.table, verbose=T)</span>
+<span class="s">    library(lfe, verbose=T)</span>
+<span class="s">    library(fixest, verbose=T)</span>
+<span class="s">    library(texreg, verbose=T)</span>
+<span class="s">    dt_reg = data.table(df_example);</span>
+<span class="s">    dt_reg[, id := as.factor(id)];</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">end</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>RObject{VecSxp}
+</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>It is hard to make sense of the results of <code>felm</code> here (note that I included <code>id</code> clustering, otherwise the estimation throws an error probably because of an zero inversion).</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-julia"><pre><span></span><span class="nd">@suppress</span> <span class="k">begin</span>
+<span class="n">R</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">     est_felm      &lt;- felm(Y ~ X1 + X2 | id | (X1 + X2 ~ Z1 + Z2) | id, dt_reg)</span>
+<span class="s">     est_felm_eps  &lt;- felm(Y ~ X1 + X2 | id | (X1 + X2 ~ Z1eps + Z2eps) | id, dt_reg)</span>
+<span class="s">     res_s = screenreg(list(est_felm, est_felm_eps), include.fstatistic = T)     </span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">end</span>
+<span class="nd">@rget</span> <span class="n">res_s</span>
+<span class="n">print</span><span class="p">(</span><span class="n">res_s</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>
+========================================================================================================
+                          Model 1                                 Model 2                               
+--------------------------------------------------------------------------------------------------------
+X1                                                                                                      
+                                                                                                        
+X2                                                                                                      
+                                                                                                        
+`X1(fit)`                                               2.35 ***                                2.35 ***
+                                                       (0.00)                                  (0.00)   
+`X2(fit)`                                               2.76 ***                                2.76 ***
+                                                       (0.00)                                  (0.00)   
+--------------------------------------------------------------------------------------------------------
+Num. obs.                                              20                                      20       
+R^2 (full model)                                        0.82                                    0.82    
+R^2 (proj model)                                        0.81                                    0.81    
+Adj. R^2 (full model)                                   0.79                                    0.79    
+Adj. R^2 (proj model)                                   0.78                                    0.78    
+F statistic (full model)                               24.52                                   24.52    
+F (full model): p-value                                 0.00                                    0.00    
+F statistic (proj model)  4716183727680664094028848955392.00      1394952676842475084979388809216.00    
+F (proj model): p-value                                 0.00                                    0.00    
+Num. groups: id                                         2                                       2       
+========================================================================================================
+*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The <code>feols</code> function detects collinearity in X1 and X2 which I do not understand, and stops there.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-julia"><pre><span></span><span class="nd">@suppress</span> <span class="k">begin</span>
+<span class="n">R</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    est_feols     &lt;- feols(Y ~ X1 + X2 | id | X1 + X2 ~ Z1 + Z2, dt_reg)</span>
+<span class="s">    est_feols_eps &lt;- feols(Y ~ X1 + X2 | id | X1 + X2 ~ Z1eps + Z2eps, dt_reg)</span>
+<span class="s">    fitstat(est_feols, &quot;ivf&quot;)</span>
+<span class="s">    fitstat(fe_est_feols, &quot;ivwald&quot;)</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">end</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+REvalError: Variables &#39;X1&#39; and &#39;X2&#39; have been removed because of collinearity (see $collin.var).
+Error in fit_wh$xwx_inv[qui, qui] : subscript out of bounds
+Calls: feols
+
+Stacktrace:
+ [1] handle_eval_stderr(; as_warning::Bool)
+   @ RCall ~/.julia/packages/RCall/eRsxl/src/io.jl:162
+ [2] reval_p(expr::Ptr{LangSxp}, env::Ptr{EnvSxp})
+   @ RCall ~/.julia/packages/RCall/eRsxl/src/eval.jl:99
+ [3] reval_p(expr::Ptr{RCall.ExprSxp}, env::Ptr{EnvSxp})
+   @ RCall ~/.julia/packages/RCall/eRsxl/src/eval.jl:115
+ [4] reval(str::String, env::RObject{EnvSxp})
+   @ RCall ~/.julia/packages/RCall/eRsxl/src/eval.jl:132
+ [5] top-level scope
+   @ ~/.julia/packages/Suppressor/nTjgZ/src/Suppressor.jl:35 [inlined]
+ [6] top-level scope
+   @ ./In[12]:0
+ [7] eval
+   @ ./boot.jl:360 [inlined]
+ [8] include_string(mapexpr::typeof(REPL.softscope), mod::Module, code::String, filename::String)
+   @ Base ./loading.jl:1094</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Perhaps we are missing other relevant packages that would take care of this issue (<code>AER</code> or <code>estimatr</code>). However these two are the fastest and most prevalent when dealing with relatively high-dimensional data. 
+At this point is is not clear how to deal with this type of regressions in <code>R</code></p>
 
 </div>
 </div>
