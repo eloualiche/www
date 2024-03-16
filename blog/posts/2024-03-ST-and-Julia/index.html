@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sometimes, I am asked how to set up a simple julia IDE for people who are already using Sublime Text. It is simple in theory but many things can go wrong, so I thought this document could be useful.
+I try to provide step by step instructions as much as possible. Feel free to email me if some of the steps were not as clear as you would have liked.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="ST-Julia-IDE" />
+<meta property="og:description" content="Sometimes, I am asked how to set up a simple julia IDE for people who are already using Sublime Text. It is simple in theory but many things can go wrong, so I thought this document could be useful.
+I try to provide step by step instructions as much as possible. Feel free to email me if some of the steps were not as clear as you would have liked." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/2024-03-ST-and-Julia/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-01T00:00:00+00:00" />
+
+<title>Sublime Text and Julia IDE | Erik Misc.</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/images/favicon.ico" >
+<link rel="canonical" href="https://example.com/posts/2024-03-ST-and-Julia/">
+<link rel="stylesheet" href="/book.min.283fc5d3549a547f6b2d17499f8cc0f2105ae4a38dcad6c20148afeea658522d.css" integrity="sha256-KD/F01SaVH9rLRdJn4zA8hBa5KONytbCAUiv7qZYUi0=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.3e7ec554a26ecdce0d6d2e150c7e10b5c5d1121b57415f737c0e191d80dab4c8.js" integrity="sha256-Pn7FVKJuzc4NbS4VDH4QtcXREhtXQV9zfA4ZHYDatMg=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Erik Misc.</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Sublime Text and Julia IDE</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-prerequisite">1. Prerequisite</a></li>
+    <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a>
+      <ul>
+        <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
+        <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with julia</a>
+      <ul>
+        <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
+        <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/posts/2024-03-ST-and-Julia/">Sublime Text and Julia IDE</a>
+  </h1>
+  
+  <h5>March 1, 2024</h5>
+
+
+
+
+<p>Sometimes, I am asked how to set up a simple julia IDE for people who are already using Sublime Text.
+It is simple in theory but many things can go wrong, so I thought this document could be useful.</p>
+<p>I try to provide step by step instructions as much as possible.
+Feel free to 
+  <a href="mailto:eloualic@umn.edu">email</a> me if some of the steps were not as clear as you would have liked.</p>
+<p><strong>N.B.</strong></p>
+<ul>
+<li>There might be better ways to have a julia IDE (see VSCode with LSP). I happen to like Sublime, it is simpler and faster than VSCode (but I am also an emacs person).</li>
+<li>Also note that the same thing would apply for R (just change a few paths here and there).</li>
+</ul>
+<p>This guide was written on 2024-03-xx for Sublime Text 4 and julia 1.10.1</p>
+<h1 id="1-prerequisite">
+  1. Prerequisite
+  <a class="anchor" href="#1-prerequisite">#</a>
+</h1>
+<p>The &ldquo;required&rdquo; software for this guide are: julia, Sublime Text, and a Terminal application called iterm2.</p>
+<p>First, I would recommend to install (optional but recommended) a nicer terminal application than the built-in macos terminal:</p>
+<ul>
+<li>
+<p>Download 
+  <a href="https://iterm2.com/downloads.html">iterm2</a>.</p>
+<ul>
+<li>This is not strictly necessary but iterm2 has some nice feature that make it work nicely with the Sublime setup here. There are other good terminal applications for macos (e.g. kitty) but I am not as familiar with those.</li>
+<li>Open the iterm2 application which should be in the application folder (note I will use the words <code>iterm2</code> and the terminal interchangeably (technically they are not quite the same thing but it won&rsquo;t matter).</li>
+</ul>
+</li>
+<li>
+<p>Download 
+  <a href="https://www.sublimetext.com/blog/articles/sublime-text-4">Sublime Text 4</a> and follow the instructions to install.</p>
+</li>
+<li>
+<p>Download 
+  <a href="https://julialang.org/downloads/">julia</a> and follow the instructions to install.</p>
+<ul>
+<li>As I am writing this, you can use juliaup to install julia by copying and pasting in your terminal the following:
+<code>curl -fsSL https://install.julialang.org | sh</code>
+This allows you to keep your version of julia up to date (this might be a bad thing if you have old code and are not templating packages)</li>
+<li>Or (simpler imho) download the latest current stable release and install it depending on your platform
+<ul>
+<li>For example for macos with Apple Silicon download the 
+  <a href="https://julialang-s3.julialang.org/bin/mac/aarch64/1.10/julia-1.10.1-macaarch64.dmg">dmg</a> and install it in your application folder</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-getting-julia-to-work">
+  2. Getting julia to work!
+  <a class="anchor" href="#2-getting-julia-to-work">#</a>
+</h1>
+<h2 id="21-basic-installation">
+  2.1 Basic installation
+  <a class="anchor" href="#21-basic-installation">#</a>
+</h2>
+<p>If julia is in your application folder, there are two ways to start a julia session.</p>
+<ol>
+<li>Double click on the julia icon: this opens the macos terminal application (not iterm2) and starts julia</li>
+<li>Open the terminal (I am assuming iterm2 from now on) and type or paste the path of the julia application binary.
+<ul>
+<li>For julia <code>1.10.1</code> the binary will likely at <code>/Applications/Julia-1.10.app/Contents/Resources/julia/bin/julia</code></li>
+<li>If you are working with version <code>1.XX</code> (where XX is a different number) the path will likely be <code>/Applications/Julia-1.XX.app/Contents/Resources/julia/bin/julia</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="22-adding-julia-to-your-path">
+  2.2 Adding julia to your path
+  <a class="anchor" href="#22-adding-julia-to-your-path">#</a>
+</h2>
+<h4 id="do-you-need-it">
+  Do you need it?
+  <a class="anchor" href="#do-you-need-it">#</a>
+</h4>
+<p>If you have installed julia using <code>juliaup</code> (see section 1 above), the julia application was automatically added to your <code>PATH</code>.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>
+I believe this means the next step is not necessary. To see whether you should <em>skip</em> the next step type <code>julia</code> inside of iterm2.
+If julia opens, you are in business, skip 2.2 and go to section 3. If there is some error or julia does not open, follow the instructions in the next section 2.2.</p>
+<h4 id="adding-julia-to-the-path">
+  Adding julia to the path
+  <a class="anchor" href="#adding-julia-to-the-path">#</a>
+</h4>
+<p>Typing the full julia path can get annoying pretty quickly, so we will add the directory to the <code>PATH</code> for the terminal (technically for the shell).
+To make this permanent we are going to edit a special file which is read everytime you start your terminal.</p>
+<p>On macos the file is <code>.zshrc</code> since the default shell is <code>zsh</code>; this is a configuration file.
+On other machine the file might be <code>.bashrc</code> if your default shell is <code>bash</code>.</p>
+<p>To edit this file we need a text editor.
+Any will do; for example you could use textedit and enter the following at the terminal:
+<code>open -a TextEdit ~/.zshrc</code>
+This tells textedit to open the <code>zsh</code> configuration file which is located on your home directory under <code>~</code><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>
+You could also use Sublime Text that you just opened; the following should work if it installed properly in the Applications folder:
+<code>/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl ~/.zshrc</code></p>
+<p>Now we need to edit this file by adding julia to the path.
+We can simply add this line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$PATH:/Applications/Julia-1.10.app/Contents/Resources/julia/bin
+</span></span></code></pre></div><p>This concatenates your path with what was already in it (<code>$PATH</code>) and the directory where the julia binary is.
+If you are working with a version different than <code>1.10</code> then adjust the line for <code>1.XX</code> as:
+<code>export PATH=$PATH:/Applications/Julia-1.XX.app/Contents/Resources/julia/bin</code></p>
+<p>Save the file. Close the window. Restart the terminal (iterm2).
+Now you should be able to start julia in the terminal by typing <code>julia</code> from anywhere.</p>
+<h1 id="3-getting-sublime-text-to-play-nice-with-julia">
+  3. Getting Sublime Text to play nice with julia
+  <a class="anchor" href="#3-getting-sublime-text-to-play-nice-with-julia">#</a>
+</h1>
+<p>Sublime text is an editor that relies on packages for added functionality.
+So next, we will download the necessary packages to get a setup that will let you work with julia from sublime text.</p>
+<h2 id="31-installing-sublime-packages">
+  3.1. Installing Sublime packages
+  <a class="anchor" href="#31-installing-sublime-packages">#</a>
+</h2>
+<ul>
+<li>
+<p>First install the package that can install other packages: that is 
+  <a href="https://packagecontrol.io/installation">package control</a>.
+The instructions to install it are:</p>
+<ol>
+<li>Open the command palette (<code>cmd+shift+p</code> on macos)</li>
+<li>Type Install Package Control, press enter</li>
+</ol>
+</li>
+<li>
+<p>Then install the <code>Julia-sublime</code> package similary:</p>
+<ol>
+<li>Open the command palette (<code>cmd+shift+p</code> on macos)</li>
+<li>Type Package Control: Install, press enter</li>
+<li>Then a dropdown menu will show and type julia to search for the julia package, type enter to install it.</li>
+</ol>
+</li>
+<li>
+<p>Last install the 
+  <a href="https://github.com/randy3k/SendCode"><code>SendCode</code></a> package</p>
+<ol>
+<li>Open the command palette (<code>cmd+shift+p</code> on macos)</li>
+<li>Type Package Control: Install, press enter</li>
+<li>Then a dropdown menu will show and type SendCode to search for the SendCode package, type enter to install it.</li>
+</ol>
+</li>
+</ul>
+<h2 id="32-setting-up-sublime-packages">
+  3.2 Setting up Sublime packages
+  <a class="anchor" href="#32-setting-up-sublime-packages">#</a>
+</h2>
+<ol>
+<li>Settings of SendCode
+<ul>
+<li>Open the settings of sendcode: open the command palette (<code>cmd+shift+p</code> on macos), type <code>SendCode settings</code>, and enter</li>
+<li>You should be dropped into a new window with two files (one on each side). Edit the one on the right which is the one with your personal settings (the one on the left has the general settings). Its name is SendCode.sublime-settings.</li>
+<li>If you are working with <code>iterm2</code> copy and paste the following:</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;auto_advance&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;prog&#34;</span>: <span style="color:#e6db74">&#34;iterm&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;julia&#34;</span>:
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;bracketed_paste_mode&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;prog&#34;</span>: <span style="color:#e6db74">&#34;iterm&#34;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;r&#34;</span>:
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;bracketed_paste_mode&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;prog&#34;</span>: <span style="color:#e6db74">&#34;iterm&#34;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol start="2">
+<li>Keybindings SendCode
+<ul>
+<li>Open the settings of sendcode: open the command palette (<code>cmd+shift+p</code> on macos), type <code>SendCode key bindings</code>, and enter</li>
+<li>You should be dropped into a new window with two files (one on each side). Edit the one on the right which is the one with your personal settings (the one on the left has the general settings).</li>
+<li>This time <em>do not remove existing keybindings</em> as they might be useful stuff.</li>
+<li>You should add the following to make sure sending lines or highlighted content to be sent to iterm2.</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span> { <span style="color:#f92672">&#34;keys&#34;</span>: [<span style="color:#e6db74">&#34;super+enter&#34;</span>], <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;send_code&#34;</span>, 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;context&#34;</span>: [{ <span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;selector&#34;</span>, <span style="color:#f92672">&#34;operator&#34;</span>: <span style="color:#e6db74">&#34;equal&#34;</span>, <span style="color:#f92672">&#34;operand&#34;</span>: <span style="color:#e6db74">&#34;source&#34;</span> } ] }<span style="color:#960050;background-color:#1e0010">,</span>
+</span></span><span style="display:flex;"><span> { <span style="color:#f92672">&#34;keys&#34;</span>: [<span style="color:#e6db74">&#34;ctrl+enter&#34;</span>], <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;send_code&#34;</span>, 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;context&#34;</span>: [{ <span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;selector&#34;</span>, <span style="color:#f92672">&#34;operator&#34;</span>: <span style="color:#e6db74">&#34;equal&#34;</span>, <span style="color:#f92672">&#34;operand&#34;</span>: <span style="color:#e6db74">&#34;source&#34;</span> } ] }<span style="color:#960050;background-color:#1e0010">,</span>
+</span></span></code></pre></div><ul>
+<li>Feel free to change the key bindings for example if you want <code>Cmd-s</code> to send to iterm2 you would replace &ldquo;super+enter&rdquo; by &ldquo;super+s&rdquo;.</li>
+</ul>
+<p>You should be good to go. Create a test.jl file. Open a terminal session and start julia on the side. select <code>1+1</code> in sublime text and press <code>Cmd+Enter</code> at the same time. It should be sending to the terminal.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Your <code>path</code> is essentially a set of places where the terminal looks for software. So if the directory of julia gets added to the path, the terminal is aware of the julia application and you can type directly <code>$ julia</code>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><code>~</code> represents what is known as your home directory. The actual address is <code>/Users/yourname/</code>. You can find it by doing in the terminal: <code>cd ~</code> to change directory to the home directory, and then <code>pwd</code> to print the directory you are currently in.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+  <div>
+    
+      <a href="/categories/code/">Code</a>
+  </div>
+  
+
+  
+  <div>
+    
+      <a href="/tags/julia/">Julia</a>, 
+      <a href="/tags/IDE/">IDE</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-prerequisite">1. Prerequisite</a></li>
+    <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a>
+      <ul>
+        <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
+        <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with julia</a>
+      <ul>
+        <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
+        <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
