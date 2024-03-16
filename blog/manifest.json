@@ -1,14 +1,14 @@
 {
   "name": "Erik Misc.",
   "short_name": "Erik Misc.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/www/blog/",
+  "scope": "/www/blog/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/www/blog/favicon.svg",
       "sizes": "512x512"
     }
   ]

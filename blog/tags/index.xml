@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Erik Misc.</title>
-    <link>https://example.com/tags/</link>
+    <link>https://loualiche.gitlab.io/www/blog/tags/</link>
     <description>Recent content in Tags on Erik Misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 01 Mar 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://loualiche.gitlab.io/www/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>IDE</title>
-      <link>https://example.com/tags/IDE/</link>
+      <link>https://loualiche.gitlab.io/www/blog/tags/IDE/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/IDE/</guid>
+      <guid>https://loualiche.gitlab.io/www/blog/tags/IDE/</guid>
       <description></description>
     </item>
     <item>
       <title>Julia</title>
-      <link>https://example.com/tags/julia/</link>
+      <link>https://loualiche.gitlab.io/www/blog/tags/julia/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tags/julia/</guid>
+      <guid>https://loualiche.gitlab.io/www/blog/tags/julia/</guid>
       <description></description>
     </item>
   </channel>
