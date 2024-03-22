@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Erik Misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 01 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.gitlab.io/www/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TAQ Consolidated</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
+      <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
+      <description>For a recent revision, I have had to dig into TAQ data. This is something relatively new to me, but I had to figure out some statistics out of the consolidated trade data. I did not want to use SAS because I do not have a PC running windows, and SAS for linux is very painful. So here is a method for getting annoying statistics from annoyingly large data.&#xA;The goal was to estimate the order imbalance volatility on the U.</description>
+    </item>
     <item>
       <title>ST-Julia-IDE</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</link>

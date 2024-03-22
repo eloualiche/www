@@ -2,28 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</loc>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</loc>
     <lastmod>2024-03-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/</loc>
-    <lastmod>2024-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/posts/</loc>
-    <lastmod>2024-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/categories/</loc>
-    <lastmod>2024-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/categories/code/</loc>
-    <lastmod>2024-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://loualiche.gitlab.io/www/blog/tags/IDE/</loc>
-    <lastmod>2024-03-01T00:00:00+00:00</lastmod>
+    <loc>https://loualiche.gitlab.io/www/blog/categories/finance/</loc>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/tags/julia/</loc>
-    <lastmod>2024-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.gitlab.io/www/blog/tags/</loc>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://loualiche.gitlab.io/www/blog/tags/unix/</loc>
+    <lastmod>2024-03-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://loualiche.gitlab.io/www/blog/tags/IDE/</loc>
     <lastmod>2024-03-01T00:00:00+00:00</lastmod>
   </url>
 </urlset>
