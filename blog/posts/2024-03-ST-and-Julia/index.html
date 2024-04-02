@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Sometimes, I am asked how to set up a simple julia IDE for people who are already using Sublime Text. It is simple in theory but many things can go wrong, so I thought this document could be useful.
-I try to provide step by step instructions as much as possible. Feel free to email me if some of the steps were not as clear as you would have liked.">
+<meta name="description" content="How to set up Sublime Text to work as a julia IDE.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:title" content="ST-Julia-IDE" />
-<meta property="og:description" content="Sometimes, I am asked how to set up a simple julia IDE for people who are already using Sublime Text. It is simple in theory but many things can go wrong, so I thought this document could be useful.
-I try to provide step by step instructions as much as possible. Feel free to email me if some of the steps were not as clear as you would have liked." />
+<meta property="og:description" content="How to set up Sublime Text to work as a julia IDE." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-03-01T00:00:00+00:00" />
@@ -18,7 +16,7 @@ I try to provide step by step instructions as much as possible. Feel free to ema
 <link rel="manifest" href="/www/blog/manifest.json">
 <link rel="icon" href="/www/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/">
-<link rel="stylesheet" href="/www/blog/book.min.67013875ef6181524d013ab6f4020899c3cbab95d214d61d70fb618cea11b1ce.css" integrity="sha256-ZwE4de9hgVJNATq29AIImcPLq5XSFNYdcPthjOoRsc4=" crossorigin="anonymous">
+<link rel="stylesheet" href="/www/blog/book.min.5ffe78c6667f6ed57aaacf2b5440885353e6bed78e44daaef25019c472276293.css" integrity="sha256-X/54xmZ/btV6qs8rVECIU1PmvteORNqu8lAZxHInYpM=" crossorigin="anonymous">
   <script defer src="/www/blog/flexsearch.min.js"></script>
   <script defer src="/www/blog/en.search.min.4df709c40db308aa3f110887ae1983b91dde7849d81313fd62c4d951cef79f50.js" integrity="sha256-TfcJxA2zCKo/EQiHrhmDuR3eeEnYExP9YsTZUc73n1A=" crossorigin="anonymous"></script>
 
@@ -104,6 +102,12 @@ https://github.com/alex-shpak/hugo-book
       </a>
   </li>
   
+  <li>
+    <a href="/www/blog/posts/"  >
+        
+      </a>
+  </li>
+  
 </ul>
 
 
@@ -147,23 +151,17 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#1-prerequisite">1. Prerequisite</a></li>
-    <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a>
+    <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
+    <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
       <ul>
-        <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
-        <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
-          <ul>
-            <li></li>
-          </ul>
-        </li>
+        <li></li>
       </ul>
     </li>
-    <li><a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with julia</a>
-      <ul>
-        <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
-        <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
-      </ul>
-    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
+    <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
   </ul>
 </nav>
 
@@ -377,7 +375,12 @@ The instructions to install it are:</p>
 </li>
 </ol>
 </div>
+<br>
+
+</br>
+
 </article>
+
  
       
 
@@ -437,23 +440,17 @@ The instructions to install it are:</p>
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#1-prerequisite">1. Prerequisite</a></li>
-    <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a>
+    <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
+    <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
       <ul>
-        <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
-        <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
-          <ul>
-            <li></li>
-          </ul>
-        </li>
+        <li></li>
       </ul>
     </li>
-    <li><a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with julia</a>
-      <ul>
-        <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
-        <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
-      </ul>
-    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
+    <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
   </ul>
 </nav>
 
