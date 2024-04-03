@@ -16,9 +16,9 @@
 <link rel="manifest" href="/www/blog/manifest.json">
 <link rel="icon" href="/www/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/">
-<link rel="stylesheet" href="/www/blog/book.min.5ffe78c6667f6ed57aaacf2b5440885353e6bed78e44daaef25019c472276293.css" integrity="sha256-X/54xmZ/btV6qs8rVECIU1PmvteORNqu8lAZxHInYpM=" crossorigin="anonymous">
+<link rel="stylesheet" href="/www/blog/book.min.ae73f60f4a419ea45bb8fb8934fdc00f48ab53ac7c606ad5927623288c99b89b.css" integrity="sha256-rnP2D0pBnqRbuPuJNP3AD0irU6x8YGrVknYjKIyZuJs=" crossorigin="anonymous">
   <script defer src="/www/blog/flexsearch.min.js"></script>
-  <script defer src="/www/blog/en.search.min.4df709c40db308aa3f110887ae1983b91dde7849d81313fd62c4d951cef79f50.js" integrity="sha256-TfcJxA2zCKo/EQiHrhmDuR3eeEnYExP9YsTZUc73n1A=" crossorigin="anonymous"></script>
+  <script defer src="/www/blog/en.search.min.084ed8960ceed16330619a7777ac69e2ca706f7fbd30553a22e28f7a18c5e74a.js" integrity="sha256-CE7Ylgzu0WMwYZp3d6xp4spwb3&#43;9MFU6IuKPehjF50o=" crossorigin="anonymous"></script>
 
   <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
 <!--
@@ -151,17 +151,9 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
-    <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-  </ul>
-
-  <ul>
-    <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
-    <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
+    <li><a href="#1-prerequisite">1. Prerequisite</a></li>
+    <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a></li>
+    <li><a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with julia</a></li>
   </ul>
 </nav>
 
@@ -275,7 +267,7 @@ You could also use Sublime Text that you just opened; the following should work 
 <code>/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl ~/.zshrc</code></p>
 <p>Now we need to edit this file by adding julia to the path.
 We can simply add this line:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$PATH:/Applications/Julia-1.10.app/Contents/Resources/julia/bin
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#a2f">export</span> <span style="color:#b8860b">PATH</span><span style="color:#666">=</span><span style="color:#b8860b">$PATH</span>:/Applications/Julia-1.10.app/Contents/Resources/julia/bin
 </span></span></code></pre></div><p>This concatenates your path with what was already in it (<code>$PATH</code>) and the directory where the julia binary is.
 If you are working with a version different than <code>1.10</code> then adjust the line for <code>1.XX</code> as:
 <code>export PATH=$PATH:/Applications/Julia-1.XX.app/Contents/Resources/julia/bin</code></p>
@@ -332,18 +324,18 @@ The instructions to install it are:</p>
 </ul>
 </li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;auto_advance&#34;</span>: <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;prog&#34;</span>: <span style="color:#e6db74">&#34;iterm&#34;</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;julia&#34;</span>:
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&#34;auto_advance&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&#34;prog&#34;</span>: <span style="color:#b44">&#34;iterm&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&#34;julia&#34;</span>:
 </span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;bracketed_paste_mode&#34;</span>: <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;prog&#34;</span>: <span style="color:#e6db74">&#34;iterm&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&#34;bracketed_paste_mode&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&#34;prog&#34;</span>: <span style="color:#b44">&#34;iterm&#34;</span>,
 </span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;r&#34;</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#008000;font-weight:bold">&#34;r&#34;</span>:
 </span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;bracketed_paste_mode&#34;</span>: <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;prog&#34;</span>: <span style="color:#e6db74">&#34;iterm&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&#34;bracketed_paste_mode&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#008000;font-weight:bold">&#34;prog&#34;</span>: <span style="color:#b44">&#34;iterm&#34;</span>,
 </span></span><span style="display:flex;"><span>  },
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><ol start="2">
@@ -356,10 +348,10 @@ The instructions to install it are:</p>
 </ul>
 </li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span> { <span style="color:#f92672">&#34;keys&#34;</span>: [<span style="color:#e6db74">&#34;super+enter&#34;</span>], <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;send_code&#34;</span>, 
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;context&#34;</span>: [{ <span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;selector&#34;</span>, <span style="color:#f92672">&#34;operator&#34;</span>: <span style="color:#e6db74">&#34;equal&#34;</span>, <span style="color:#f92672">&#34;operand&#34;</span>: <span style="color:#e6db74">&#34;source&#34;</span> } ] }<span style="color:#960050;background-color:#1e0010">,</span>
-</span></span><span style="display:flex;"><span> { <span style="color:#f92672">&#34;keys&#34;</span>: [<span style="color:#e6db74">&#34;ctrl+enter&#34;</span>], <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;send_code&#34;</span>, 
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;context&#34;</span>: [{ <span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;selector&#34;</span>, <span style="color:#f92672">&#34;operator&#34;</span>: <span style="color:#e6db74">&#34;equal&#34;</span>, <span style="color:#f92672">&#34;operand&#34;</span>: <span style="color:#e6db74">&#34;source&#34;</span> } ] }<span style="color:#960050;background-color:#1e0010">,</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span> { <span style="color:#008000;font-weight:bold">&#34;keys&#34;</span>: [<span style="color:#b44">&#34;super+enter&#34;</span>], <span style="color:#008000;font-weight:bold">&#34;command&#34;</span>: <span style="color:#b44">&#34;send_code&#34;</span>, 
+</span></span><span style="display:flex;"><span>   <span style="color:#008000;font-weight:bold">&#34;context&#34;</span>: [{ <span style="color:#008000;font-weight:bold">&#34;key&#34;</span>: <span style="color:#b44">&#34;selector&#34;</span>, <span style="color:#008000;font-weight:bold">&#34;operator&#34;</span>: <span style="color:#b44">&#34;equal&#34;</span>, <span style="color:#008000;font-weight:bold">&#34;operand&#34;</span>: <span style="color:#b44">&#34;source&#34;</span> } ] }<span style="">,</span>
+</span></span><span style="display:flex;"><span> { <span style="color:#008000;font-weight:bold">&#34;keys&#34;</span>: [<span style="color:#b44">&#34;ctrl+enter&#34;</span>], <span style="color:#008000;font-weight:bold">&#34;command&#34;</span>: <span style="color:#b44">&#34;send_code&#34;</span>, 
+</span></span><span style="display:flex;"><span>   <span style="color:#008000;font-weight:bold">&#34;context&#34;</span>: [{ <span style="color:#008000;font-weight:bold">&#34;key&#34;</span>: <span style="color:#b44">&#34;selector&#34;</span>, <span style="color:#008000;font-weight:bold">&#34;operator&#34;</span>: <span style="color:#b44">&#34;equal&#34;</span>, <span style="color:#008000;font-weight:bold">&#34;operand&#34;</span>: <span style="color:#b44">&#34;source&#34;</span> } ] }<span style="">,</span>
 </span></span></code></pre></div><ul>
 <li>Feel free to change the key bindings for example if you want <code>Cmd-s</code> to send to iterm2 you would replace &ldquo;super+enter&rdquo; by &ldquo;super+s&rdquo;.</li>
 </ul>
@@ -424,10 +416,6 @@ The instructions to install it are:</p>
 
       
   
-  <div class="book-comments">
-
-</div>
-  
  
 
       <label for="menu-control" class="hidden book-menu-overlay"></label>
@@ -440,17 +428,9 @@ The instructions to install it are:</p>
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#21-basic-installation">2.1 Basic installation</a></li>
-    <li><a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-  </ul>
-
-  <ul>
-    <li><a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a></li>
-    <li><a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a></li>
+    <li><a href="#1-prerequisite">1. Prerequisite</a></li>
+    <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a></li>
+    <li><a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with julia</a></li>
   </ul>
 </nav>
 

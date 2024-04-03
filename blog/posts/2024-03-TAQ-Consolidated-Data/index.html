@@ -16,9 +16,9 @@
 <link rel="manifest" href="/www/blog/manifest.json">
 <link rel="icon" href="/www/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/">
-<link rel="stylesheet" href="/www/blog/book.min.5ffe78c6667f6ed57aaacf2b5440885353e6bed78e44daaef25019c472276293.css" integrity="sha256-X/54xmZ/btV6qs8rVECIU1PmvteORNqu8lAZxHInYpM=" crossorigin="anonymous">
+<link rel="stylesheet" href="/www/blog/book.min.ae73f60f4a419ea45bb8fb8934fdc00f48ab53ac7c606ad5927623288c99b89b.css" integrity="sha256-rnP2D0pBnqRbuPuJNP3AD0irU6x8YGrVknYjKIyZuJs=" crossorigin="anonymous">
   <script defer src="/www/blog/flexsearch.min.js"></script>
-  <script defer src="/www/blog/en.search.min.4df709c40db308aa3f110887ae1983b91dde7849d81313fd62c4d951cef79f50.js" integrity="sha256-TfcJxA2zCKo/EQiHrhmDuR3eeEnYExP9YsTZUc73n1A=" crossorigin="anonymous"></script>
+  <script defer src="/www/blog/en.search.min.084ed8960ceed16330619a7777ac69e2ca706f7fbd30553a22e28f7a18c5e74a.js" integrity="sha256-CE7Ylgzu0WMwYZp3d6xp4spwb3&#43;9MFU6IuKPehjF50o=" crossorigin="anonymous"></script>
 
   <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
 <!--
@@ -151,14 +151,10 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#defining-variables">Defining variables</a></li>
-    <li><a href="#download-and-expand-the-data">Download and expand the data</a></li>
-    <li><a href="#sort-the-data">Sort the data</a></li>
-    <li><a href="#split-the-data">Split the data</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#preamble">Preamble</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#preprocessing">Preprocessing</a></li>
+    <li><a href="#processing-of-stock-specific-statistics-in-julia">Processing of stock specific statistics in julia</a></li>
+    <li><a href="#slurm-specifics">SLURM Specifics</a></li>
   </ul>
 </nav>
 
@@ -225,22 +221,22 @@ Once downloaded, I reuploaded all the data to a s3 bucket where I have easy acce
   <a class="anchor" href="#download-and-expand-the-data">#</a>
 </h2>
 <p>First I download the data from the s3 bucket using <code>s5cmd</code> as:<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ input_file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TAQ_name_</span>$DATEY<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>$ s5cmd cp s3://my-bucket/TAQ/$input_file.csv.gz $TAQ_HOME/
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">input_file</span><span style="color:#666">=</span><span style="color:#b44">&#34;TAQ_name_</span><span style="color:#b8860b">$DATEY</span><span style="color:#b44">&#34;</span>
+</span></span><span style="display:flex;"><span>$ s5cmd cp s3://my-bucket/TAQ/<span style="color:#b8860b">$input_file</span>.csv.gz <span style="color:#b8860b">$TAQ_HOME</span>/
 </span></span></code></pre></div><p>Then I expand the data; I take advantage of multicore expansion using <code>pigz</code>.</p>
 <p>First I peak at the data to check that the data has the correct columns and that the year is correct:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pigz -cd  | head -n <span style="color:#ae81ff">5</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pigz -cd  | head -n <span style="color:#666">5</span>
 </span></span><span style="display:flex;"><span>SYMBOL,DATE,TIME,PRICE,SIZE,G127,CORR,COND,EX
 </span></span><span style="display:flex;"><span>A,2006-01-03,8:00:07,33.29,30000,0,0,U,T
 </span></span><span style="display:flex;"><span>A,2006-01-03,8:08:01,33.29,8300,0,0,T,T
 </span></span><span style="display:flex;"><span>A,2006-01-03,8:17:28,33.29,8600,0,0,T,T
 </span></span><span style="display:flex;"><span>A,2006-01-03,9:30:22,33.4,96200,40,0,,N
 </span></span></code></pre></div><p>Once I have confirmed that I am looking at the right thing I expand the whole file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pigz -dc $TAQ_HOME/$input_file.csv.gz &gt; $TAQ_HOME/taq_select.csv.gz
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pigz -dc <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv.gz
 </span></span></code></pre></div><p>For efficiency (untested), I have actually use the binaries from <code>xsv</code><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> to select only the columns from the file that I needed.
 Simply replace the previous command with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd $TAQ_HOME/$input_file.csv.gz | <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    xsv <span style="color:#66d9ef">select</span> <span style="color:#e6db74">&#34;SYMBOL,DATE,TIME,PRICE,SIZE&#34;</span> &gt; $TAQ_HOME/taq_select.csv 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz | <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    xsv <span style="color:#a2f;font-weight:bold">select</span> <span style="color:#b44">&#34;SYMBOL,DATE,TIME,PRICE,SIZE&#34;</span> &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv 
 </span></span></code></pre></div><p>Note that this is fairly slow and can take upwards of 20 minutes even reading the file from the ram disk.</p>
 <h2 id="sort-the-data">
   Sort the data
@@ -254,9 +250,9 @@ It is a lot easier to do once the data is ordered by symbol!</p>
 The one thing to watch for is memory usage (this will eat pretty much of all your memory and get your job killed if you don&rsquo;t watch it).
 So we define an upper bound for memory usage.
 Given the memory allocation defined above, we restrict <code>sort</code> to only use 80% of it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mem_for_sort<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>mem_alloc%G<span style="color:#e6db74">}</span><span style="color:#e6db74"> * 0.8 / 1&#34;</span> | bc<span style="color:#66d9ef">)</span> <span style="color:#75715e"># bc is the bash calculator</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/usr/bin/time tail -n +2 $TAQ_HOME/taq_select.csv | <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    sort -t, -k1,1 --buffer-size<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>mem_for_sort<span style="color:#e6db74">}</span><span style="color:#e6db74">G&#34;</span> --parallel<span style="color:#f92672">=</span>$nprocs --temporary-directory<span style="color:#f92672">=</span>$TAQ_HOME  &gt; $TAQ_HOME/taq_sorted.csv
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">mem_for_sort</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span><span style="color:#a2f">echo</span> <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">mem_alloc</span>%G<span style="color:#b68;font-weight:bold">}</span><span style="color:#b44"> * 0.8 / 1&#34;</span> | bc<span style="color:#a2f;font-weight:bold">)</span> <span style="color:#080;font-style:italic"># bc is the bash calculator</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/usr/bin/time tail -n +2 <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv | <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    sort -t, -k1,1 --buffer-size<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">mem_for_sort</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">G&#34;</span> --parallel<span style="color:#666">=</span><span style="color:#b8860b">$nprocs</span> --temporary-directory<span style="color:#666">=</span><span style="color:#b8860b">$TAQ_HOME</span>  &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_sorted.csv
 </span></span></code></pre></div><p>This can take a while. I have waited close to one hour for the largest files (128 cores, 490Gb of memory allocated).</p>
 <p>Note: you can clean up the non sorted file to save a little bit of space at this stage <code>rm $TAQ_HOME/taq_select.csv</code></p>
 <h2 id="split-the-data">
@@ -266,18 +262,18 @@ Given the memory allocation defined above, we restrict <code>sort</code> to only
 <p>Last of the preprocessing, we split the data in chunks: one chunk for each symbol/stock.
 Given the sorted nature of the data, this is a straightforward (I only spent a day figuring it out using chatGPT) application of <code>awk</code></p>
 <p>First we make some room for the chunks by giving them their own directory</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>TAQ_CHUNKS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$TAQ_HOME<span style="color:#e6db74">/chunks/&#34;</span>
-</span></span><span style="display:flex;"><span>mkdir -p $TAQ_CHUNKS
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">TAQ_CHUNKS</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$TAQ_HOME</span><span style="color:#b44">/chunks/&#34;</span>
+</span></span><span style="display:flex;"><span>mkdir -p <span style="color:#b8860b">$TAQ_CHUNKS</span>
 </span></span></code></pre></div><p>Then we process the whole thing using awk</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat $TAQ_HOME/taq_sorted.csv | <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    awk -v chunkDir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$TAQ_CHUNKS<span style="color:#e6db74">&#34;</span> -F, <span style="color:#e6db74">&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    {
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if (last != $1) {
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            if (last != &#34;&#34;) close(chunkDir &#34;/chunk_&#34; last &#34;.csv&#34;);
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            last = $1;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        print &gt; (chunkDir &#34;/chunk_&#34; $1 &#34;.csv&#34;);
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }&#39;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#b8860b">$TAQ_HOME</span>/taq_sorted.csv | <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    awk -v <span style="color:#b8860b">chunkDir</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$TAQ_CHUNKS</span><span style="color:#b44">&#34;</span> -F, <span style="color:#b44">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    {
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        if (last != $1) {
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">            if (last != &#34;&#34;) close(chunkDir &#34;/chunk_&#34; last &#34;.csv&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">            last = $1;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        print &gt; (chunkDir &#34;/chunk_&#34; $1 &#34;.csv&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    }&#39;</span>
 </span></span></code></pre></div><p>The script reads the whole file line by line; it checks the first column (the &ldquo;SYMBOL&rdquo; column), if it is equal to the first column of the previous line, it appends the line to the file, if not it moves to create a new file.
 The created files are named based on the first column.</p>
 <p>This process is sequential and can be quite slow (close to one hour for the largest file).</p>
@@ -294,88 +290,88 @@ It is fairly easy to implement; you still need to be careful not to trigger segf
   <a class="anchor" href="#preamble">#</a>
 </h2>
 <p>My preamble is pretty standard and only use basic julia <code>DataFrame</code> stuff.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> CSV
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> DataFrames, DataFramesMeta
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Dates, PeriodicalDates
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">Pipe</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">@pipe</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> ShiftedArrays<span style="color:#f92672">:</span> lag
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Statistics
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> StatsBase<span style="color:#f92672">:</span> std
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@info</span> Threads<span style="color:#f92672">.</span>nthreads() <span style="color:#75715e"># usefule for parallelism later on</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># To ingest the command line parameter I pass to the script</span>
-</span></span><span style="display:flex;"><span>datey <span style="color:#f92672">=</span> ARGS[<span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>TAQ_CHUNKS <span style="color:#f92672">=</span> ARGS[<span style="color:#ae81ff">2</span>] <span style="color:#75715e"># TAQ_CHUNKS=&#34;/scratch.global/eloualic/taq/chunks&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CSV
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> DataFrames, DataFramesMeta
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Dates, PeriodicalDates
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> <span style="color:#0b0;font-weight:bold">Pipe</span><span style="color:#666">:</span> <span style="color:#a2f">@pipe</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> ShiftedArrays<span style="color:#666">:</span> lag
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Statistics
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> StatsBase<span style="color:#666">:</span> std
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@info</span> Threads<span style="color:#666">.</span>nthreads() <span style="color:#080;font-style:italic"># usefule for parallelism later on</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># To ingest the command line parameter I pass to the script</span>
+</span></span><span style="display:flex;"><span>datey <span style="color:#666">=</span> <span style="color:#a2f">ARGS</span>[<span style="color:#666">1</span>]
+</span></span><span style="display:flex;"><span>TAQ_CHUNKS <span style="color:#666">=</span> <span style="color:#a2f">ARGS</span>[<span style="color:#666">2</span>] <span style="color:#080;font-style:italic"># TAQ_CHUNKS=&#34;/scratch.global/eloualic/taq/chunks&#34;</span>
 </span></span></code></pre></div><p>We are going to process each symbol one by one and store the statistics in a table.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>file_list<span style="color:#f92672">=</span>readdir(TAQ_CHUNKS);
-</span></span><span style="display:flex;"><span>n_files <span style="color:#f92672">=</span> length(file_list)
-</span></span><span style="display:flex;"><span>df_oib_vol_array <span style="color:#f92672">=</span> <span style="color:#66d9ef">Vector</span>{<span style="color:#66d9ef">Union</span>{<span style="color:#66d9ef">DataFrame</span>, <span style="color:#66d9ef">Nothing</span>}}(nothing, n_files);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Threads<span style="color:#f92672">.</span><span style="color:#a6e22e">@threads</span> <span style="color:#66d9ef">for</span> i_f <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>n_files
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># read the file for one stock</span>
-</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#f92672">=</span> ingest_file(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$TAQ_CHUNKS</span><span style="color:#e6db74">/</span><span style="color:#e6db74">$file_in</span><span style="color:#e6db74">&#34;</span>; verbose<span style="color:#f92672">=</span>verbose)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># create the trade sign flag</span>
-</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#f92672">=</span> create_trade_sign!(df_taq_symbol)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># create the order imbalance statistic</span>
-</span></span><span style="display:flex;"><span>    df_oib <span style="color:#f92672">=</span> create_oib(df_taq_symbol)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># get the volatility of the order imbalance</span>
-</span></span><span style="display:flex;"><span>    df_oib_vol_array[i_f] <span style="color:#f92672">=</span> create_oib_vol(df_oib)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>file_list<span style="color:#666">=</span>readdir(TAQ_CHUNKS);
+</span></span><span style="display:flex;"><span>n_files <span style="color:#666">=</span> length(file_list)
+</span></span><span style="display:flex;"><span>df_oib_vol_array <span style="color:#666">=</span> <span style="color:#0b0;font-weight:bold">Vector</span>{<span style="color:#0b0;font-weight:bold">Union</span>{<span style="color:#0b0;font-weight:bold">DataFrame</span>, <span style="color:#0b0;font-weight:bold">Nothing</span>}}(<span style="color:#a2f">nothing</span>, n_files);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Threads<span style="color:#666">.</span><span style="color:#a2f">@threads</span> <span style="color:#a2f;font-weight:bold">for</span> i_f <span style="color:#666">=</span> <span style="color:#666">1</span><span style="color:#666">:</span>n_files
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># read the file for one stock</span>
+</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> ingest_file(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">$TAQ_CHUNKS</span><span style="color:#b44">/</span><span style="color:#b68;font-weight:bold">$file_in</span><span style="color:#b44">&#34;</span>; verbose<span style="color:#666">=</span>verbose)
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># create the trade sign flag</span>
+</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> create_trade_sign!(df_taq_symbol)
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># create the order imbalance statistic</span>
+</span></span><span style="display:flex;"><span>    df_oib <span style="color:#666">=</span> create_oib(df_taq_symbol)
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># get the volatility of the order imbalance</span>
+</span></span><span style="display:flex;"><span>    df_oib_vol_array[i_f] <span style="color:#666">=</span> create_oib_vol(df_oib)
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>The most important step is how we read the file.
 Since this is happening inside a parallel loop, we need to make sure <code>CSV.read</code> only happens on a single thread.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> read_file(file_in<span style="color:#f92672">::</span><span style="color:#66d9ef">AbstractString</span>; verbose<span style="color:#f92672">=</span>false)
-</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#f92672">=</span> CSV<span style="color:#f92672">.</span>read(file_in, DataFrame, header<span style="color:#f92672">=</span>false, ntasks<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>    rename!(df_taq_symbol, [<span style="color:#e6db74">:symbol</span>, <span style="color:#e6db74">:date</span>, <span style="color:#e6db74">:time</span>, <span style="color:#e6db74">:price</span>, <span style="color:#e6db74">:size</span>]);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> read_file(file_in<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">AbstractString</span>; verbose<span style="color:#666">=</span><span style="color:#a2f">false</span>)
+</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(file_in, DataFrame, header<span style="color:#666">=</span><span style="color:#a2f">false</span>, ntasks<span style="color:#666">=</span><span style="color:#666">1</span>);
+</span></span><span style="display:flex;"><span>    rename!(df_taq_symbol, [<span style="color:#b8860b">:symbol</span>, <span style="color:#b8860b">:date</span>, <span style="color:#b8860b">:time</span>, <span style="color:#b8860b">:price</span>, <span style="color:#b8860b">:size</span>]);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>Next we follow Chordia et al. to estimate whether the trade is a buy or a sell order.
 Basically we compare the current price to previous prices (up to a lag of 5).
 This is the step that is the slowest when working with the whole dataset at a time.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> create_trade_sign!(df_taq_symbol<span style="color:#f92672">::</span><span style="color:#66d9ef">DataFrame</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@transform!</span>(groupby(df_taq_symbol, <span style="color:#e6db74">:symbol</span>),
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:l1_price</span><span style="color:#f92672">=</span>lag(<span style="color:#e6db74">:price</span>), <span style="color:#e6db74">:l2_price</span><span style="color:#f92672">=</span>lag(<span style="color:#e6db74">:price</span>, <span style="color:#ae81ff">2</span>), 
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:l3_price</span><span style="color:#f92672">=</span>lag(<span style="color:#e6db74">:price</span>, <span style="color:#ae81ff">3</span>), <span style="color:#e6db74">:l4_price</span><span style="color:#f92672">=</span>lag(<span style="color:#e6db74">:price</span>, <span style="color:#ae81ff">4</span>), 
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:l5_price</span><span style="color:#f92672">=</span>lag(<span style="color:#e6db74">:price</span>, <span style="color:#ae81ff">5</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@rtransform!</span> df_taq_symbol <span style="color:#a6e22e">@passmissing</span> <span style="color:#e6db74">:trd_sgn</span> <span style="color:#f92672">=</span> 
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:price</span> <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">:l1_price</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span> 
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:price</span> <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">:l1_price</span> <span style="color:#f92672">?</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">:price</span> <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">:l2_price</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">:price</span> <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">:l2_price</span> <span style="color:#f92672">?</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">:price</span> <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">:l3_price</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">:price</span> <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">:l3_price</span> <span style="color:#f92672">?</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">:price</span> <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">:l4_price</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">:price</span> <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">:l4_price</span> <span style="color:#f92672">?</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">:price</span> <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">:l5_price</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">:price</span> <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">:l5_price</span> <span style="color:#f92672">?</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>                            missing
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> df_taq_symbol
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_trade_sign!(df_taq_symbol<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">DataFrame</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform!</span>(groupby(df_taq_symbol, <span style="color:#b8860b">:symbol</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:l1_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>), <span style="color:#b8860b">:l2_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">2</span>), 
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:l3_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">3</span>), <span style="color:#b8860b">:l4_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">4</span>), 
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:l5_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">5</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@rtransform!</span> df_taq_symbol <span style="color:#a2f">@passmissing</span> <span style="color:#b8860b">:trd_sgn</span> <span style="color:#666">=</span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:price</span> <span style="color:#666">&gt;</span> <span style="color:#b8860b">:l1_price</span> <span style="color:#666">?</span> <span style="color:#666">1</span> <span style="color:#666">:</span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:price</span> <span style="color:#666">&lt;</span> <span style="color:#b8860b">:l1_price</span> <span style="color:#666">?</span> <span style="color:#666">-</span><span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b8860b">:price</span> <span style="color:#666">&gt;</span> <span style="color:#b8860b">:l2_price</span> <span style="color:#666">?</span> <span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b8860b">:price</span> <span style="color:#666">&lt;</span> <span style="color:#b8860b">:l2_price</span> <span style="color:#666">?</span> <span style="color:#666">-</span><span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#b8860b">:price</span> <span style="color:#666">&gt;</span> <span style="color:#b8860b">:l3_price</span> <span style="color:#666">?</span> <span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#b8860b">:price</span> <span style="color:#666">&lt;</span> <span style="color:#b8860b">:l3_price</span> <span style="color:#666">?</span> <span style="color:#666">-</span><span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#b8860b">:price</span> <span style="color:#666">&gt;</span> <span style="color:#b8860b">:l4_price</span> <span style="color:#666">?</span> <span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#b8860b">:price</span> <span style="color:#666">&lt;</span> <span style="color:#b8860b">:l4_price</span> <span style="color:#666">?</span> <span style="color:#666">-</span><span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#b8860b">:price</span> <span style="color:#666">&gt;</span> <span style="color:#b8860b">:l5_price</span> <span style="color:#666">?</span> <span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#b8860b">:price</span> <span style="color:#666">&lt;</span> <span style="color:#b8860b">:l5_price</span> <span style="color:#666">?</span> <span style="color:#666">-</span><span style="color:#666">1</span> <span style="color:#666">:</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#a2f">missing</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> df_taq_symbol
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>The other two functions are fairly straightforward and not particularly interesting</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> create_oib(df) <span style="color:#75715e">#; to::TimerOutput=to)</span>
-</span></span><span style="display:flex;"><span>    symbol_var<span style="color:#f92672">=</span>df[<span style="color:#ae81ff">1</span>,<span style="color:#e6db74">:symbol</span>]
-</span></span><span style="display:flex;"><span>    dropmissing!(df, <span style="color:#e6db74">:trd_sgn</span>)
-</span></span><span style="display:flex;"><span>    nrow(df)<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">return</span> DataFrame(symbol<span style="color:#f92672">=</span>symbol_var, date<span style="color:#f92672">=</span>missing)  <span style="color:#75715e"># some do not have valid signed trades</span>
-</span></span><span style="display:flex;"><span>    df_oib <span style="color:#f92672">=</span> <span style="color:#a6e22e">@combine</span>(groupby(df, [<span style="color:#e6db74">:date</span>,<span style="color:#e6db74">:trd_sgn</span>]),
-</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">:oib_shr_sign</span><span style="color:#f92672">=</span>sum(<span style="color:#e6db74">:size</span>), <span style="color:#e6db74">:oib_num_sign</span><span style="color:#f92672">=</span>length(<span style="color:#e6db74">:size</span>)) <span style="color:#f92672">|&gt;</span>
-</span></span><span style="display:flex;"><span>        (d <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">@transform!</span>(groupby(d, <span style="color:#e6db74">:date</span>),
-</span></span><span style="display:flex;"><span>                          <span style="color:#e6db74">:oib_shr_tot</span><span style="color:#f92672">=</span>sum(<span style="color:#e6db74">:oib_shr_sign</span>), <span style="color:#e6db74">:oib_num_tot</span><span style="color:#f92672">=</span>sum(<span style="color:#e6db74">:oib_num_sign</span>)) )
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@transform!</span>(groupby(df_oib, <span style="color:#e6db74">:date</span>),
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:oib_shr_ratio</span><span style="color:#f92672">=</span>sum(<span style="color:#e6db74">:trd_sgn</span> <span style="color:#f92672">.*</span> <span style="color:#e6db74">:oib_shr_sign</span>) <span style="color:#f92672">./</span><span style="color:#e6db74">:oib_shr_tot</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:oib_num_ratio</span><span style="color:#f92672">=</span>sum(<span style="color:#e6db74">:trd_sgn</span> <span style="color:#f92672">.*</span> <span style="color:#e6db74">:oib_num_sign</span>) <span style="color:#f92672">./</span><span style="color:#e6db74">:oib_num_tot</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">:symbol</span><span style="color:#f92672">=</span>symbol_var)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> df_oib
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> create_oib_vol(df) <span style="color:#75715e">#; to::TimerOutput=to)</span>
-</span></span><span style="display:flex;"><span>    symbol_var<span style="color:#f92672">=</span>df[<span style="color:#ae81ff">1</span>,<span style="color:#e6db74">:symbol</span>]
-</span></span><span style="display:flex;"><span>    dropmissing!(df, <span style="color:#e6db74">:date</span>)
-</span></span><span style="display:flex;"><span>    nrow(df)<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">return</span> DataFrame(symbol<span style="color:#f92672">=</span>symbol_var, 
-</span></span><span style="display:flex;"><span>        datem<span style="color:#f92672">=</span>missing, oib_shr_vol<span style="color:#f92672">=</span>missing, oib_num_vol<span style="color:#f92672">=</span>missing)
-</span></span><span style="display:flex;"><span>    df_oib_vol <span style="color:#f92672">=</span> 
-</span></span><span style="display:flex;"><span>        unique(<span style="color:#a6e22e">@rselect</span>(df, <span style="color:#e6db74">:date</span>, <span style="color:#e6db74">:datem</span><span style="color:#f92672">=</span>MonthlyDate(<span style="color:#e6db74">:date</span>), <span style="color:#e6db74">:symbol</span>, <span style="color:#e6db74">:oib_shr_ratio</span>, <span style="color:#e6db74">:oib_num_ratio</span>)) <span style="color:#f92672">|&gt;</span>
-</span></span><span style="display:flex;"><span>        (d <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">@combine</span>(groupby(d, [<span style="color:#e6db74">:symbol</span>, <span style="color:#e6db74">:datem</span>]),
-</span></span><span style="display:flex;"><span>                       <span style="color:#e6db74">:oib_shr_vol</span><span style="color:#f92672">=</span>std(<span style="color:#e6db74">:oib_shr_ratio</span>), <span style="color:#e6db74">:oib_num_vol</span><span style="color:#f92672">=</span>std(<span style="color:#e6db74">:oib_num_ratio</span>)) )
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> df_oib_vol
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_oib(df) <span style="color:#080;font-style:italic">#; to::TimerOutput=to)</span>
+</span></span><span style="display:flex;"><span>    symbol_var<span style="color:#666">=</span>df[<span style="color:#666">1</span>,<span style="color:#b8860b">:symbol</span>]
+</span></span><span style="display:flex;"><span>    dropmissing!(df, <span style="color:#b8860b">:trd_sgn</span>)
+</span></span><span style="display:flex;"><span>    nrow(df)<span style="color:#666">==</span><span style="color:#666">0</span> <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f;font-weight:bold">return</span> DataFrame(symbol<span style="color:#666">=</span>symbol_var, date<span style="color:#666">=</span><span style="color:#a2f">missing</span>)  <span style="color:#080;font-style:italic"># some do not have valid signed trades</span>
+</span></span><span style="display:flex;"><span>    df_oib <span style="color:#666">=</span> <span style="color:#a2f">@combine</span>(groupby(df, [<span style="color:#b8860b">:date</span>,<span style="color:#b8860b">:trd_sgn</span>]),
+</span></span><span style="display:flex;"><span>                      <span style="color:#b8860b">:oib_shr_sign</span><span style="color:#666">=</span>sum(<span style="color:#b8860b">:size</span>), <span style="color:#b8860b">:oib_num_sign</span><span style="color:#666">=</span>length(<span style="color:#b8860b">:size</span>)) <span style="color:#666">|&gt;</span>
+</span></span><span style="display:flex;"><span>        (d <span style="color:#666">-&gt;</span> <span style="color:#a2f">@transform!</span>(groupby(d, <span style="color:#b8860b">:date</span>),
+</span></span><span style="display:flex;"><span>                          <span style="color:#b8860b">:oib_shr_tot</span><span style="color:#666">=</span>sum(<span style="color:#b8860b">:oib_shr_sign</span>), <span style="color:#b8860b">:oib_num_tot</span><span style="color:#666">=</span>sum(<span style="color:#b8860b">:oib_num_sign</span>)) )
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform!</span>(groupby(df_oib, <span style="color:#b8860b">:date</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:oib_shr_ratio</span><span style="color:#666">=</span>sum(<span style="color:#b8860b">:trd_sgn</span> <span style="color:#666">.*</span> <span style="color:#b8860b">:oib_shr_sign</span>) <span style="color:#666">./</span><span style="color:#b8860b">:oib_shr_tot</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:oib_num_ratio</span><span style="color:#666">=</span>sum(<span style="color:#b8860b">:trd_sgn</span> <span style="color:#666">.*</span> <span style="color:#b8860b">:oib_num_sign</span>) <span style="color:#666">./</span><span style="color:#b8860b">:oib_num_tot</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:symbol</span><span style="color:#666">=</span>symbol_var)
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> df_oib
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_oib_vol(df) <span style="color:#080;font-style:italic">#; to::TimerOutput=to)</span>
+</span></span><span style="display:flex;"><span>    symbol_var<span style="color:#666">=</span>df[<span style="color:#666">1</span>,<span style="color:#b8860b">:symbol</span>]
+</span></span><span style="display:flex;"><span>    dropmissing!(df, <span style="color:#b8860b">:date</span>)
+</span></span><span style="display:flex;"><span>    nrow(df)<span style="color:#666">==</span><span style="color:#666">0</span> <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f;font-weight:bold">return</span> DataFrame(symbol<span style="color:#666">=</span>symbol_var, 
+</span></span><span style="display:flex;"><span>        datem<span style="color:#666">=</span><span style="color:#a2f">missing</span>, oib_shr_vol<span style="color:#666">=</span><span style="color:#a2f">missing</span>, oib_num_vol<span style="color:#666">=</span><span style="color:#a2f">missing</span>)
+</span></span><span style="display:flex;"><span>    df_oib_vol <span style="color:#666">=</span> 
+</span></span><span style="display:flex;"><span>        unique(<span style="color:#a2f">@rselect</span>(df, <span style="color:#b8860b">:date</span>, <span style="color:#b8860b">:datem</span><span style="color:#666">=</span>MonthlyDate(<span style="color:#b8860b">:date</span>), <span style="color:#b8860b">:symbol</span>, <span style="color:#b8860b">:oib_shr_ratio</span>, <span style="color:#b8860b">:oib_num_ratio</span>)) <span style="color:#666">|&gt;</span>
+</span></span><span style="display:flex;"><span>        (d <span style="color:#666">-&gt;</span> <span style="color:#a2f">@combine</span>(groupby(d, [<span style="color:#b8860b">:symbol</span>, <span style="color:#b8860b">:datem</span>]),
+</span></span><span style="display:flex;"><span>                       <span style="color:#b8860b">:oib_shr_vol</span><span style="color:#666">=</span>std(<span style="color:#b8860b">:oib_shr_ratio</span>), <span style="color:#b8860b">:oib_num_vol</span><span style="color:#666">=</span>std(<span style="color:#b8860b">:oib_num_ratio</span>)) )
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> df_oib_vol
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>I don&rsquo;t run the code interactively (see the arguments passed above).
 The command I pass reads:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -t $nprocs import_taq_chunks.jl $DATEY $TAQ_CHUNKS &amp;&gt; import_taq_chunks.log.jl
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -t <span style="color:#b8860b">$nprocs</span> import_taq_chunks.jl <span style="color:#b8860b">$DATEY</span> <span style="color:#b8860b">$TAQ_CHUNKS</span> &amp;&gt; import_taq_chunks.log.jl
 </span></span></code></pre></div><h1 id="slurm-specifics">
   SLURM Specifics
   <a class="anchor" href="#slurm-specifics">#</a>
@@ -449,10 +445,6 @@ The command I pass reads:</p>
 
       
   
-  <div class="book-comments">
-
-</div>
-  
  
 
       <label for="menu-control" class="hidden book-menu-overlay"></label>
@@ -465,14 +457,10 @@ The command I pass reads:</p>
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#defining-variables">Defining variables</a></li>
-    <li><a href="#download-and-expand-the-data">Download and expand the data</a></li>
-    <li><a href="#sort-the-data">Sort the data</a></li>
-    <li><a href="#split-the-data">Split the data</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#preamble">Preamble</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#preprocessing">Preprocessing</a></li>
+    <li><a href="#processing-of-stock-specific-statistics-in-julia">Processing of stock specific statistics in julia</a></li>
+    <li><a href="#slurm-specifics">SLURM Specifics</a></li>
   </ul>
 </nav>
 
