@@ -36,5 +36,47 @@
       <guid>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</guid>
       <description>There are (were?) some issues with F-statistics estimation in stata for IV regressions</description>
     </item>
+    <item>
+      <title>TikZ-Options</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/</link>
+      <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/</guid>
+      <description>Some pictures in TikZ for Asset Pricing with Entry and Imperfect Competition</description>
+    </item>
+    <item>
+      <title>TikZ-Options</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2021-07-Tikz-Bubbles/</link>
+      <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2021-07-Tikz-Bubbles/</guid>
+      <description>Some pictures in TikZ for Bubbles and Innovation</description>
+    </item>
+    <item>
+      <title>TikZ-Investments</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/</link>
+      <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/</guid>
+      <description>Some pictures in TikZ for an investment&amp;rsquo;s class</description>
+    </item>
+    <item>
+      <title>TikZ-MWE</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-MWE/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-MWE/</guid>
+      <description>Integrating TikZ Pictures in a LaTeX environment</description>
+    </item>
+    <item>
+      <title>TikZ-Discussions</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-for-Discussions/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-for-Discussions/</guid>
+      <description>Some pictures in TikZ for conference discussions</description>
+    </item>
+    <item>
+      <title>TikZ-Options</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Options/</link>
+      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Options/</guid>
+      <description>Some pictures in TikZ for an options and derivatives class</description>
+    </item>
   </channel>
 </rss>

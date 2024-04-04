@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Some pictures in TikZ for Bubbles and Innovation">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="TikZ-Options" />
+<meta property="og:description" content="Some pictures in TikZ for Bubbles and Innovation" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2021-07-Tikz-Bubbles/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-07-29T00:00:00+00:00" />
+<title>Using TikZ and PGFPlots for Bubbles and Innovation | EL Misc.</title>
+<link rel="manifest" href="/www/blog/manifest.json">
+<link rel="icon" href="/www/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2021-07-Tikz-Bubbles/">
+<link rel="stylesheet" href="/www/blog/book.min.14bdc6ba62740a5ea9520c7c34f6bc224802166cc73d5287f7a950adac82cd43.css" integrity="sha256-FL3GumJ0Cl6pUgx8NPa8IkgCFmzHPVKH96lQrayCzUM=" crossorigin="anonymous">
+  <script defer src="/www/blog/flexsearch.min.js"></script>
+  <script defer src="/www/blog/en.search.min.93895ea0f932605993025182706ffdb5562be8fcaf54634e7faf0f4dd7fefed7.js" integrity="sha256-k4leoPkyYFmTAlGCcG/9tVYr6PyvVGNOf68PTdf&#43;/tc=" crossorigin="anonymous"></script>
+
+  <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+    
+    
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+</script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']],                  
+      tags: 'ams'
+    }
+  };
+</script>
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+    
+    
+
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Using TikZ and PGFPlots for Bubbles and Innovation</strong>
+
+  <label for="toc-control">
+    
+    <img src="/www/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#household-disagreement">Household disagreement</a></li>
+    <li><a href="#innovation-stage">Innovation Stage</a></li>
+    <li><a href="#production-stage">Production Stage</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/www/blog/posts/2021-07-Tikz-Bubbles/">Using TikZ and PGFPlots for Bubbles and Innovation</a>
+  </h1>
+  
+  <h5>July 29, 2021</h5>
+
+
+
+
+<p>TikZ and PGFPlots in <em>&ldquo;Bubbles and the Value of Innovation&rdquo;</em></p>
+<p>To use the code just insert it into any LaTeX code with the appropriate tikz libraries; see 
+  <a href="/www/blog/posts/2020-05-Tikz-MWE/">here</a> for examples.</p>
+<h1 id="household-disagreement">
+  Household disagreement
+  <a class="anchor" href="#household-disagreement">#</a>
+</h1>
+<p>Households disagree on firms productivity and invest in them in consequence:</p>
+<figure>
+  <img src="../../images/tikz_img/beliefs.svg" alt="Detail Disagreement" style="width: 70%;"/>
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\tikzset</span><span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>  pil/.style=<span style="color:#a2f">{</span> -&gt;, thick, shorten &lt;=0.5pt,  shorten &gt;=0.5pt,<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  shaded/.style=<span style="color:#a2f">{</span>circle,radius=<span style="color:#a2f;font-weight:bold">\r</span>,draw, pattern=north west lines,pattern color=black<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  households/.style=<span style="color:#a2f">{</span>rectangle, draw, fill=black!10, inner sep=5pt, 
+</span></span><span style="display:flex;"><span>                     text width=4cm, text badly centered, minimum height=1.75cm, 
+</span></span><span style="display:flex;"><span>                     font=<span style="color:#a2f;font-weight:bold">\Large\sffamily</span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% =============================================
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Large circle split in 4
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[color=black]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[clip]</span> (0, 0) circle (5cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> [dashed] (0, 0) -- (0, 5);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> [dashed] (0, 0) -- (0, -5);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> [dashed] (0, 0) -- (5, 0);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> [dashed] (0, 0) -- (-5, 0);
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% =============================================  
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Circles in each of the separation  1
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc11) at (1.2, -3.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc12) at (2, -1.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc13) at (4, -2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc13) at (1., -2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Circles in each of the separation  2  
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc31) at (-1.2, -3.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc32) at (-2, -1.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc33) at (-3.75, -2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc13) at (-3., -3) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Circles in each of the separation  3
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc41) at (-1.2, 3.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc42) at (-2, 1.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc43) at (-3.75, 2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, draw=black, fill=white, inner sep=0pt,minimum size=15pt]</span> (dc13) at (-2.75, +2.75) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Last circle for all the other groups  
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> at (2, 2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Huge</span>  <span style="color:#a2f;font-weight:bold">\emph</span><span style="color:#a2f">{</span>etc.<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% =============================================  
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Draw Households
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> (investor1) at (-8,-1) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (investor2) at (-8, 1) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[alice, shirt = blue, saturated, minimum size=1.cm]</span> at (-8., -1.) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[alice, shirt = red, skin=brown, hair=gray, saturated, minimum size=1.cm]</span> at (-8., 1.) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[alice, shirt = gray, skin=brown, saturated, minimum size=1.cm]</span> at (-10., -1.) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[bob, saturated, minimum size=1.cm]</span> at (-10., 1.) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[businessman, female, shirt = gray, skin=brown,  minimum size=1.cm]</span> at (-12., -1.) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[charlie, shirt = gray,  minimum size=1.cm]</span> at (-12., 1.) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% =============================================
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Households Preferences
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-0.7, -3.5) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span>  3<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-0.4,  -3.5) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-1.55, -1.5) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span>  2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-1.25,  -1.5) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 3<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-3.3,  -2) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-3., -2) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-2.5, -3)  [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span>  <span style="color:#a2f;font-weight:bold">\bfseries</span> 4<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-2.2, -3)  [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span>  <span style="color:#a2f;font-weight:bold">\bfseries</span> 4<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% =============================================
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% All rankings
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-0.7, 3.5) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span>  3<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-0.4, 3.5) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-1.55,1.5) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span>  2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-1.25,1.5) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-3.3, 2) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-3.,  2) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 4<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-2.3,  2.75) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 4<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (-2.0,  2.75) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 3<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (1.65, -3.5) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span>  1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (1.95, -3.5) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (2.45,-1.5) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span>  2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (2.75,-1.5) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 3<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (3.3,  -2) [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 3<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (3.55, -2) [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span> <span style="color:#a2f;font-weight:bold">\bfseries</span> 4<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (1.8, -2)  [red] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span>  <span style="color:#a2f;font-weight:bold">\bfseries</span> 4<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (1.5, -2)  [blue] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span>  <span style="color:#a2f;font-weight:bold">\bfseries</span> 2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% =============================================
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Link Investors with their investments
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend left=35, draw=red]</span>    (-7.5, 1)  to   (dc33.north);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend right=35, draw=blue]</span>  (-7.5, -1) to   (dc31.west);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend left=35, draw=red]</span>    (-7.5, 1)  to   (dc43.west);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend right=35, draw=blue]</span>  (-7.5, -1) to   (dc42.south);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend left=35, draw=red]</span>    (-7.5, 1)  to   (dc11.north);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend right=40, draw=blue]</span>  (-7.5, -1) to   (dc11.south);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, fill=blue, minimum size=15pt]</span> (dc31blue) at (-1.2, -3.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, fill=red, minimum size=15pt]</span> (dc33red) at (-3.75, -2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, fill=blue, minimum size=15pt]</span> (dc31blue) at (-2, 1.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[circle, fill=red, minimum size=15pt]</span> (dc33red) at (-3.75, 2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[semicircle, fill=blue, minimum size=7.5pt, rotate=90]</span> (dc42blue)  at (1.1, -3.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[semicircle, fill=red,  minimum size=7.5pt, rotate=270]</span> at (1.3,-3.5) <span style="color:#a2f">{}</span>;   
+</span></span></code></pre></div><h1 id="innovation-stage">
+  Innovation Stage
+  <a class="anchor" href="#innovation-stage">#</a>
+</h1>
+<p>Creation of blueprints and trading</p>
+<figure>
+  <img src="../../images/tikz_img/bubbles-innovation1.svg" alt="Blueprint Creation Stage" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[color=black]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[households]</span> (households) at (-7, -1) <span style="color:#a2f">{</span>Households <span style="color:#b44">$</span><span style="color:#a2f">j</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[myarrow]</span>  (0.2, 4.0) -- (-3.4, 0.25);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[households]</span> (creators) at (13, -1) <span style="color:#a2f">{</span>Firm Creators<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[align=left, font=\footnotesize]</span> (bs1) at (13, -3) <span style="color:#a2f">{</span>collects <span style="color:#b44">$</span><span style="color:#a2f">p_i </span><span style="color:#666">-</span><span style="color:#a2f"> p_b</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[myarrow]</span> (-3.4, -2.25) -- (0.2, -6);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (firmprod) at (-3.9, -5) <span style="color:#a2f">{</span>Produce<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (firmprod) at (-3.9, -6.25) <span style="color:#a2f">{</span>effort cost <span style="color:#b44">$</span><span style="color:#a2f">W</span><span style="color:#666">(</span><span style="color:#a2f">b</span><span style="color:#666">)</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[myarrow]</span>  (5.8, -6) -- (9.4, -2.25);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (firmbuy) at (8.5, -5.5) <span style="color:#a2f">{</span>Buy<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[myarrow]</span>  (9.4 , 0.25) -- (5.8, 4.0);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (firmbuy) at (8.5, 2) <span style="color:#a2f">{</span>Sell<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (firmprod) at (-3.7, 2) <span style="color:#a2f">{</span>Buy shares<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dasharrow]</span> (-3.5, -1) -- (9.5, -1);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (firmbuy) at (3, -1) <span style="color:#a2f">{</span>Own<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% BLUEPRINTS
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\draw</span> (3,-7) circle (3cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font=\footnotesize, anchor=west]</span> (blue) at (0.3,-6.)  <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Blueprints<span style="color:#a2f">}}</span>;    
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp11) at (2,   -7.5) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp12) at (1.7, -8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp13) at (2.4, -7.65) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp14) at (3,   -9.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp15) at (1.9, -8.5) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp16) at (3,   -9.7) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp17) at (3,   -8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp18) at (3.7, -7.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp19) at (4.4, -8.65) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp20) at (5,   -9) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp21) at (3.9, -9.5) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (bp22) at (5,   -7.7) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% FIRMS
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\draw</span> (3, 5) circle (3cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font=\footnotesize]</span> (consfirms) at ( 3, 6)  <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Firms<span style="color:#a2f">}</span> <span style="color:#b44">$</span><span style="color:#a2f">i</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;    
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> (4.5, 4) circle (0.5cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (4.5, 4) <span style="color:#a2f">{</span>?<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> (3, 3.1) circle (0.5cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (3, 3.1) <span style="color:#a2f">{</span>?<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> (1.8, 3.3) circle (0.5cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (1.8, 3.3) <span style="color:#a2f">{</span>?<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span> (2.6, 4.5) circle (0.5cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> at (2.6, 4.5) <span style="color:#a2f">{</span>?<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="production-stage">
+  Production Stage
+  <a class="anchor" href="#production-stage">#</a>
+</h1>
+<p>Firms compete and produce; consumers receive proceeds from their investments</p>
+<figure>
+  <img src="../../images/tikz_img/bubbles-innovation2.svg" alt="Production Stage" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[color=black, xshift=0cm, yshift=0cm]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[households]</span> (households) at (-7, -1) <span style="color:#a2f">{</span>Households <span style="color:#b44">$</span><span style="color:#a2f">j</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[myarrow]</span>  (0.2, 4.0) -- (-3.4, 0.25);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font = \footnotesize, anchor = south]</span> (consbuy) at (-3.5, 2) <span style="color:#a2f">{</span>Consume<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[clip]</span> (3, 5) circle (3cm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\fill</span><span style="color:#b44">[gray!30]</span> (0.5, 5) circle (3cm); 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (dc15) at (2,   3.6) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>8.2<span style="color:#a2f">}}</span>;    
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (dc11) at (1.5, 4.1)  <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>8.2<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (dc14) at (2.8, 4) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>9<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (dc12) at (2.8,   5.1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>8<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (dc13) at (2.1, 5.8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>10<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (dc16) at (2,   6.8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>11<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (4, 3) circle (2.25 mm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (5.5, 4) circle (1.5 mm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (4.7, 3.85) circle (1.9 mm);    
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (3.3, 6.75) circle (1.7 mm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (4,   4) circle (1.2 mm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (4, 5.5) circle (2 mm);    
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (5, 6) circle (1 mm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [pattern=north west lines,pattern color=black] (4.95, 6.7) circle (2.05 mm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[font=\footnotesize]</span> (consfirms) at ( 3, 1.5)  <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Firms<span style="color:#a2f">}</span> <span style="color:#b44">$</span><span style="color:#a2f">i</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;      
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>     
+</span></span></code></pre></div><br>
+
+</br>
+
+</article>
+
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/www/blog/tags/TeX/">TeX</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+
+    
+
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www/blog/"><span>EL Misc.</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/www/blog/"  >
+        
+      </a>
+  </li>
+  
+  <li>
+    <a href="/www/blog/posts/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#household-disagreement">Household disagreement</a></li>
+    <li><a href="#innovation-stage">Innovation Stage</a></li>
+    <li><a href="#production-stage">Production Stage</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+
+
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,41 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on EL Misc.</title>
-    <link>https://loualiche.gitlab.io/www/blog/</link>
-    <description>Recent content in Blog on EL Misc.</description>
+    <title>TeX on EL Misc.</title>
+    <link>https://loualiche.gitlab.io/www/blog/tags/TeX/</link>
+    <description>Recent content in TeX on EL Misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://loualiche.gitlab.io/www/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>TAQ Consolidated</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
-      <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
-      <description>Example of a workflow to deal with annoying TAQ data.</description>
-    </item>
-    <item>
-      <title>ST-Julia-IDE</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</link>
-      <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</guid>
-      <description>How to set up Sublime Text to work as a julia IDE.</description>
-    </item>
-    <item>
-      <title>DataFrames and datatable</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</link>
-      <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</guid>
-      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table.</description>
-    </item>
-    <item>
-      <title>KP-Fstats-Julia</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</link>
-      <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</guid>
-      <description>There are (were?) some issues with F-statistics estimation in stata for IV regressions</description>
-    </item>
+    <lastBuildDate>Thu, 29 Jul 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://loualiche.gitlab.io/www/blog/tags/TeX/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TikZ-Options</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/</link>

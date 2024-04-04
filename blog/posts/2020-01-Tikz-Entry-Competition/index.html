@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Some pictures in TikZ for Asset Pricing with Entry and Imperfect Competition">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="TikZ-Options" />
+<meta property="og:description" content="Some pictures in TikZ for Asset Pricing with Entry and Imperfect Competition" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-07-29T00:00:00+00:00" />
+<title>Using TikZ and PGFPlots for Asset Pricing with Entry and Imperfect Competition | EL Misc.</title>
+<link rel="manifest" href="/www/blog/manifest.json">
+<link rel="icon" href="/www/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/">
+<link rel="stylesheet" href="/www/blog/book.min.14bdc6ba62740a5ea9520c7c34f6bc224802166cc73d5287f7a950adac82cd43.css" integrity="sha256-FL3GumJ0Cl6pUgx8NPa8IkgCFmzHPVKH96lQrayCzUM=" crossorigin="anonymous">
+  <script defer src="/www/blog/flexsearch.min.js"></script>
+  <script defer src="/www/blog/en.search.min.93895ea0f932605993025182706ffdb5562be8fcaf54634e7faf0f4dd7fefed7.js" integrity="sha256-k4leoPkyYFmTAlGCcG/9tVYr6PyvVGNOf68PTdf&#43;/tc=" crossorigin="anonymous"></script>
+
+  <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+    
+    
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+</script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']],                  
+      tags: 'ams'
+    }
+  };
+</script>
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+    
+    
+
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Using TikZ and PGFPlots for Asset Pricing with Entry and Imperfect Competition</strong>
+
+  <label for="toc-control">
+    
+    <img src="/www/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#summary-of-the-economy">Summary of the economy</a></li>
+    <li><a href="#industry-competition">Industry Competition</a></li>
+    <li><a href="#entry-elasticity">Entry Elasticity</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/www/blog/posts/2020-01-Tikz-Entry-Competition/">Using TikZ and PGFPlots for Asset Pricing with Entry and Imperfect Competition</a>
+  </h1>
+  
+  <h5>July 29, 2021</h5>
+
+
+
+
+<p>TikZ and PGFPlots in <em>&ldquo;Asset Pricing with Entry and Imperfect Competition&rdquo;</em></p>
+<p>To use the code just insert it into any LaTeX code with the appropriate tikz libraries; see 
+  <a href="/www/blog/posts/2020-05-Tikz-MWE/">here</a> for examples.</p>
+<h1 id="summary-of-the-economy">
+  Summary of the economy
+  <a class="anchor" href="#summary-of-the-economy">#</a>
+</h1>
+<p>From blueprints, to production across two industries and aggregation of varieties into a final consumption bundle:</p>
+<figure>
+  <img src="../../images/tikz_img/entry_hopenhayn.svg" alt="Hopenhayn Economy" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\tikzset</span><span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    pil/.style=<span style="color:#a2f">{</span> -&gt;, thick, shorten &lt;=0.1pt,  shorten &gt;=0.1pt,<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    dasharrow/.style=<span style="color:#a2f">{</span> -&gt;, thick, shorten &lt;=1pt,  shorten &gt;=1pt, dashed<span style="color:#a2f">}</span>, 
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>[scale=0.75]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[color=black]
+</span></span><span style="display:flex;"><span>     <span style="color:#a2f;font-weight:bold">\draw</span> (7,5) circle (1.5 cm);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (const) at (7,5)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{C_t}</span><span style="color:#b44">$</span> <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west, text width=3.5cm]</span> (cons) at (14,5)  <span style="color:#a2f">{</span> <span style="color:#a2f">{</span>Final consumption:<span style="color:#a2f;font-weight:bold">\\</span> aggregation of industry goods<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% differentiate industries
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>   <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[text width=3cm]</span>(industry1) at (4,2.4) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\node</span>(industry2) at (10,2.4) <span style="color:#a2f">{}</span>; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% consumption from industry east
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>   <span style="color:#a2f;font-weight:bold">\node</span> (c1) at (8.5,5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\node</span> (c2) at (10,2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend right=35, draw=blue  ]</span> (industry2.south) to (c1.east);
+</span></span><span style="display:flex;"><span> <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west]</span> (cons2) at (10,4)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\mathcal</span><span style="color:#a2f">{C}_{</span><span style="color:#666">2</span><span style="color:#a2f">,t}</span><span style="color:#b44">$</span> <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% consumption from industry west
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>   <span style="color:#a2f;font-weight:bold">\node</span> (c3) at (4,2) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\node</span> (c4) at (5.5,5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend left=35, draw=red  ]</span> (industry1.south) to (c4.west);
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=east]</span> (cons1) at (4,4)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\mathcal</span><span style="color:#a2f">{C}_{</span><span style="color:#666">1</span><span style="color:#a2f">,t}</span><span style="color:#b44">$</span> <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[color=red]
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">\draw</span> (4,0) circle (2cm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[color=blue]
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">\draw</span> (10,0cm) circle (2cm);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west, text width=3cm]</span> (cons) at (14,0)  <span style="color:#a2f">{</span> <span style="color:#a2f">{</span>Industry Level Product Market Competition<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">%firms in first industry circle
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\node</span> (11) at (5,1)  <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (12) at (3,-0.1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (13) at (5.1,-0.8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (14) at (3.6,-1.1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (15) at (4,1.6) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (16) at (4,0) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (17) at (3.8,-0.8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (18) at (3.2,-1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (19) at (4.8,-1.1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (110) at (3,1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (111) at (5.2,0.1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">%firms in second industry circle
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\node</span> (21) at (11,1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (22) at (9,-1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (24) at (10,-.5) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (25) at (11,0) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle*</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west]</span> (omega11) at (0,1) <span style="color:#a2f">{</span>firm<span style="color:#a2f">}</span> ;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend left=30 ]</span> (omega11.east) to (12.west);
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west]</span> (omega12) at (0,-2.5) <span style="color:#a2f">{</span>industry<span style="color:#a2f">}</span> ;
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend right=20 ]</span> (omega12.east) to (3.5,-2cm);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">%innovators
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>   <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[thin]</span>  (2.5,-2.8)--(6,-2.8); 
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[ultra thick]</span> (8,-2.8)--(11.5,-2.8);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (31) at (4.8,-3.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>; 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (32) at (4.4,-3.5) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (33) at (5.2,-3.8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (34) at (5.8,-3.4) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (35) at (4.6,-4.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (36) at (5.5,-4.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (37) at (10,-3.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>; 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (39) at (10.2,-3.8) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (310) at (9.8,-3.4) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (312) at (9.9,-4.1) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (313) at (9.1,-4) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> (314) at (9.2,-3.2) <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\circle</span><span style="color:#a2f">{</span>4<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west, text width=3cm,]</span> (omega13)  at (0,-4.8) <span style="color:#a2f">{</span>potential entrant <span style="color:#a2f;font-weight:bold">\\</span>(blueprint)<span style="color:#a2f">}</span> ;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span>                               (omega13b) at (3.3,-4.6) <span style="color:#a2f">{}</span> ;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[pil, bend right=10 ]</span> (omega13b.east) to (35.west);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dasharrow, bend right=30, draw=red ]</span> (31.east) to (13.south);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dasharrow, bend left=30, draw=blue ]</span> (310.west) to (22.south);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> [anchor=west, text width=3.5cm, ] (innov) at (14,-3.5) <span style="color:#a2f">{</span>Innovation Sector<span style="color:#a2f">}</span>; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="industry-competition">
+  Industry Competition
+  <a class="anchor" href="#industry-competition">#</a>
+</h1>
+<p>Hotelling-Salop model of competition:</p>
+<figure>
+  <img src="../../images/tikz_img/entry_salop.svg" alt="Salop/Hotelling Model" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\newcommand</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\overbar</span><span style="color:#a2f">}</span>[1]<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\mkern</span> 1.5mu<span style="color:#a2f;font-weight:bold">\overline</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\mkern</span>-1.5mu#1<span style="color:#a2f;font-weight:bold">\mkern</span>-1.5mu<span style="color:#a2f">}</span><span style="color:#a2f;font-weight:bold">\mkern</span> 1.5mu<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>[shift=<span style="color:#a2f">{</span>(-7,0)<span style="color:#a2f">}</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\foreach</span> <span style="color:#a2f;font-weight:bold">\x</span> [count=<span style="color:#a2f;font-weight:bold">\p</span>] in <span style="color:#a2f">{</span>0,...,5<span style="color:#a2f">}</span> <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[shape=circle,fill=black, scale=0.5]</span> (<span style="color:#a2f;font-weight:bold">\p</span>) at (<span style="color:#a2f;font-weight:bold">\x*</span>60:1) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[shape=circle,fill=red, scale=0.5]</span> (<span style="color:#a2f;font-weight:bold">\p</span>) at (-30-<span style="color:#a2f;font-weight:bold">\x*</span>60:1) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">}</span>; 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> (1) arc (-30:360:1);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [dotted, gray] (-1,0) -- (1,0);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (Mlo) at (0,0.2) <span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\overbar</span><span style="color:#a2f">{M}_{lo}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>scope<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\foreach</span> <span style="color:#a2f;font-weight:bold">\x</span> [count=<span style="color:#a2f;font-weight:bold">\p</span>] in <span style="color:#a2f">{</span>0,...,5<span style="color:#a2f">}</span> <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[shape=circle,fill=black, scale=0.5]</span> (<span style="color:#a2f;font-weight:bold">\p</span>) at (<span style="color:#a2f;font-weight:bold">\x*</span>60:3) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[shape=circle,fill=red, scale=0.5]</span> (<span style="color:#a2f;font-weight:bold">\p</span>) at (-30-<span style="color:#a2f;font-weight:bold">\x*</span>60:3) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">}</span>; 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> (1) arc (-30:360:3);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [dotted, gray] (-3,0) -- (3,0);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (Mhigh) at (0,0.2) <span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\overbar</span><span style="color:#a2f">{M}_{hi}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span></code></pre></div><!-- ----------------------------------------------------------------------------------------------------------------------- -->
+<h1 id="entry-elasticity">
+  Entry Elasticity
+  <a class="anchor" href="#entry-elasticity">#</a>
+</h1>
+<figure>
+  <img src="../../images/tikz_img/entry_elasticity.svg" alt="Elasticity of Entry" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>[domain=0:5,
+</span></span><span style="display:flex;"><span>                      scale=1, thick]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\tikzset</span><span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">% &gt;=stealth&#39;    ,
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    pil/.style=<span style="color:#a2f">{</span> -&gt;, thick, shorten &lt;=0.1pt,  shorten &gt;=0.1pt,<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    dasharrow/.style=<span style="color:#a2f">{</span> -&gt;, thick, shorten &lt;=1pt,  shorten &gt;=1pt, dashed<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">%Define style for boxes
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\usetikzlibrary</span><span style="color:#a2f">{</span>calc<span style="color:#a2f">}</span>   <span style="color:#080;font-style:italic">%allows coordinate calculations.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\tikzstyle</span><span style="color:#a2f">{</span>loosely dashed<span style="color:#a2f">}</span> = [dash pattern=on 6pt off 6pt]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\tikzstyle</span><span style="color:#a2f">{</span>dasharrow<span style="color:#a2f">}</span> = [-&gt;, thick, shorten &lt;=1pt,  shorten &gt;=1pt, dashed]
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% dot/.style={circle,fill=black,minimum size=4pt,inner sep=0pt, outer sep=-1pt},
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#080;font-style:italic">%Define linear parameters for supply and demand
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\dint</span><span style="color:#a2f">{</span>4.5<span style="color:#a2f">}</span>          <span style="color:#080;font-style:italic">%Y-intercept for DEMAND.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\dslp</span><span style="color:#a2f">{</span>-0.5<span style="color:#a2f">}</span>         <span style="color:#080;font-style:italic">%Slope for DEMAND.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\sint</span><span style="color:#a2f">{</span>2<span style="color:#a2f">}</span>          <span style="color:#080;font-style:italic">%Y-intercept for SUPPLY.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\sslp</span><span style="color:#a2f">{</span>0.5<span style="color:#a2f">}</span>          <span style="color:#080;font-style:italic">%Slope for SUPPLY.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\demand</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\x</span>,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\dslp*\x</span>+<span style="color:#a2f;font-weight:bold">\dint</span><span style="color:#a2f">}}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\def\supply</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\x</span>,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sslp*\x</span>+<span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Define coordinates.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (ints) at (<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)<span style="color:#a2f">}</span>,<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)*<span style="color:#a2f;font-weight:bold">\sslp</span>+<span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (ep) at  (0,<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)*<span style="color:#a2f;font-weight:bold">\sslp</span>+<span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (eq) at  (<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)<span style="color:#a2f">}</span>,0);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (dint) at (0,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\dint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (sint) at (0,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">% DEMAND
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[thick,color=dark-gray, domain=0.25:5.25]</span> plot (<span style="color:#a2f;font-weight:bold">\demand</span>) node[right] <span style="color:#a2f">{</span>Demand<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">% SUPPLY
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[very thick,color=black, domain=0.25:5.25]</span> plot (<span style="color:#a2f;font-weight:bold">\supply</span>) node[right] <span style="color:#a2f">{</span>Supply<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">% supply going to infinity
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\fe</span><span style="color:#a2f">{</span>3.25<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [loosely dashed, color=black] (0.2, <span style="color:#a2f;font-weight:bold">\fe</span>) -- (5.5,<span style="color:#a2f;font-weight:bold">\fe</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\filldraw</span><span style="color:#b44">[fill=black, draw=black]</span> (0,<span style="color:#a2f;font-weight:bold">\fe</span>) circle (0.1);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=east]</span> (fe) at (-0.1,<span style="color:#a2f;font-weight:bold">\fe</span>)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\bar</span><span style="color:#a2f">{v}_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=south, color=dark-gray]</span> (zeta) at (6,<span style="color:#a2f;font-weight:bold">\fe</span>)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\zeta</span><span style="color:#a2f"> </span><span style="color:#b8860b">\to</span><span style="color:#a2f"> </span><span style="color:#b8860b">\infty</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;, bend left=30, draw=dark-gray]</span> (4.6,4.2) to (5.25,<span style="color:#a2f;font-weight:bold">\fe</span>+0.1);
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">% Draw axes, and dotted equilibrium lines.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span> (0,0) -- (6.2,0) node[right] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span><span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#a2f">M_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}}</span>;   <span style="color:#080;font-style:italic">% axes
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span> (0,0) -- (0,6.2) node[above] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span><span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#a2f">v_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>[domain=0:5,
+</span></span><span style="display:flex;"><span>                      scale=1,thick]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\usetikzlibrary</span><span style="color:#a2f">{</span>calc<span style="color:#a2f">}</span>   <span style="color:#080;font-style:italic">%allows coordinate calculations.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\tikzstyle</span><span style="color:#a2f">{</span>loosely dashed<span style="color:#a2f">}</span> = [dash pattern=on 6pt off 6pt]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\tikzstyle</span><span style="color:#a2f">{</span>dasharrow<span style="color:#a2f">}</span> = [-&gt;, thick, shorten &lt;=1pt,  shorten &gt;=1pt, dashed]
+</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">%Define linear parameters for supply and demand
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\dint</span><span style="color:#a2f">{</span>4.5<span style="color:#a2f">}</span>          <span style="color:#080;font-style:italic">%Y-intercept for DEMAND.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\dslp</span><span style="color:#a2f">{</span>-0.5<span style="color:#a2f">}</span>         <span style="color:#080;font-style:italic">%Slope for DEMAND.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\sint</span><span style="color:#a2f">{</span>-2<span style="color:#a2f">}</span>          <span style="color:#080;font-style:italic">%Y-intercept for SUPPLY.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\sslp</span><span style="color:#a2f">{</span>2<span style="color:#a2f">}</span>          <span style="color:#080;font-style:italic">%Slope for SUPPLY.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\def\demand</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\x</span>,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\dslp*\x</span>+<span style="color:#a2f;font-weight:bold">\dint</span><span style="color:#a2f">}}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\def\supply</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\x</span>,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sslp*\x</span>+<span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Define coordinates.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (ints) at (<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)<span style="color:#a2f">}</span>,<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)*<span style="color:#a2f;font-weight:bold">\sslp</span>+<span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (ep) at  (0,<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)*<span style="color:#a2f;font-weight:bold">\sslp</span>+<span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (eq) at  (<span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sint</span>-<span style="color:#a2f;font-weight:bold">\dint</span>)/(<span style="color:#a2f;font-weight:bold">\dslp</span>-<span style="color:#a2f;font-weight:bold">\sslp</span>)<span style="color:#a2f">}</span>,0);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (dint) at (0,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\dint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\coordinate</span> (sint) at (0,<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sint</span><span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% DEMAND
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[thick,color=dark-gray, domain=0.25:5]</span> plot (<span style="color:#a2f;font-weight:bold">\demand</span>) node[right] <span style="color:#a2f">{</span>Demand<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% SUPPLY
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[very thick,color=black, domain=1.25:4]</span> plot (<span style="color:#a2f;font-weight:bold">\supply</span>) node[right] <span style="color:#a2f">{</span>Supply<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\def\Me</span><span style="color:#a2f">{</span>2.6<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span> [loosely dashed, color=black] (<span style="color:#a2f;font-weight:bold">\Me</span>, 0) -- (<span style="color:#a2f;font-weight:bold">\Me</span>, 6);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\filldraw</span><span style="color:#b44">[fill=black, draw=black]</span> (<span style="color:#a2f;font-weight:bold">\Me</span>, 0) circle (0.1);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=north]</span> (me) at (<span style="color:#a2f;font-weight:bold">\Me</span>, -0.1)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\bar</span><span style="color:#a2f">{M}_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[anchor=west, color=dark-gray]</span> (zeta) at (<span style="color:#a2f;font-weight:bold">\Me</span>, 0.5)  <span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#b8860b">\zeta</span><span style="color:#a2f"> </span><span style="color:#b8860b">\to</span><span style="color:#a2f"> </span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;, bend right=20, draw=dark-gray]</span> (1.6,1) to (2.5,0.5);
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">% Draw axes, and dotted equilibrium lines.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span> (0,0) -- (6.2,0) node[right] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span><span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#a2f">M_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}}</span>;   <span style="color:#080;font-style:italic">% axes
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span> (0,0) -- (0,6.2) node[above] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span><span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#a2f">v_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span></code></pre></div><br>
+
+</br>
+
+</article>
+
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/www/blog/tags/TeX/">TeX</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+
+    
+
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www/blog/"><span>EL Misc.</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/www/blog/"  >
+        
+      </a>
+  </li>
+  
+  <li>
+    <a href="/www/blog/posts/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#summary-of-the-economy">Summary of the economy</a></li>
+    <li><a href="#industry-competition">Industry Competition</a></li>
+    <li><a href="#entry-elasticity">Entry Elasticity</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+
+
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Some pictures in TikZ for an investment&rsquo;s class">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="TikZ-Investments" />
+<meta property="og:description" content="Some pictures in TikZ for an investment&rsquo;s class" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-12-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-12-30T00:00:00+00:00" />
+<title>Using TikZ and PGFPlots for a class on Portfolio Investment | EL Misc.</title>
+<link rel="manifest" href="/www/blog/manifest.json">
+<link rel="icon" href="/www/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/">
+<link rel="stylesheet" href="/www/blog/book.min.14bdc6ba62740a5ea9520c7c34f6bc224802166cc73d5287f7a950adac82cd43.css" integrity="sha256-FL3GumJ0Cl6pUgx8NPa8IkgCFmzHPVKH96lQrayCzUM=" crossorigin="anonymous">
+  <script defer src="/www/blog/flexsearch.min.js"></script>
+  <script defer src="/www/blog/en.search.min.93895ea0f932605993025182706ffdb5562be8fcaf54634e7faf0f4dd7fefed7.js" integrity="sha256-k4leoPkyYFmTAlGCcG/9tVYr6PyvVGNOf68PTdf&#43;/tc=" crossorigin="anonymous"></script>
+
+  <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+    
+    
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+</script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']],                  
+      tags: 'ams'
+    }
+  };
+</script>
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+    
+    
+
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Using TikZ and PGFPlots for a class on Portfolio Investment</strong>
+
+  <label for="toc-control">
+    
+    <img src="/www/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#optimal-portfolio">Optimal Portfolio</a></li>
+    <li><a href="#efficient-frontier">Efficient Frontier</a></li>
+    <li><a href="#security-market-line">Security Market Line</a></li>
+    <li><a href="#capital-market-line-and-security-market-line">Capital Market Line and Security Market Line</a></li>
+    <li><a href="#treynor-black-portfolio-selection">Treynor-Black Portfolio Selection</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/www/blog/posts/2020-01-Tikz-Investments/">Using TikZ and PGFPlots for a class on Portfolio Investment</a>
+  </h1>
+  
+  <h5>December 30, 2020</h5>
+
+
+
+
+<p>To use the code just insert it into any LaTeX code with the appropriate tikz libraries; see 
+  <a href="/www/blog/posts/2020-05-Tikz-MWE/">here</a> for examples.</p>
+<h1 id="optimal-portfolio">
+  Optimal Portfolio
+  <a class="anchor" href="#optimal-portfolio">#</a>
+</h1>
+<p>Optimal portfolio allocation lies on the Capital Allocation Line (CAL) such that it maximizes the utility of the investor. Thus investor&rsquo;s utility curve is tangent on that point to the CAL:</p>
+<figure>
+  <img src="../../images/tikz_img/opt_portfolio.svg" alt="Optimal Portfolio with a Capital Allocation Line" style="width: 70%;"/>
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>    height=7cm, width=12cm,
+</span></span><span style="display:flex;"><span>    axis x line=bottom, axis y line=left,
+</span></span><span style="display:flex;"><span>    xlabel = Standard Deviation, ylabel = Expected Return,
+</span></span><span style="display:flex;"><span>    ymin=0, ymax=25,
+</span></span><span style="display:flex;"><span>    xmin=0, xmax=60,
+</span></span><span style="display:flex;"><span>    extra x ticks=<span style="color:#a2f">{</span>65<span style="color:#a2f">}</span>, extra x tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    extra x tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    extra y ticks=<span style="color:#a2f">{</span>25<span style="color:#a2f">}</span>, extra y tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{E}</span><span style="color:#b8860b">\{</span><span style="color:#a2f">R</span><span style="color:#b8860b">\}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    extra y tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    enlargelimits=true,
+</span></span><span style="display:flex;"><span>    scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>      a=<span style="color:#a2f">{</span>mark=o,draw=black, mark size = 3pt<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>      b=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=red, fill = red<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[color=black, domain=0:55, line width=1pt]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a2f">{</span>3 + x * 0.4<span style="color:#a2f">}</span>; <span style="color:#080;font-style:italic">% plot the capital allocation line
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[color=red, domain=0:55, line width=1pt]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a2f">{</span>5 + 0.5 * (1/23) * x<span style="color:#a2f">^</span>2<span style="color:#a2f">}</span>; <span style="color:#080;font-style:italic">% plot the utility function
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">\addplot</span>[scatter,only marks,
+</span></span><span style="display:flex;"><span>      scatter src=explicit symbolic]  <span style="color:#080;font-style:italic">% plot the risk-free rate and the market and the allocation
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>      coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>          (0,3)        [a]
+</span></span><span style="display:flex;"><span>          (20, 11)     [a]
+</span></span><span style="display:flex;"><span>          (10, 7)      [b]
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:0,3) [anchor=north west] <span style="color:#a2f">{</span>Riskfree, <span style="color:#b44">$</span><span style="color:#a2f">R_f</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:20,11) [anchor=north west] <span style="color:#a2f">{</span>Risky, <span style="color:#b44">$</span><span style="color:#a2f">R_s</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[rotate=27]</span> at (axis cs:50, 23) [anchor=south east] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>CAL<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[color=red]</span> at (axis cs:27, 25) [anchor=south west] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>U<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, pin distance=2cm]</span>90:<span style="color:#a2f">{</span>Optimal Porfolio<span style="color:#a2f">}}</span>] at (axis cs:10,7.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="efficient-frontier">
+  Efficient Frontier
+  <a class="anchor" href="#efficient-frontier">#</a>
+</h1>
+<p>Case of two or more than two assets</p>
+<h4 id="two-assets">
+  Two Assets
+  <a class="anchor" href="#two-assets">#</a>
+</h4>
+<figure>  
+  <img src="../../images/tikz_img/efficient_frontier1.svg" alt="CIP" style="width: 70%;"/>
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>  height=7cm, width=12cm,
+</span></span><span style="display:flex;"><span>  axis x line=bottom, axis y line=left,
+</span></span><span style="display:flex;"><span>  xlabel = Standard Deviation, ylabel = Expected Return,
+</span></span><span style="display:flex;"><span>  ymin=0, ymax=25, xmin=0, xmax=60,
+</span></span><span style="display:flex;"><span>  extra x ticks=<span style="color:#a2f">{</span>65<span style="color:#a2f">}</span>, extra x tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra x tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y ticks=<span style="color:#a2f">{</span>25<span style="color:#a2f">}</span>, extra y tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{E}</span><span style="color:#b8860b">\{</span><span style="color:#a2f">R</span><span style="color:#b8860b">\}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y tick style=<span style="color:#a2f">{</span>major tick length=0mm,  grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  enlargelimits=true,
+</span></span><span style="display:flex;"><span>  scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    a=<span style="color:#a2f">{</span>mark=o,draw=black, mark size = 3pt<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    b=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=red, fill = red<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>  coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    (20, 11)     [a]
+</span></span><span style="display:flex;"><span>     (12, 5)      [a]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:12, 5) [anchor=north east] <span style="color:#a2f">{</span>Asset 1<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:20,11) [anchor=north west] <span style="color:#a2f">{</span>Asset 2<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[red, very thick,  domain=-1:2.5, samples=200, variable=\t]</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">{</span>(20<span style="color:#a2f">^</span>2*t<span style="color:#a2f">^</span>2 + 12<span style="color:#a2f">^</span>2*(1-t)<span style="color:#a2f">^</span>2)<span style="color:#a2f">^</span>(0.5) <span style="color:#a2f">}</span>, <span style="color:#080;font-style:italic">%{(t^2 * 20^2 + (1-t)^2 * 12)},
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f">{</span>11 * t + (1-t) * 5<span style="color:#a2f">}</span> );
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[rotate=18, color=red]</span> at (axis cs:50, 20) [anchor=south east] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Efficient Frontier<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h4 id="more-than-two-assets">
+  More than two Assets
+  <a class="anchor" href="#more-than-two-assets">#</a>
+</h4>
+<figure>  
+  <img src="../../images/tikz_img/efficient_frontier2.svg" alt="CIP" style="width: 70%;"/>
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>  height=7cm, width=12cm,
+</span></span><span style="display:flex;"><span>  axis x line=bottom, axis y line=left,
+</span></span><span style="display:flex;"><span>  xlabel = Standard Deviation, ylabel = Expected Return,
+</span></span><span style="display:flex;"><span>  ymin=0, ymax=25, xmin=0, xmax=60,
+</span></span><span style="display:flex;"><span>  extra x ticks=<span style="color:#a2f">{</span>65<span style="color:#a2f">}</span>, extra x tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra x tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y ticks=<span style="color:#a2f">{</span>25<span style="color:#a2f">}</span>, extra y tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{E}</span><span style="color:#b8860b">\{</span><span style="color:#a2f">R</span><span style="color:#b8860b">\}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  enlargelimits=true,
+</span></span><span style="display:flex;"><span>  scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    a=<span style="color:#a2f">{</span>mark=o,draw=black, mark size = 3pt<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    b=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=red, fill = red<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    c=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=black, fill = black<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>  coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    (30, 11)     [c]
+</span></span><span style="display:flex;"><span>    (19, 5)      [c]
+</span></span><span style="display:flex;"><span>    (40, 15)     [c]
+</span></span><span style="display:flex;"><span>    (16, 10)     [b]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:19, 5) [anchor=north west] <span style="color:#a2f">{</span>MSFT<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:30,11) [anchor=north west] <span style="color:#a2f">{</span>AAPL<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:40,15) [anchor=north west] <span style="color:#a2f">{</span>KO<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[red, very thick,  domain=-1:2.5, samples=200, variable=\t]</span>(
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f">{</span>(20<span style="color:#a2f">^</span>2*t<span style="color:#a2f">^</span>2 + 12<span style="color:#a2f">^</span>2*(1-t)<span style="color:#a2f">^</span>2)<span style="color:#a2f">^</span>(0.5) <span style="color:#a2f">}</span>, <span style="color:#080;font-style:italic">%{(t^2 * 20^2 + (1-t)^2 * 12)},
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>   <span style="color:#a2f">{</span>11 * t + (1-t) * 5<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span> );
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[color=red]</span> at (axis cs:30, 0) [anchor=south west] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Efficient Frontier<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[black, very thick, domain=-10:50, samples=100, variable=\x]</span>(
+</span></span><span style="display:flex;"><span>  (<span style="color:#a2f">{</span>x<span style="color:#a2f">}</span>, <span style="color:#a2f">{</span>4 + 0.37 * x<span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[rotate = 25, color=black]</span> at (axis cs:30, 15) [anchor=south west] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Optimal CAL<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, text width=3cm, pin distance=2cm]</span>90:<span style="color:#a2f">{{</span><span style="color:#a2f;font-weight:bold">\centering</span> Mean Variance Efficient Porfolio<span style="color:#a2f">}}}</span>] at (axis cs:16, 10.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="security-market-line">
+  Security Market Line
+  <a class="anchor" href="#security-market-line">#</a>
+</h1>
+<figure>  
+  <img src="../../images/tikz_img/sml.svg" alt="SML" style="width: 70%;"/>
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>  height=7cm, width=12cm,
+</span></span><span style="display:flex;"><span>  axis x line=bottom, axis y line=left,
+</span></span><span style="display:flex;"><span>  xlabel = Market Risk, ylabel = Expected Return,
+</span></span><span style="display:flex;"><span>  ymin=0, ymax=24, xmin=0, xmax=2.5,
+</span></span><span style="display:flex;"><span>  xtick=<span style="color:#a2f">{</span>0, 0.5, 1, 1.5, 2<span style="color:#a2f">}</span>, extra x ticks=<span style="color:#a2f">{</span>2.5<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra x tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\beta</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra x tick style=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    major tick length=0mm,
+</span></span><span style="display:flex;"><span>    grid=none
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  ytick=<span style="color:#a2f">{</span>3, 7, 11, 15<span style="color:#a2f">}</span>, yticklabels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#a2f">R_f</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#a2f">R_</span><span style="color:#666">1</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#a2f">R_M</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#a2f">R_</span><span style="color:#666">2</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y ticks=<span style="color:#a2f">{</span>23<span style="color:#a2f">}</span>,  extra y tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{E}</span><span style="color:#b8860b">\{</span><span style="color:#a2f">R</span><span style="color:#b8860b">\}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y tick style=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    major tick length=0mm,
+</span></span><span style="display:flex;"><span>    grid=none
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    a=<span style="color:#a2f">{</span>mark=o,draw=black, mark size = 3pt<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    b=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=red, fill = red<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    c=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=black, fill = black<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[color=black, domain=-10:3, line width=1pt]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">{</span>3 + x * 8<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>  coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    (0,3)        [a]
+</span></span><span style="display:flex;"><span>    (1, 11)      [b]
+</span></span><span style="display:flex;"><span>    (0.5, 7)     [c]
+</span></span><span style="display:flex;"><span>    (1.5, 15)    [c]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (axis cs:0.5,0) -- (axis cs:0.5,7);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (axis cs:1.5,0) -- (axis cs:1.5,15);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed, color=red]</span> (axis cs:1,0) -- (axis cs:1,11);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted]</span> (axis cs:0,7) -- (axis cs:0.5,7);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted]</span> (axis cs:0,15) -- (axis cs:1.5,15);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted, color=red]</span> (axis cs:0,11) -- (axis cs:1,11);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[rotate=23]</span> at (axis cs:2.4, 23) [anchor=south east] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Security Market Line<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, pin distance=2cm]</span>90:<span style="color:#a2f">{</span>Market Porfolio<span style="color:#a2f">}}</span>] at (axis cs:1,11.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="capital-market-line-and-security-market-line">
+  Capital Market Line and Security Market Line
+  <a class="anchor" href="#capital-market-line-and-security-market-line">#</a>
+</h1>
+<figure class="fullwidth">
+  <img src="../../images/tikz_img/sml_cal.svg" alt="Security Market Line and Capital Allocation Line" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>groupplot<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>      group style=<span style="color:#a2f">{</span>group size=2 by 1, horizontal sep=2cm<span style="color:#a2f">}</span>, no markers,
+</span></span><span style="display:flex;"><span>      height=7cm, width=10cm,
+</span></span><span style="display:flex;"><span>      axis x line=bottom, axis y line=left,
+</span></span><span style="display:flex;"><span>      ymin=0, ymax=24,
+</span></span><span style="display:flex;"><span>      extra y ticks=<span style="color:#a2f">{</span>23<span style="color:#a2f">}</span>,  extra y tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{E}</span><span style="color:#b8860b">\{</span><span style="color:#a2f">R</span><span style="color:#b8860b">\}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    extra y tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>      a=<span style="color:#a2f">{</span>mark=o,draw=black, mark size = 3pt<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>      b=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=red, fill = red<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>      c=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=black, fill = black<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% PLOT 1
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">\nextgroupplot</span>[
+</span></span><span style="display:flex;"><span>    xlabel = Standard Deviation,
+</span></span><span style="display:flex;"><span>    ylabel = Expected Return,
+</span></span><span style="display:flex;"><span>    xmin=0, xmax=55,
+</span></span><span style="display:flex;"><span>    extra x ticks=<span style="color:#a2f">{</span>55<span style="color:#a2f">}</span>, extra x tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    extra x tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    xtick=<span style="color:#a2f">{</span>0, 16, 30, 40 <span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    xticklabels=<span style="color:#a2f">{</span>0, <span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#a2f">_M</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#a2f">_{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{AAPL}}</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#a2f">_{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{KO}}</span><span style="color:#b44">$</span> <span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    ytick=<span style="color:#a2f">{</span>3, 5, 10, 15<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    yticklabels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#a2f">R_f</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#a2f">R_{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{MSFT}}</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#a2f">R_M</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#a2f">R_{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{KO}}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>        coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>          (30, 11)     [c]
+</span></span><span style="display:flex;"><span>          (19, 5)      [c]
+</span></span><span style="display:flex;"><span>          (40, 15)     [c]
+</span></span><span style="display:flex;"><span>          (16, 10)     [b]
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:19, 5) [anchor=north west] <span style="color:#a2f">{</span>MSFT<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:30,11) [anchor=south west] <span style="color:#a2f">{</span>AAPL<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:40,15) [anchor=north west] <span style="color:#a2f">{</span>KO<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[red, very thick,  domain=-0.5:2.5, samples=200, variable=\t]</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#a2f">{</span>(18<span style="color:#a2f">^</span>2*t<span style="color:#a2f">^</span>2 + 16<span style="color:#a2f">^</span>2*(1-t)<span style="color:#a2f">^</span>2)<span style="color:#a2f">^</span>(0.5) <span style="color:#a2f">}</span>, <span style="color:#080;font-style:italic">%{(t^2 * 20^2 + (1-t)^2 * 12)},
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>      <span style="color:#a2f">{</span>11 * t + (1-t) * 4<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[black, very thick, domain=-10:50, samples=100, variable=\x]</span>((<span style="color:#a2f">{</span>x<span style="color:#a2f">}</span>, <span style="color:#a2f">{</span>3 + 7/16 * x<span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[rotate = 35, color=black]</span> at (axis cs:30, 16) [anchor=south west]<span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Optimal CAL<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, text width=3cm, pin distance=2cm]</span>90:<span style="color:#a2f">{{</span><span style="color:#a2f;font-weight:bold">\centering</span> Mean Variance Efficient Porfolio<span style="color:#a2f">}}}</span>] at (axis cs:16, 10.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted, color=red]</span> (axis cs:0, 10) -- (axis cs: 16,10);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed, thick, color=red]</span> (axis cs:16, 10) -- (axis cs: 55,10);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (market1) at (axis cs:55.,10) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted]</span> (axis cs:0, 15) -- (axis cs: 40, 15);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (axis cs:40, 15) -- (axis cs: 55,15);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (ko1) at (axis cs:55.,15) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted]</span> (axis cs:0, 5) -- (axis cs: 19, 5);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (axis cs:19, 5) -- (axis cs: 55,5);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (ms1) at (axis cs:55, 5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% PLOT 2
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\nextgroupplot</span>[
+</span></span><span style="display:flex;"><span>    xlabel = Market Risk,
+</span></span><span style="display:flex;"><span>    xmin=0, xmax=2,
+</span></span><span style="display:flex;"><span>    xtick=<span style="color:#a2f">{</span>0, 1, 0.2857142857142857, 1.7142857142857142<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    xticklabels=<span style="color:#a2f">{</span>0 , <span style="color:#b44">$</span><span style="color:#b8860b">\beta</span><span style="color:#a2f">^M</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#b8860b">\beta</span><span style="color:#a2f">^{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{MSFT}}</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#b8860b">\beta</span><span style="color:#a2f">^{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{KO}}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    ytick=<span style="color:#a2f;font-weight:bold">\empty</span>
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[color=black, domain=-10:3, line width=1pt]</span><span style="color:#a2f">{</span>3 + x * 7<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>        coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>          (0,3)        [a]
+</span></span><span style="display:flex;"><span>          (1, 10)      [b]
+</span></span><span style="display:flex;"><span>          (2/7, 5)     [c]
+</span></span><span style="display:flex;"><span>          (12/7, 15)   [c]
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted, color=red]</span> (axis cs:1,0) -- (axis cs:1,10);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed, color=red]</span> (axis cs:0,10) -- (axis cs:1,10);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted]</span> (axis cs:12/7,0) -- (axis cs:12/7, 15);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (axis cs:0,15) -- (axis cs:12/7,15);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dotted]</span> (axis cs:2/7,0) -- (axis cs:2/7, 5);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (axis cs:0,5) -- (axis cs:2/7,5);
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (market2) at (axis cs:0.,10) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (ko2) at (axis cs:0,15) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[]</span> (ms2) at (axis cs:0, 5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[rotate=23]</span> at (axis cs:2.4, 23) [anchor=south east] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>SML<span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, pin distance=2cm]</span>90:<span style="color:#a2f">{</span>Market Porfolio<span style="color:#a2f">}}</span>] at (axis cs:1,11.5) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>groupplot<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed, thick, red]</span> (market1) -- (market2) ;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (ko1) -- (ko2) ;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[dashed]</span> (ms1) -- (ms2) ;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="treynor-black-portfolio-selection">
+  Treynor-Black Portfolio Selection
+  <a class="anchor" href="#treynor-black-portfolio-selection">#</a>
+</h1>
+<p>If investors have information on some portfolio, they might want to trade beyond the passive allocation of holding the market portfolio. How much should they weigh the &ldquo;active&rdquo; section of their portfolio with respect to their passive investment? Standard mean-variance algebra gives a formula for the maximum Sharpe ratio of a portfolio of two risky assets. Coupled with the &ldquo;diagonal version&rdquo; of the market model, we find that the weight corresponds to the ratio of excess returns to variances.</p>
+<figure>
+  <img src="../../images/tikz_img/investment_TreynorBlack.svg" alt="Treynor-Black Allocation" />
+ </figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>  height=7cm, width=12cm,
+</span></span><span style="display:flex;"><span>  axis x line=bottom, axis y line=left,
+</span></span><span style="display:flex;"><span>  xlabel = Standard Deviation, ylabel = Expected Return,
+</span></span><span style="display:flex;"><span>  ymin=0, ymax=35, xmin=0, xmax=35,
+</span></span><span style="display:flex;"><span>  xtick=<span style="color:#a2f">{</span>0, 10, 20, 30<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra x ticks=<span style="color:#a2f">{</span>35<span style="color:#a2f">}</span>, extra x tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#b8860b">\sigma</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra x tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y ticks=<span style="color:#a2f">{</span>3, 35<span style="color:#a2f">}</span>, extra y tick labels=<span style="color:#a2f">{</span><span style="color:#b44">$</span><span style="color:#a2f">r_f</span><span style="color:#b44">$</span>, <span style="color:#b44">$</span><span style="color:#b8860b">\mathbf</span><span style="color:#a2f">{E}</span><span style="color:#b8860b">\{</span><span style="color:#a2f">R</span><span style="color:#b8860b">\}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  extra y tick style=<span style="color:#a2f">{</span>major tick length=0mm, grid=none<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  enlargelimits=false,
+</span></span><span style="display:flex;"><span>  scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    a=<span style="color:#a2f">{</span>mark=o,draw=black, mark size = 3pt<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    b=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=red, fill = red<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    c=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=black, fill = black<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\rf</span><span style="color:#a2f">}{</span>2<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\muM</span><span style="color:#a2f">}{</span>8<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sigM</span><span style="color:#a2f">}{</span>9<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\muA</span><span style="color:#a2f">}{</span>20<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sigA</span><span style="color:#a2f">}{</span>15<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\rhoAM</span><span style="color:#a2f">}{</span>0.1<span style="color:#a2f">}</span> 
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sigAM</span><span style="color:#a2f">}{</span><span style="color:#a2f;font-weight:bold">\sigA</span> * <span style="color:#a2f;font-weight:bold">\sigM</span> * <span style="color:#a2f;font-weight:bold">\rhoAM</span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>  coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#a2f;font-weight:bold">\sigM</span>, <span style="color:#a2f;font-weight:bold">\muM</span>+<span style="color:#a2f;font-weight:bold">\rf</span>) [c]
+</span></span><span style="display:flex;"><span>    (<span style="color:#a2f;font-weight:bold">\sigA</span>, <span style="color:#a2f;font-weight:bold">\muA</span>+<span style="color:#a2f;font-weight:bold">\rf</span>) [c]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:<span style="color:#a2f;font-weight:bold">\sigM</span>, <span style="color:#a2f;font-weight:bold">\muM</span>+<span style="color:#a2f;font-weight:bold">\rf</span>) [anchor=south west] <span style="color:#a2f">{</span>Market Portfolio<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span> at (axis cs:<span style="color:#a2f;font-weight:bold">\sigA</span>, <span style="color:#a2f;font-weight:bold">\muA</span>+<span style="color:#a2f;font-weight:bold">\rf</span>) [anchor=north west] <span style="color:#a2f">{</span>Active Portfolio<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\omA</span><span style="color:#a2f">}{</span>(<span style="color:#a2f;font-weight:bold">\muM*\sigAM</span> - <span style="color:#a2f;font-weight:bold">\muA</span> * <span style="color:#a2f;font-weight:bold">\sigM</span><span style="color:#a2f">^</span>2) / ( (<span style="color:#a2f;font-weight:bold">\muA</span>+<span style="color:#a2f;font-weight:bold">\muM</span>)*<span style="color:#a2f;font-weight:bold">\sigAM</span> - <span style="color:#a2f;font-weight:bold">\muA*\sigM</span><span style="color:#a2f">^</span>2 - <span style="color:#a2f;font-weight:bold">\muM*\sigA</span><span style="color:#a2f">^</span>2)<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\muP</span><span style="color:#a2f">}{</span><span style="color:#a2f;font-weight:bold">\omA</span> * <span style="color:#a2f;font-weight:bold">\muA</span> + (1-<span style="color:#a2f;font-weight:bold">\omA</span>) * <span style="color:#a2f;font-weight:bold">\muM</span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\pgfmathsetmacro</span><span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\sigP</span><span style="color:#a2f">}{</span>(<span style="color:#a2f;font-weight:bold">\omA</span><span style="color:#a2f">^</span>2 * <span style="color:#a2f;font-weight:bold">\sigA</span><span style="color:#a2f">^</span>2 + (1-<span style="color:#a2f;font-weight:bold">\omA</span>)<span style="color:#a2f">^</span>2 * <span style="color:#a2f;font-weight:bold">\sigM</span><span style="color:#a2f">^</span>2 + 2*<span style="color:#a2f;font-weight:bold">\omA*</span>(1-<span style="color:#a2f;font-weight:bold">\omA</span>)*<span style="color:#a2f;font-weight:bold">\sigAM</span>)<span style="color:#a2f">^</span>(1/2)<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[scatter,only marks, scatter src=explicit symbolic]</span>
+</span></span><span style="display:flex;"><span>  coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#a2f;font-weight:bold">\sigP</span>, <span style="color:#a2f;font-weight:bold">\muP</span>+2) [b]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[red, very thick,  domain=-0.75:1.5, samples=200, variable=\t]</span>(
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f">{</span>(<span style="color:#a2f;font-weight:bold">\sigA</span><span style="color:#a2f">^</span>2 * t<span style="color:#a2f">^</span>2 + <span style="color:#a2f;font-weight:bold">\sigM</span><span style="color:#a2f">^</span>2*(1-t)<span style="color:#a2f">^</span>2 + 2*t*(1-t)*<span style="color:#a2f;font-weight:bold">\sigAM</span>)<span style="color:#a2f">^</span>(0.5)<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>   <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\muA</span> * t + (1-t) * <span style="color:#a2f;font-weight:bold">\muM</span> + <span style="color:#a2f;font-weight:bold">\rf</span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span> );
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[black, very thick, domain=0:18, samples=100, variable=\x]</span>(
+</span></span><span style="display:flex;"><span>  (<span style="color:#a2f">{</span>x<span style="color:#a2f">}</span>, <span style="color:#a2f">{</span>2 + <span style="color:#a2f;font-weight:bold">\muP</span>/<span style="color:#a2f;font-weight:bold">\sigP</span> * x<span style="color:#a2f">}</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, text width=3cm, pin distance=1.5cm]</span>90:<span style="color:#a2f">{{</span><span style="color:#a2f;font-weight:bold">\centering</span> maximum Sharpe Ratio portfolio<span style="color:#a2f">}}}</span>] at (axis cs:<span style="color:#a2f;font-weight:bold">\sigP</span>, <span style="color:#a2f;font-weight:bold">\muP</span>+3) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[text centered, text width = 5cm]</span> at (axis cs:20, 10) [anchor=south west] <span style="color:#a2f">{{</span>Active portfolio weight: <span style="color:#a2f;font-weight:bold">\\</span><span style="color:#b44">$</span><span style="color:#b8860b">\omega</span><span style="color:#a2f">_a </span><span style="color:#666">=</span><span style="color:#a2f"> </span><span style="color:#b8860b">\frac</span><span style="color:#a2f">{</span><span style="color:#b8860b">\alpha</span><span style="color:#a2f">_A</span><span style="color:#666">/</span><span style="color:#b8860b">\sigma</span><span style="color:#a2f">_A^</span><span style="color:#666">2</span><span style="color:#a2f">}{</span><span style="color:#b8860b">\mu</span><span style="color:#a2f">_M </span><span style="color:#666">/</span><span style="color:#a2f"> </span><span style="color:#b8860b">\sigma</span><span style="color:#a2f">_M^</span><span style="color:#666">2</span><span style="color:#a2f">}</span><span style="color:#b44">$</span><span style="color:#a2f">}}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>
+</span></span></code></pre></div><br>
+
+</br>
+
+</article>
+
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/www/blog/tags/TeX/">TeX</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+
+    
+
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www/blog/"><span>EL Misc.</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/www/blog/"  >
+        
+      </a>
+  </li>
+  
+  <li>
+    <a href="/www/blog/posts/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#optimal-portfolio">Optimal Portfolio</a></li>
+    <li><a href="#efficient-frontier">Efficient Frontier</a></li>
+    <li><a href="#security-market-line">Security Market Line</a></li>
+    <li><a href="#capital-market-line-and-security-market-line">Capital Market Line and Security Market Line</a></li>
+    <li><a href="#treynor-black-portfolio-selection">Treynor-Black Portfolio Selection</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+
+
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

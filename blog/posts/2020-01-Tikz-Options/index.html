@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Some pictures in TikZ for an options and derivatives class">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="TikZ-Options" />
+<meta property="og:description" content="Some pictures in TikZ for an options and derivatives class" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Options/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-01-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-23T00:00:00+00:00" />
+<title>Using TikZ and PGFPlots for a class on Options and Derivatives | EL Misc.</title>
+<link rel="manifest" href="/www/blog/manifest.json">
+<link rel="icon" href="/www/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Options/">
+<link rel="stylesheet" href="/www/blog/book.min.14bdc6ba62740a5ea9520c7c34f6bc224802166cc73d5287f7a950adac82cd43.css" integrity="sha256-FL3GumJ0Cl6pUgx8NPa8IkgCFmzHPVKH96lQrayCzUM=" crossorigin="anonymous">
+  <script defer src="/www/blog/flexsearch.min.js"></script>
+  <script defer src="/www/blog/en.search.min.93895ea0f932605993025182706ffdb5562be8fcaf54634e7faf0f4dd7fefed7.js" integrity="sha256-k4leoPkyYFmTAlGCcG/9tVYr6PyvVGNOf68PTdf&#43;/tc=" crossorigin="anonymous"></script>
+
+  <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+    
+    
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+</script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']],                  
+      tags: 'ams'
+    }
+  };
+</script>
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+    
+    
+
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Using TikZ and PGFPlots for a class on Options and Derivatives</strong>
+
+  <label for="toc-control">
+    
+    <img src="/www/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#payoff-of-a-forward-contract">Payoff of a Forward Contract</a></li>
+    <li><a href="#covered-interest-parity">Covered Interest Parity</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/www/blog/posts/2020-01-Tikz-Options/">Using TikZ and PGFPlots for a class on Options and Derivatives</a>
+  </h1>
+  
+  <h5>January 23, 2020</h5>
+
+
+
+
+<p>To use the code just insert it into any LaTeX code with the appropriate tikz libraries; see 
+  <a href="/www/blog/posts/2020-05-Tikz-MWE/">here</a> for examples.</p>
+<h1 id="payoff-of-a-forward-contract">
+  Payoff of a Forward Contract
+  <a class="anchor" href="#payoff-of-a-forward-contract">#</a>
+</h1>
+<p>Payoff of a forward contract is linear in the underlying security:</p>
+<figure>
+  <img src="../../images/tikz_img/forward.svg" alt="Forward Contract Payoff" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>    height=10cm,
+</span></span><span style="display:flex;"><span>    width=14cm,
+</span></span><span style="display:flex;"><span>    axis x line=bottom,
+</span></span><span style="display:flex;"><span>    axis y line=left,
+</span></span><span style="display:flex;"><span>    xlabel = Spot Price <span style="color:#b44">$</span><span style="color:#a2f">S_T</span><span style="color:#b44">$</span>,
+</span></span><span style="display:flex;"><span>    ylabel = Payoff,
+</span></span><span style="display:flex;"><span>    ymin=-32, ymax=32,
+</span></span><span style="display:flex;"><span>    xmin=70, xmax=132,    
+</span></span><span style="display:flex;"><span>    xtick=<span style="color:#a2f">{</span>80, 100, 120, 130<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    ytick=<span style="color:#a2f">{</span>-20, 0, 20, 30<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    grid = major,
+</span></span><span style="display:flex;"><span>    grid style=<span style="color:#a2f">{</span>dashed<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    scatter/classes=<span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>      a=<span style="color:#a2f">{</span>mark=*, mark size = 3pt,draw=black, fill = black<span style="color:#a2f">}</span>      
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\definecolor</span><span style="color:#a2f">{</span>maroon<span style="color:#a2f">}{</span>RGB<span style="color:#a2f">}{</span>128, 0, 0<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[color=black, domain=70:130, line width=1pt]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">{</span>x - 100<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\addplot</span><span style="color:#b44">[color=maroon, dashed, domain=70:130, line width=1pt]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">{</span>100 - x<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[pin={[pin edge={thick}, text width=3cm, pin distance=2cm]</span>-90:<span style="color:#a2f">{{</span><span style="color:#a2f;font-weight:bold">\centering</span> Forward Price <span style="color:#b44">$</span><span style="color:#a2f">F_{</span><span style="color:#666">0</span><span style="color:#a2f">,T}</span><span style="color:#b44">$</span><span style="color:#a2f">}}}</span>, align=center] at (axis cs:100, -1) <span style="color:#a2f">{}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\addplot</span>[scatter,only marks,
+</span></span><span style="display:flex;"><span>    scatter src=explicit symbolic]
+</span></span><span style="display:flex;"><span>    coordinates <span style="color:#a2f">{</span>
+</span></span><span style="display:flex;"><span>      (100,0)        [a]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">}</span>;        
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[text width=3cm,align=right]</span> at (axis cs:120, 20) [anchor=south east] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Long Forward<span style="color:#a2f">}</span><span style="color:#a2f;font-weight:bold">\\</span><span style="color:#b44">$</span><span style="color:#a2f">S_T </span><span style="color:#666">-</span><span style="color:#a2f"> F_{</span><span style="color:#666">0</span><span style="color:#a2f">,T}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span><span style="color:#b44">[text width=3cm,align=left]</span> at (axis cs:80, 20) [anchor=south west] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\textbf</span><span style="color:#a2f">{</span>Short Forward<span style="color:#a2f">}</span><span style="color:#a2f;font-weight:bold">\\</span><span style="color:#b44">$</span><span style="color:#a2f">F_{</span><span style="color:#666">0</span><span style="color:#a2f">,T} </span><span style="color:#666">-</span><span style="color:#a2f"> S_T</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>axis<span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span></code></pre></div><h1 id="covered-interest-parity">
+  Covered Interest Parity
+  <a class="anchor" href="#covered-interest-parity">#</a>
+</h1>
+<p>Replicating foreign interest rate using exchange rate and a forward:</p>
+<figure>  
+  <img src="../../images/tikz_img/cip_contract.svg" alt="CIP" />
+</figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#080;font-style:italic">% Definition of blocks:
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">\tikzset</span><span style="color:#a2f">{</span><span style="color:#080;font-style:italic">%
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  block/.style    = <span style="color:#a2f">{</span>draw, thick, rectangle, minimum height = 3em,
+</span></span><span style="display:flex;"><span>    minimum width = 3em<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  sum/.style      = <span style="color:#a2f">{</span>draw, circle, node distance = 2cm<span style="color:#a2f">}</span>, <span style="color:#080;font-style:italic">% Adder
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  input/.style    = <span style="color:#a2f">{</span>coordinate<span style="color:#a2f">}</span>, <span style="color:#080;font-style:italic">% Input
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  output/.style   = <span style="color:#a2f">{</span>coordinate<span style="color:#a2f">}</span>, <span style="color:#080;font-style:italic">% Output
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  &gt;=<span style="color:#a2f">{</span>Latex[width=2mm,length=2mm]<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Specifications for style of nodes:
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>            base/.style = <span style="color:#a2f">{</span>rectangle, rounded corners, draw=black,
+</span></span><span style="display:flex;"><span>                           minimum width=4cm, minimum height=1cm,
+</span></span><span style="display:flex;"><span>                           text centered, font=<span style="color:#a2f;font-weight:bold">\sffamily</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  activityStarts/.style = <span style="color:#a2f">{</span>base, fill=blue!30<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>       startstop/.style = <span style="color:#a2f">{</span>base, fill=red!30<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>    activityRuns/.style = <span style="color:#a2f">{</span>base, fill=green!30<span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>         process/.style = <span style="color:#a2f">{</span>base, minimum width=2.5cm, fill=orange!15,
+</span></span><span style="display:flex;"><span>                           font=<span style="color:#a2f;font-weight:bold">\ttfamily</span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\begin</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>[
+</span></span><span style="display:flex;"><span>  node distance=2cm,
+</span></span><span style="display:flex;"><span>  every node/.style=<span style="color:#a2f">{</span>fill=white, font=<span style="color:#a2f;font-weight:bold">\sffamily</span><span style="color:#a2f">}</span>,
+</span></span><span style="display:flex;"><span>  align=center
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Specification of nodes (position, etc.)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> (start)             [activityStarts]                <span style="color:#a2f">{</span>US Investor at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (borrowing0)        [process, above=2.5cm of start]       <span style="color:#a2f">{</span>US Bank<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange0)         [process, below=2.5cm of start]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (lending01)         [process, right=3.5cm of start]       <span style="color:#a2f">{</span>Japanese Investor<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (end)               [activityStarts, right=3.5cm of lending01] <span style="color:#a2f">{</span>US Investor at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">1</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (borrowing1)        [process, above=2.5cm of end]       <span style="color:#a2f">{</span>US Bank<span style="color:#a2f">}</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange1)         [process, below=2.5cm of end]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Link the nodes
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(borrowing0) -- node[]<span style="color:#a2f">{</span>Borrowing in USD<span style="color:#a2f">}</span> (start);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(start)  -- node[]<span style="color:#a2f">{</span>Buy Yen at rate <span style="color:#b44">$</span><span style="color:#a2f">x_</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f;font-weight:bold">\\</span> buy for <span style="color:#b44">$</span><span style="color:#b8860b">\$</span><span style="color:#666">1</span><span style="color:#b44">$</span> receive <span style="color:#b44">$</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{</span><span style="color:#b8860b">\textyen</span><span style="color:#a2f">}</span><span style="color:#b8860b">\ </span><span style="color:#666">1</span><span style="color:#a2f"> </span><span style="color:#666">/</span><span style="color:#a2f"> x_</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>(exchange0);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(start)  -- node[text width = 2.4cm]<span style="color:#a2f">{</span>Lend <span style="color:#b44">$</span><span style="color:#666">1</span><span style="color:#666">/</span><span style="color:#a2f">x_</span><span style="color:#666">0</span><span style="color:#b44">$</span> Yens at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span> (lending01);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(lending01)  -- node[text width = 2.4cm]<span style="color:#a2f">{</span>Receive Yens: <span style="color:#b44">$</span><span style="color:#b8860b">\frac</span><span style="color:#a2f">{</span><span style="color:#666">1</span><span style="color:#a2f">}{x_</span><span style="color:#666">0</span><span style="color:#a2f">} </span><span style="color:#b8860b">\cdot</span><span style="color:#a2f"> </span><span style="color:#666">(</span><span style="color:#666">1</span><span style="color:#666">+</span><span style="color:#a2f">r^{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{</span><span style="color:#b8860b">\textyen</span><span style="color:#a2f">}}</span><span style="color:#666">)</span><span style="color:#b44">$</span><span style="color:#a2f">}</span> (end);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(end)  -- node[]<span style="color:#a2f">{</span>Repay USD loan at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">1</span><span style="color:#b44">$</span> for <span style="color:#a2f;font-weight:bold">\\</span><span style="color:#b44">$</span><span style="color:#666">1</span><span style="color:#666">+</span><span style="color:#a2f">r</span><span style="color:#b44">$</span><span style="color:#a2f">}</span> (borrowing1);
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(exchange1)  -- node[]<span style="color:#a2f">{</span>Exchange the <span style="color:#a2f;font-weight:bold">\textyen</span> <span style="color:#a2f;font-weight:bold">\ </span>investment in USD<span style="color:#a2f;font-weight:bold">\\</span> <span style="color:#b44">$</span><span style="color:#b8860b">\frac</span><span style="color:#a2f">{</span><span style="color:#666">1</span><span style="color:#a2f">}{x_</span><span style="color:#666">0</span><span style="color:#a2f">} </span><span style="color:#b8860b">\cdot</span><span style="color:#a2f"> </span><span style="color:#666">(</span><span style="color:#666">1</span><span style="color:#666">+</span><span style="color:#a2f">r^{</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{</span><span style="color:#b8860b">\textyen</span><span style="color:#a2f">}}</span><span style="color:#666">)</span><span style="color:#a2f"> </span><span style="color:#b8860b">\cdot</span><span style="color:#a2f"> F_{</span><span style="color:#666">0</span><span style="color:#a2f">,</span><span style="color:#666">1</span><span style="color:#a2f">}</span><span style="color:#b44">$</span><span style="color:#a2f">}</span> (end);
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
+</span></span></code></pre></div><br>
+
+</br>
+
+</article>
+
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/www/blog/tags/TeX/">TeX</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+
+    
+
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www/blog/"><span>EL Misc.</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/www/blog/"  >
+        
+      </a>
+  </li>
+  
+  <li>
+    <a href="/www/blog/posts/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#payoff-of-a-forward-contract">Payoff of a Forward Contract</a></li>
+    <li><a href="#covered-interest-parity">Covered Interest Parity</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+
+
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
