@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A guide for moving between julia&rsquo;s DataFrames.jl and R data.table.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="DataFrames and datatable" />
+<meta property="og:description" content="A guide for moving between julia&rsquo;s DataFrames.jl and R data.table." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-01-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-01-07T00:00:00+00:00" />
+<title>From R data.table to julia DataFrames.jl | EL Misc.</title>
+<link rel="manifest" href="/www/blog/manifest.json">
+<link rel="icon" href="/www/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/">
+<link rel="stylesheet" href="/www/blog/book.min.14bdc6ba62740a5ea9520c7c34f6bc224802166cc73d5287f7a950adac82cd43.css" integrity="sha256-FL3GumJ0Cl6pUgx8NPa8IkgCFmzHPVKH96lQrayCzUM=" crossorigin="anonymous">
+  <script defer src="/www/blog/flexsearch.min.js"></script>
+  <script defer src="/www/blog/en.search.min.1bbb131f6e857464fd74d1731a5b92ab9ae78c16b8649c083997421797b4dda1.js" integrity="sha256-G7sTH26FdGT9dNFzGluSq5rnjBa4ZJwIOZdCF5e03aE=" crossorigin="anonymous"></script>
+
+  <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+    
+    
+
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>From R data.table to julia DataFrames.jl</strong>
+
+  <label for="toc-control">
+    
+    <img src="/www/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#file-io">File I/O</a></li>
+    <li><a href="#inspecting-the-dataset">Inspecting the dataset</a></li>
+    <li><a href="#filtering">Filtering</a></li>
+    <li><a href="#creatingmodifying-variables">Creating/modifying variables</a></li>
+    <li><a href="#aggregating">Aggregating</a></li>
+    <li><a href="#reshaping">Reshaping</a></li>
+    <li><a href="#merging">Merging</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/www/blog/posts/2023-07-DataFrames-and-datatable/">From R data.table to julia DataFrames.jl</a>
+  </h1>
+  
+  <h5>January 7, 2024</h5>
+
+
+
+
+<h1 id="introduction">
+  Introduction
+  <a class="anchor" href="#introduction">#</a>
+</h1>
+<p>This is meant as a resource for people trying to move between R and julia who are using data.table on the one hand and DataFrames.jl on the other.
+I have gathered function I tend to use frequently or that I find frustrating to look for when I need them.
+There are probably glaring omissions.
+Feel free to open an issue 
+  <a href="https://gitlab.com/Loualiche/www/issues">here</a>.</p>
+<h4 id="resources">
+  Resources
+  <a class="anchor" href="#resources">#</a>
+</h4>
+<ul>
+<li>I will mostly follow the excellent 
+  <a href="https://stata2r.github.io/data.table/#installation"><code>stata2r</code></a> as a template.</li>
+<li>You can also have a look at some of the mappings in the <code>DataFrames.jl</code> 
+  <a href="https://dataframes.juliadata.org/stable/man/comparisons/">documentation</a></li>
+<li>I have found this 
+  <a href="http://brooksandrew.github.io/simpleblog/articles/advanced-data-table/">guide</a> of data.table by Andrew Brooks  very useful.</li>
+</ul>
+<h4 id="a-word-of-warning">
+  A word of warning
+  <a class="anchor" href="#a-word-of-warning">#</a>
+</h4>
+<ul>
+<li><strong>Missing Data.</strong> Dealing with missing data in julia requires to be explicit as most functions will return a <code>missing</code> value if an array includes a missing element. Some functions will error. I will try to point out the equivalence with the <code>R</code> code but be aware that the equivalence might not be always be strictly the same if you implement it. I show some of the examples on the <em>Freedman</em> dataset from the <code>car</code> package in R.</li>
+<li><strong>Need improvement.</strong>
+<ul>
+<li>A few specific sections could use some user inputs as the julia solutions were less than ideal: 
+  <a href="/www/blog/#leads-and-lags"><em>Leads and lags</em></a>; <em>Dates</em>; <em>Complex merges</em></li>
+</ul>
+</li>
+</ul>
+<h4 id="issues">
+  Issues
+  <a class="anchor" href="#issues">#</a>
+</h4>
+<ul>
+<li>This is a first draft and there might be a few mistakes throughout the document. I am not a professional and I probably picked up bad habits here and there.</li>
+<li>Email me at 
+  <a href="mailto:eloualic@umn.edu">eloualic@umn.edu</a></li>
+<li>File an issue on 
+  <a href="https://gitlab.com/Loualiche/www/issues">gitlab here</a> if you want to start a dicussion or have ideas of things to add/change</li>
+</ul>
+<h1 id="installation">
+  Installation
+  <a class="anchor" href="#installation">#</a>
+</h1>
+
+
+
+<div class="grid" style="">
+  
+  <div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    Installation can sometime be challenging.
+This should not be an issue in <code>julia</code> here.
+We will mostly use the base <code>DataFrames</code> package and the convenient macros in the <code>DataFramesMeta</code> package.
+To read in data  we will use the <code>CSV</code> package while julia supports many different file formats (see 
+  <a href="https://github.com/JuliaIO/FileIO.jl"><code>FileIO.jl</code></a>)
+  </div>
+</div>
+
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    Installation for <code>data.table</code> can be tricky especially if you want to benefit from the multicore features.
+I recommend that you look at the 
+  <a href="https://github.com/Rdatatable/data.table/wiki/Installation">installation wiki</a> for more details.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+  
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Pkg
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;DataFrames&#34;</span>)
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;DataFramesMeta&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> DataFrames
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> DataFramesMeta
+</span></span></code></pre></div>
+</div>
+
+
+  
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;data.table&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># latest development version that has passed all tests:</span>
+</span></span><span style="display:flex;"><span>data.table<span style="color:#666">::</span><span style="color:#00a000">update_dev_pkg</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the package</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(data.table)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Pkg
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;DataFrames&#34;</span>)
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;DataFramesMeta&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> DataFrames
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> DataFramesMeta
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;data.table&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># latest development version that has passed all tests:</span>
+</span></span><span style="display:flex;"><span>data.table<span style="color:#666">::</span><span style="color:#00a000">update_dev_pkg</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the package</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(data.table)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<p>We will also use other packages to load auxiliary datasets, download data etc.
+I use the pipe macro in julia and the magrittr package in R to compose commands (though both packages have some amount of chaining built-in)</p>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Install the packages</span>
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;CSV&#34;</span>)
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;ShiftedArrays&#34;</span>) <span style="color:#080;font-style:italic"># lead/lag operators</span>
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;HTTP&#34;</span>) <span style="color:#080;font-style:italic"># download utilities</span>
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;RDatasets&#34;</span>) 
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;Pipe&#34;</span>) <span style="color:#080;font-style:italic"># pipes</span>
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Install the packages</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;car&#34;</span>)       <span style="color:#080;font-style:italic"># RDataset</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;magrittr&#34;</span>)  <span style="color:#080;font-style:italic"># pipes</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;statar&#34;</span>)    <span style="color:#080;font-style:italic"># stata-style data utilities</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;lubridate&#34;</span>) <span style="color:#080;font-style:italic"># date utilities</span>
+</span></span><span style="display:flex;"><span> 
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> HTTP
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CSV
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> RDatasets
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> <span style="color:#0b0;font-weight:bold">Pipe</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> ShiftedArrays
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Dates
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We will need some statistical function from the Base package</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Statistics<span style="color:#666">:</span> mean, median, quantile
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(car)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(magrittr)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(statar)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(lubridate)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="file-io">
+  File I/O
+  <a class="anchor" href="#file-io">#</a>
+</h1>
+<h2 id="reading-data">
+  Reading Data
+  <a class="anchor" href="#reading-data">#</a>
+</h2>
+<p>I am using the flight dataset to run most of the examples.
+This assumes your data is in a <code>csv</code> format.</p>
+<p>There are options in both languages to read from more efficient formats like parquet.
+I have found that csv is both fast and idioproof and lends itself to quick manipulation on the shell if I need to do something quickly.</p>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In julia, the <code>CSV.jl</code> package does not allow to read directly from a url but we can use the <code>HTTP.jl</code> package to download the file.
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In R, you can directly read the dataset from an <code>url</code> using <code>fread</code> in <code>data.table</code>.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Flights data</span>
+</span></span><span style="display:flex;"><span>url_flights <span style="color:#666">=</span> <span style="color:#b44">&#34;https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv&#34;</span>
+</span></span><span style="display:flex;"><span>url_get <span style="color:#666">=</span> HTTP<span style="color:#666">.</span>get(url_flights);
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(url_get<span style="color:#666">.</span>body, DataFrame)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># If the dataset is compressed, the data is expanded to /tmp (see this [issue](https://github.com/JuliaData/CSV.jl/issues/988))</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># If you are limited by how much to write on `/tmp` (HPC) then use </span>
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(<span style="color:#b44">&#34;file.csv.gz&#34;</span>, DataFrame, buffer_in_memory<span style="color:#666">=</span><span style="color:#a2f">true</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Freedman data</span>
+</span></span><span style="display:flex;"><span>dat_missing <span style="color:#666">=</span> RDatasets<span style="color:#666">.</span>dataset(<span style="color:#b44">&#34;car&#34;</span>, <span style="color:#b44">&#34;Freedman&#34;</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Flights data</span>
+</span></span><span style="display:flex;"><span>url_flights <span style="color:#666">=</span> <span style="color:#b44">&#34;https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> <span style="color:#00a000">fread</span>(url_flights)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># In fread you can choose to which temp folder to write intermediary files using `tmpdir`</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Note: this is different from the option offered in `julia`</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">fread</span>(<span style="color:#b44">&#34;file.csv.gz&#34;</span>, tmpdir<span style="color:#666">=</span><span style="color:#b44">&#34;~/tmp&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Freedman data</span>
+</span></span><span style="display:flex;"><span>dat_missing <span style="color:#666">=</span> <span style="color:#00a000">data.table</span>(Freedman) <span style="color:#080;font-style:italic"># load and convert to data.table</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="writing-data">
+  Writing Data
+  <a class="anchor" href="#writing-data">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    To write the file we use a similar function. It is also possible to save the file with compression
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    Similarly <code>data.table</code> provides a write function with optional compression
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>CSV<span style="color:#666">.</span>write(<span style="color:#b44">&#34;./data.csv&#34;</span>, dat)
+</span></span><span style="display:flex;"><span>CSV<span style="color:#666">.</span>write(<span style="color:#b44">&#34;./data.csv.gz&#34;</span>, dat; compress<span style="color:#666">=</span><span style="color:#a2f">true</span>)
+</span></span></code></pre></div><p>If you want to set up a different compression algorithm (faster or more efficient) use 
+  <a href="https://github.com/JuliaIO/TranscodingStreams.jl"><code>TranscodingStreams.jl</code></a> with the appropriate codec.
+For example if you want to use zst you would do</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;CodecZstd&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CodecZstd
+</span></span><span style="display:flex;"><span>open(ZstdCompressorStream, <span style="color:#b44">&#34;./data.csv.zst&#34;</span>, <span style="color:#b44">&#34;w&#34;</span>) <span style="color:#a2f;font-weight:bold">do</span> stream
+</span></span><span style="display:flex;"><span>    CSV<span style="color:#666">.</span>write(stream, dat)
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># similarly to read it back</span>
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> open(ZstdDecompressorStream, <span style="color:#b44">&#34;./data.csv.zst&#34;</span>, <span style="color:#b44">&#34;r&#34;</span>) <span style="color:#a2f;font-weight:bold">do</span> stream
+</span></span><span style="display:flex;"><span>    CSV<span style="color:#666">.</span>read(stream, DataFrame)
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">fwrite</span>(dat, <span style="color:#b44">&#34;./data.csv&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">fwrite</span>(dat, <span style="color:#b44">&#34;./data.csv.gz&#34;</span>, compress<span style="color:#666">=</span><span style="color:#b44">&#34;gzip&#34;</span>) <span style="color:#080;font-style:italic"># with compression</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="benchmarks">
+  (Benchmarks)
+  <a class="anchor" href="#benchmarks">#</a>
+</h2>
+<p>I would like to include a benchmark for one large file and compare csv intake to parquet.</p>
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="inspecting-the-dataset">
+  Inspecting the dataset
+  <a class="anchor" href="#inspecting-the-dataset">#</a>
+</h1>
+<p>This is before we start filtering, collapsing, or merging the data.</p>
+<h2 id="sorting">
+  Sorting
+  <a class="anchor" href="#sorting">#</a>
+</h2>
+<p>It is important to be able to sort rows.
+What are the most delayed flights, what about the most delayed flight on a specific day?</p>
+<p><em>Note that the code changes the order &ldquo;in-place&rdquo; as it changes the dataset itself.</em></p>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    The most basic task is to sort some columns with respect to a specific variable
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    Similarly <code>data.table</code> provides a write function with optional compression
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>sort!(dat, <span style="color:#b8860b">:air_time</span>)
+</span></span><span style="display:flex;"><span>sort!(dat, [<span style="color:#b8860b">:air_time</span>, <span style="color:#b8860b">:dest</span>])
+</span></span><span style="display:flex;"><span>sort!(dat, <span style="color:#b8860b">:air_time</span>; rev<span style="color:#666">=</span><span style="color:#a2f">true</span>)
+</span></span><span style="display:flex;"><span>sort!(dat, [order(<span style="color:#b8860b">:air_time</span>, rev<span style="color:#666">=</span><span style="color:#a2f">true</span>), <span style="color:#b8860b">:dest</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if you do not want to change the dataset in place</span>
+</span></span><span style="display:flex;"><span>sort(dat, <span style="color:#b8860b">:air_time</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, air_time) 
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, air_time, dest) 
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, <span style="color:#666">-</span>air_time)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, <span style="color:#666">-</span>air_time, dest)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if you do not want to change the dataset in place</span>
+</span></span><span style="display:flex;"><span>dat[ <span style="color:#00a000">order</span>(air_time)] <span style="color:#080;font-style:italic"># etc.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># To reorder a dataset programmatically use the `setorderv` function</span>
+</span></span><span style="display:flex;"><span>col <span style="color:#666">=</span> <span style="color:#b44">&#34;air_time&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setorderv</span>(dat, col)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<p>If we want to reorder <strong>columns</strong> (rather than rows)</p>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>select!(dat, [<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>], Not([<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>]))
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setcolorder</span>(dat, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>))
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="renaming">
+  Renaming
+  <a class="anchor" href="#renaming">#</a>
+</h2>
+<p>Renaming does modify the dataset but it does not alter its data so we include it here.</p>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    This is where I start leaning on the macros from <code>DataFramesMeta.jl</code>
+  </div>
+</div>
+
+
+
+<div class="code-column" style="">
+    Similarly <code>data.table</code> provides a write function with optional compression
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rename!</span>(dat, <span style="color:#b8860b">:new_arr_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:arr_delay</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rename!</span>(dat, <span style="color:#b8860b">:new_carrier</span> <span style="color:#666">=</span> <span style="color:#b8860b">:carrier</span>, <span style="color:#b8860b">:new_origin</span>  <span style="color:#666">=</span> <span style="color:#666">$</span><span style="color:#b44">&#34;origin&#34;</span>) 
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rename</span>(dat, <span style="color:#b8860b">:new_arr_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:arr_delay</span>) <span style="color:#080;font-style:italic"># not in place</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rename!(x <span style="color:#666">-&gt;</span> replace(x, <span style="color:#b44">&#34;arr_&#34;</span> <span style="color:#666">=&gt;</span> <span style="color:#b44">&#34;arrival_&#34;</span>), dat) <span style="color:#080;font-style:italic"># use the base DataFrames.jl function here</span>
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat, <span style="color:#b44">&#34;new_arr_delay&#34;</span>, <span style="color:#b44">&#34;arrival_delay&#34;</span>) 
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;carrier&#34;</span>,<span style="color:#b44">&#34;origin&#34;</span>), <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;new_carrier&#34;</span>,<span style="color:#b44">&#34;new_origin&#34;</span>)) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat, <span style="color:#00a000">gsub</span>(<span style="color:#b44">&#34;arr_&#34;</span>, <span style="color:#b44">&#34;arrival_&#34;</span>, <span style="color:#00a000">names</span>(dat)))
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="summary-statistics">
+  Summary Statistics
+  <a class="anchor" href="#summary-statistics">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>describe(dat)
+</span></span><span style="display:flex;"><span>describe(dat, <span style="color:#b8860b">:arr_delay</span>)
+</span></span><span style="display:flex;"><span>describe(dat, <span style="color:#b8860b">:min</span>, <span style="color:#b8860b">:detailed</span>, cols<span style="color:#666">=</span><span style="color:#b8860b">:arr_delay</span>) 
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat) <span style="color:#080;font-style:italic"># from statar package</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat, arr_delay)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat, arr_delay, d <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="tabulations">
+  Tabulations
+  <a class="anchor" href="#tabulations">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>summary_var <span style="color:#666">=</span> <span style="color:#b8860b">:carrier</span> <span style="color:#080;font-style:italic"># or [:carrier, :origin]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, summary_var) <span style="color:#666">|&gt;</span>
+</span></span><span style="display:flex;"><span>    combine(_, nrow <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:Freq</span>, proprow <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:Percent</span>) <span style="color:#666">|&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform</span>(_, <span style="color:#b8860b">:Cum</span> <span style="color:#666">=</span> cumsum(<span style="color:#b8860b">:Percent</span>))
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">tab</span>(dat, carrier) <span style="color:#080;font-style:italic"># from statar package</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">tab</span>(dat, carrier, origin)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># data.table version</span>
+</span></span><span style="display:flex;"><span>dat[, .N, by <span style="color:#666">=</span> .(carrier, origin)][,
+</span></span><span style="display:flex;"><span>    <span style="color:#00a000">`:=`</span>(Percent<span style="color:#666">=</span><span style="color:#666">100</span><span style="color:#666">*</span>N<span style="color:#666">/</span><span style="color:#00a000">nrow</span>(dat), Cum<span style="color:#666">=</span><span style="color:#666">100</span><span style="color:#666">*</span><span style="color:#00a000">cumsum</span>(N)<span style="color:#666">/</span><span style="color:#00a000">nrow</span>(dat)) ][]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="filtering">
+  Filtering
+  <a class="anchor" href="#filtering">#</a>
+</h1>
+<h2 id="subsetting-rows">
+  Subsetting rows
+  <a class="anchor" href="#subsetting-rows">#</a>
+</h2>
+<h4 id="on-the-flights-data">
+  On the flights data
+  <a class="anchor" href="#on-the-flights-data">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    There are multiple options for filtering; this is where I start leaning on the macros from <code>DataFramesMeta.jl</code>
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In <code>data.table</code> filtering is not in place and you will need to assign the dataset (to itself) for the changes to propagate.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">200</span>, <span style="color:#666">:</span>]
+</span></span><span style="display:flex;"><span>subset(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">-&gt;</span> x <span style="color:#666">.&gt;</span> <span style="color:#666">5</span> <span style="color:#666">.&amp;</span> x <span style="color:#666">.&lt;</span> <span style="color:#666">10</span>) <span style="color:#080;font-style:italic"># from dataframes base</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@subset</span>(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">.&gt;</span> <span style="color:#666">5</span> <span style="color:#666">.&amp;</span> <span style="color:#b8860b">:day</span> <span style="color:#666">.&lt;</span> <span style="color:#666">10</span>) <span style="color:#080;font-style:italic"># note the `.` for broadcasting</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">&gt;</span> <span style="color:#666">5</span> <span style="color:#666">&amp;</span> <span style="color:#b8860b">:day</span> <span style="color:#666">&lt;</span> <span style="color:#666">10</span>)  <span style="color:#080;font-style:italic"># note the `r` for change by row</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset!</span>(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">&gt;</span> <span style="color:#666">5</span> <span style="color:#666">&amp;</span> <span style="color:#b8860b">:day</span> <span style="color:#666">&lt;</span> <span style="color:#666">10</span>) <span style="color:#080;font-style:italic"># change in place</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:origin</span> <span style="color:#666">==</span> <span style="color:#b44">&#34;LGA&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, occursin(<span style="color:#b44">r</span><span style="color:#b68">&#34;^LG&#34;</span>, <span style="color:#b8860b">:origin</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:month</span> <span style="color:#666">∈</span> [<span style="color:#666">3</span>, <span style="color:#666">4</span>, <span style="color:#666">11</span>, <span style="color:#666">12</span>])
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:origin</span> <span style="color:#666">∈</span> [<span style="color:#b44">&#34;JFK&#34;</span>, <span style="color:#b44">&#34;LGA&#34;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:month</span> <span style="color:#666">!=</span> <span style="color:#666">1</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[1<span style="color:#666">:</span><span style="color:#666">200</span>] 
+</span></span><span style="display:flex;"><span>dat[day <span style="color:#666">&gt;</span> <span style="color:#666">5</span> <span style="color:#666">&amp;</span> day <span style="color:#666">&lt;</span> <span style="color:#666">10</span>]        <span style="color:#080;font-style:italic"># filtering only</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> dat[day <span style="color:#666">&gt;</span> <span style="color:#666">5</span> <span style="color:#666">&amp;</span> day <span style="color:#666">&lt;</span> <span style="color:#666">10</span>]  <span style="color:#080;font-style:italic"># filtering and reassigning</span>
+</span></span><span style="display:flex;"><span>dat[origin<span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>]
+</span></span><span style="display:flex;"><span>dat[origin <span style="color:#666">%like%</span> <span style="color:#b44">&#34;^LG&#34;</span>] 
+</span></span><span style="display:flex;"><span>dat[month <span style="color:#666">%in%</span> <span style="color:#00a000">c</span>(<span style="color:#666">3</span>,<span style="color:#666">4</span>,<span style="color:#666">11</span>,<span style="color:#666">12</span>)] 
+</span></span><span style="display:flex;"><span>dat[origin <span style="color:#666">%chin%</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;JFK&#34;</span>,<span style="color:#b44">&#34;LGA&#34;</span>)] <span style="color:#080;font-style:italic"># %chin% is a fast %in% for characters </span>
+</span></span><span style="display:flex;"><span>dat[month<span style="color:#666">!=</span><span style="color:#666">1</span>]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h4 id="on-the-freedman-data-with-missing-values">
+  On the Freedman data (with missing values)
+  <a class="anchor" href="#on-the-freedman-data-with-missing-values">#</a>
+</h4>
+<p>In this case we need to be careful on how we deal with missing data.
+Note that to find the missings julia uses the <code>isequal</code> function (because <code>missing==missing</code> returns missing).</p>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>subset(dat_missing, <span style="color:#b8860b">:Population</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">-&gt;</span> x <span style="color:#666">.&lt;</span> <span style="color:#666">1000</span>; skipmissing<span style="color:#666">=</span><span style="color:#a2f">true</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat_missing, <span style="color:#b8860b">:Population</span> <span style="color:#666">.&lt;</span> <span style="color:#666">1000</span>) <span style="color:#080;font-style:italic"># treats missing values as false by default</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat_missing, isequal(<span style="color:#b8860b">:Population</span>, <span style="color:#a2f">missing</span>) )
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_missing[ population <span style="color:#666">&lt;</span> <span style="color:#666">1000</span> ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat_missing<span style="color:#00a000">[is.na</span>(population)]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="dropping-duplicate-or-missing-values">
+  Dropping duplicate or missing values
+  <a class="anchor" href="#dropping-duplicate-or-missing-values">#</a>
+</h2>
+<h4 id="drop-duplicate-values">
+  Drop duplicate values
+  <a class="anchor" href="#drop-duplicate-values">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>unique(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:first</span>)  <span style="color:#080;font-style:italic"># default</span>
+</span></span><span style="display:flex;"><span>unique!(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:first</span>) <span style="color:#080;font-style:italic"># in place</span>
+</span></span><span style="display:flex;"><span>unique(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:noduplicates</span>) <span style="color:#080;font-style:italic"># :last also an option</span>
+</span></span><span style="display:flex;"><span>unique(dat, [<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>])
+</span></span></code></pre></div>
+</div>
+
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">unique</span>(dat) 
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> <span style="color:#00a000">unique</span>(dat) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">unique</span>(dat, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>))
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h4 id="drop-missing-values">
+  Drop missing values
+  <a class="anchor" href="#drop-missing-values">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dropmissing(dat_missing)
+</span></span><span style="display:flex;"><span>dropmissing!(dat_missing) <span style="color:#080;font-style:italic"># in place</span>
+</span></span><span style="display:flex;"><span>dropmissing(dat_missing, <span style="color:#b8860b">:Population</span>)
+</span></span><span style="display:flex;"><span>dropmissing(dat_missing, [<span style="color:#b8860b">:Population</span>, <span style="color:#b8860b">:Density</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if the column type still include missing values convert the array to non missing types</span>
+</span></span><span style="display:flex;"><span>disallowmissing(dat_missing)
+</span></span><span style="display:flex;"><span>disallowmissing(dat_missing, <span style="color:#b8860b">:Density</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">na.omit</span>(dat_missing) 
+</span></span><span style="display:flex;"><span>dat_missing <span style="color:#666">=</span> <span style="color:#00a000">na.omit</span>(dat_missing) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat_missing[<span style="color:#666">!</span><span style="color:#00a000">is.na</span>(population)]
+</span></span><span style="display:flex;"><span>dat_missing[<span style="color:#666">!</span><span style="color:#00a000">is.na</span>(population) <span style="color:#666">&amp;</span> <span style="color:#666">!</span><span style="color:#00a000">is.na</span>(density)]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="selecting-columns">
+  Selecting columns
+  <a class="anchor" href="#selecting-columns">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select columns</span>
+</span></span><span style="display:flex;"><span>select(dat, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)
+</span></span><span style="display:flex;"><span>select!(dat, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)   <span style="color:#080;font-style:italic"># in place</span>
+</span></span><span style="display:flex;"><span>select(dat, <span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>) <span style="color:#080;font-style:italic"># also works</span>
+</span></span><span style="display:flex;"><span>select(dat, <span style="color:#b44">r</span><span style="color:#b68">&#34;_delay&#34;</span>)
+</span></span><span style="display:flex;"><span>select(dat, <span style="color:#666">.!</span>(eltype<span style="color:#666">.</span>(eachcol(dat)) <span style="color:#666">.&lt;:</span> <span style="color:#0b0;font-weight:bold">AbstractString</span>) )
+</span></span><span style="display:flex;"><span>select(dat_missing, (eltype<span style="color:#666">.</span>(eachcol(dat_missing)) <span style="color:#666">.&lt;:</span> <span style="color:#0b0;font-weight:bold">Union</span>{<span style="color:#0b0;font-weight:bold">Missing</span>, <span style="color:#0b0;font-weight:bold">Int</span>}) ) <span style="color:#080;font-style:italic"># if some columns include missing</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># removing select columns</span>
+</span></span><span style="display:flex;"><span>select(dat, Not([<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:dest</span>]))
+</span></span><span style="display:flex;"><span>select!(dat, Not([<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:dest</span>])) <span style="color:#080;font-style:italic"># in place</span>
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select columns</span>
+</span></span><span style="display:flex;"><span>dat[, .(month, day, carrier)] 
+</span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> dat[, .(month, day, carrier)] <span style="color:#080;font-style:italic"># &#34;in place&#34;</span>
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>)] <span style="color:#080;font-style:italic"># same but programmatic</span>
+</span></span><span style="display:flex;"><span>dat[, .SD, .SDcols<span style="color:#666">=</span><span style="color:#00a000">patterns</span>(<span style="color:#b44">&#34;*_delay&#34;</span>)] <span style="color:#080;font-style:italic"># keep columns by matching</span>
+</span></span><span style="display:flex;"><span>dat[, .SD, .SDcols<span style="color:#666">=!</span>is.character]       <span style="color:#080;font-style:italic"># keep columns by type</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># removing select columns</span>
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#666">-</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#34;origin&#34;</span>, <span style="color:#b44">&#34;dest&#34;</span>)]
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;origin&#34;</span>, <span style="color:#b44">&#34;dest&#34;</span>) <span style="color:#666">:=</span> <span style="color:#a2f;font-weight:bold">NULL</span>] <span style="color:#080;font-style:italic"># same, but in-place </span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="rows-and-columns">
+  Rows and columns
+  <a class="anchor" href="#rows-and-columns">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@select</span>(<span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:origin</span><span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>), 
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> <span style="color:#a2f">@rsubset</span>(_, <span style="color:#b8860b">:origin</span><span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>) <span style="color:#666">|&gt;</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@select</span>(_, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[origin<span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>, .(month, day, carrier)]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="creatingmodifying-variables">
+  Creating/modifying variables
+  <a class="anchor" href="#creatingmodifying-variables">#</a>
+</h1>
+<h2 id="basic-operations">
+  Basic operations
+  <a class="anchor" href="#basic-operations">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(dat, <span style="color:#b8860b">:tot_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:dep_delay</span> <span style="color:#666">+</span> <span style="color:#b8860b">:arr_delay</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:segment</span> <span style="color:#666">=</span> <span style="color:#b8860b">:origin</span> <span style="color:#666">*</span> <span style="color:#b8860b">:dest</span>) <span style="color:#080;font-style:italic"># rowwise operation</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Programmatic version</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#666">=</span> <span style="color:#b44">&#34;dep_delay&#34;</span>; y <span style="color:#666">=</span> <span style="color:#b44">&#34;arr_delay&#34;</span>; z <span style="color:#666">=</span> <span style="color:#b44">&#34;tot_delay&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(dat, <span style="color:#666">$</span>z <span style="color:#666">=</span> <span style="color:#666">$</span>x <span style="color:#666">+</span> <span style="color:#666">$</span>y)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Conditional modification </span>
+</span></span><span style="display:flex;"><span>dat[dat<span style="color:#666">.</span>month<span style="color:#666">.==</span><span style="color:#666">9</span>, <span style="color:#b8860b">:distance</span>] <span style="color:#666">=</span> dat[dat<span style="color:#666">.</span>month<span style="color:#666">.==</span><span style="color:#666">9</span>, <span style="color:#b8860b">:distance</span>] <span style="color:#666">.+</span> <span style="color:#666">1</span>;
+</span></span><span style="display:flex;"><span>dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">2</span>, <span style="color:#b8860b">:air_time</span>] <span style="color:#666">.=</span> <span style="color:#666">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Or with missing values</span>
+</span></span><span style="display:flex;"><span>dat_missing[isequal<span style="color:#666">.</span>(dat_missing<span style="color:#666">.</span>Population, <span style="color:#a2f">missing</span>), <span style="color:#b8860b">:City</span>] <span style="color:#666">.=</span> <span style="color:#b44">&#34;NOPOP&#34;</span>;
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>dat[, tot_delay <span style="color:#666">:=</span> dep_delay <span style="color:#666">+</span> arr_delay] 
+</span></span><span style="display:flex;"><span>dat[, segment <span style="color:#666">:=</span> <span style="color:#00a000">paste0</span>(origin, dest) ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Programmatic version</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#666">=</span> <span style="color:#b44">&#34;dep_delay&#34;</span>; y <span style="color:#666">=</span> <span style="color:#b44">&#34;arr_delay&#34;</span>; z <span style="color:#666">=</span> <span style="color:#b44">&#34;tot_delay&#34;</span>
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">c</span>(z) <span style="color:#666">:=</span> <span style="color:#00a000">get</span>(x) <span style="color:#666">+</span> <span style="color:#00a000">get</span>(y) ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Conditional modification </span>
+</span></span><span style="display:flex;"><span>dat[month<span style="color:#666">==</span><span style="color:#666">9</span>, distance <span style="color:#666">:=</span> distance <span style="color:#666">+</span> <span style="color:#666">1</span>]
+</span></span><span style="display:flex;"><span>dat[1<span style="color:#666">:</span><span style="color:#666">2</span>, origin <span style="color:#666">:=</span> <span style="color:#b44">&#34;OBS&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Or with missing values</span>
+</span></span><span style="display:flex;"><span>dat_missing<span style="color:#00a000">[is.na</span>(population), City <span style="color:#666">:=</span> <span style="color:#b44">&#34;NOPOP&#34;</span>]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="grouped-operations">
+  Grouped operations
+  <a class="anchor" href="#grouped-operations">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, <span style="color:#b8860b">:carrier</span>) <span style="color:#666">|&gt;</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform!</span>(_, <span style="color:#b8860b">:avg_arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>)) <span style="color:#080;font-style:italic"># in place</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, <span style="color:#b8860b">:carrier</span>) <span style="color:#666">|&gt;</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@combine</span>(_, <span style="color:#b8860b">:avg_arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>))
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[, avg_arr_delay <span style="color:#666">:=</span> <span style="color:#00a000">mean</span>(arr_delay), by<span style="color:#666">=</span>carrier] 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat[, .(avg_arr_delay <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(arr_delay, na.rm<span style="color:#666">=</span>T)), by<span style="color:#666">=</span>carrier]  <span style="color:#080;font-style:italic"># collapse see aggregation section below</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="leads-and-lags">
+  Leads and lags
+  <a class="anchor" href="#leads-and-lags">#</a>
+</h2>
+<h4 id="standard-leads-and-lags">
+  Standard leads and lags
+  <a class="anchor" href="#standard-leads-and-lags">#</a>
+</h4>
+<p>I work with shifts on dates here but the dataset is a full panel with consecutive dates so there is nothing special about the dates variable per-se.</p>
+<p><em>It is easier to see this on a smaller dataset. So I aggregate the data to get the total monthly flights out of each origin airport (see last section).</em></p>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    For leads and lags on arrays, I use the <code>ShiftedArrays</code> package which works fine for standard operations (read: as long as you are not dealing with dates).
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    For standard leads and lags, it is faster to use the built-in <code>shift</code> function from data.table.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> combine(
+</span></span><span style="display:flex;"><span>    groupby(dat, [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:month</span>]), 
+</span></span><span style="display:flex;"><span>    nrow <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:N</span>)
+</span></span><span style="display:flex;"><span>sort!(dat_shift, [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:month</span>])    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(groupby(dat_shift, <span style="color:#b8860b">:origin</span>), 
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:growth</span> <span style="color:#666">=</span> <span style="color:#b8860b">:N</span> <span style="color:#666">./</span> ShiftedArrays<span style="color:#666">.</span>lag(<span style="color:#b8860b">:N</span>, <span style="color:#666">1</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(groupby(dat_shift, <span style="color:#b8860b">:origin</span>), 
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:growth_since_first</span> <span style="color:#666">=</span> <span style="color:#b8860b">:N</span> <span style="color:#666">./</span> <span style="color:#b8860b">:N</span>[<span style="color:#666">1</span>] )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># The following is probably not optimal; here are two versions</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat_shift <span style="color:#666">|&gt;</span> 
+</span></span><span style="display:flex;"><span>    groupby(_, <span style="color:#b8860b">:origin</span>) <span style="color:#666">|&gt;</span> <span style="color:#a2f">@subset</span>(_, <span style="color:#666">5</span> ∈ <span style="color:#666">:</span>month) <span style="color:#666">|&gt;</span>  <span style="color:#080;font-style:italic"># this errors if month 5 is missing in a group</span>
+</span></span><span style="display:flex;"><span>    groupby(_, <span style="color:#b8860b">:origin</span>) <span style="color:#666">|&gt;</span> <span style="color:#a2f">@transform</span>(_, <span style="color:#b8860b">:growth_since_may</span> <span style="color:#666">=</span> <span style="color:#b8860b">:N</span> <span style="color:#666">./</span> <span style="color:#b8860b">:N</span>[<span style="color:#b8860b">:month</span><span style="color:#666">.==</span><span style="color:#666">5</span>])
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> subdf <span style="color:#a2f;font-weight:bold">in</span> groupby(dat_shift, <span style="color:#b8860b">:origin</span>)    
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">if</span> <span style="color:#666">5</span> <span style="color:#666">∈</span> subdf<span style="color:#666">.</span>month
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">@transform!</span>(subdf, <span style="color:#b8860b">:growth_since_may</span> <span style="color:#666">=</span> <span style="color:#b8860b">:N</span> <span style="color:#666">./</span> <span style="color:#b8860b">:N</span>[<span style="color:#b8860b">:month</span><span style="color:#666">.==</span><span style="color:#666">5</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> dat[, .N, by <span style="color:#666">=</span> .(origin, month)]
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat_shift, origin, month)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat_shift[, growth <span style="color:#666">:=</span> N<span style="color:#666">/</span><span style="color:#00a000">shift</span>(N, <span style="color:#666">1</span>), by <span style="color:#666">=</span> origin]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat_shift[, growth_since_first <span style="color:#666">:=</span> N<span style="color:#666">/</span>N[1], by <span style="color:#666">=</span> origin] 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat_shift[, growth_since_may <span style="color:#666">:=</span> N<span style="color:#666">/</span>N[month<span style="color:#666">==</span><span style="color:#666">5</span>], by <span style="color:#666">=</span> origin]
+</span></span><span style="display:flex;"><span>dat_shift[, growth_since_may <span style="color:#666">:=</span> .SD[[<span style="color:#b44">&#34;N&#34;</span>]]<span style="color:#666">/</span>.SD[month<span style="color:#666">==</span><span style="color:#666">5</span>][[<span style="color:#b44">&#34;N&#34;</span>]], 
+</span></span><span style="display:flex;"><span>    .SDcols <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;N&#34;</span>, <span style="color:#b44">&#34;month&#34;</span>), by <span style="color:#666">=</span> origin]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h4 id="the-case-of-dates">
+  The case of dates
+  <a class="anchor" href="#the-case-of-dates">#</a>
+</h4>
+<p>Dates are messy (imho).
+Lagging a variable by three months in a monthly panel does not necessarily translate into shifting the data by 3 indices (if the panel is unbalanced for example).
+The correct date function should check that &ldquo;shifting&rdquo; by three months in April corresponds to January and not December (if January is missing).</p>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date</span> <span style="color:#666">=</span> Date(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>) )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Including time</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date_time</span> <span style="color:#666">=</span> DateTime(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:hour</span>) )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date_y</span> <span style="color:#666">=</span> year(<span style="color:#b8860b">:date</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:f7d_date</span> <span style="color:#666">=</span> <span style="color:#b8860b">:date</span> <span style="color:#666">+</span> Dates<span style="color:#666">.</span>Day(<span style="color:#666">7</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:l3m_date</span> <span style="color:#666">=</span> <span style="color:#b8860b">:date</span> <span style="color:#666">-</span> Dates<span style="color:#666">.</span>Month(<span style="color:#666">3</span>))
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Make a date variable using data.table built-in IDate</span>
+</span></span><span style="display:flex;"><span>dat[, date <span style="color:#666">:=</span> <span style="color:#00a000">as.IDate</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#39;-&#39;</span>))] 
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is usually faster to use lubridate parser </span>
+</span></span><span style="display:flex;"><span>dat[, date <span style="color:#666">:=</span> <span style="color:#00a000">parse_date_time2</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#39;-&#39;</span>), <span style="color:#b44">&#34;Y-m-d&#34;</span>)]
+</span></span><span style="display:flex;"><span>dat[, date_time <span style="color:#666">:=</span> <span style="color:#00a000">parse_date_time2</span>(<span style="color:#00a000">paste</span>(year, month, day, hour, sep<span style="color:#666">=</span><span style="color:#b44">&#39;-&#39;</span>), <span style="color:#b44">&#34;Y-m-d-H&#34;</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat[, date_y <span style="color:#666">:=</span> <span style="color:#00a000">year</span>(date)] <span style="color:#080;font-style:italic"># extract year</span>
+</span></span><span style="display:flex;"><span>dat[, f7d_date <span style="color:#666">:=</span> date <span style="color:#666">+</span> <span style="color:#00a000">days</span>(<span style="color:#666">7</span>) ]   <span style="color:#080;font-style:italic"># date in 7 days</span>
+</span></span><span style="display:flex;"><span>dat[, l3m_date <span style="color:#666">:=</span> date <span style="color:#666">-</span> <span style="color:#00a000">months</span>(<span style="color:#666">3</span>) ] <span style="color:#080;font-style:italic"># date three months ago</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<p>Once we know how to lag dates, we would like to answer questions such as:
+<em>what was the average flight delay for each origin airport three months ago compared to today?</em>
+We will work with the aggregate delays by origins.</p>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    <p>In julia, the <code>ShiftedArrays</code> package does not support dates (See this post on 
+  <a href="https://discourse.julialang.org/t/ann-shiftedarrays-and-support-for-shiftedarrays-in-groupederrors/9162/2?u=piever">discourse</a> and this 
+  <a href="https://github.com/JuliaArrays/ShiftedArrays.jl/pull/37#issuecomment-623647440">issue</a>)</p>
+<p>This is one of the most <em>annoying</em> thing when working with dates and panel data in julia.
+I have found that <code>PanelShift.jl</code> solves the problem but it is still in version <code>0.1.1</code> and it is unclear how many updates it is receiving.
+What is nice with julia is that you can simply loop over the data and do exactly what you want to do.</p>
+
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In R, I use the utility <code>tlag</code> and <code>tlead</code> from <code>statar</code> which lags based on date intervals.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date</span> <span style="color:#666">=</span> Date(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>) )
+</span></span><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> <span style="color:#a2f">@combine</span>(groupby(dat, [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:date</span>]), <span style="color:#b8860b">:arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>) )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># I could not find a built-in function, but julia is amenable to loops</span>
+</span></span><span style="display:flex;"><span>dat_shift<span style="color:#666">.</span>l3m_arr_delay <span style="color:#666">=</span> <span style="color:#0b0;font-weight:bold">Array</span>{<span style="color:#0b0;font-weight:bold">Union</span>{<span style="color:#0b0;font-weight:bold">Missing</span>,<span style="color:#0b0;font-weight:bold">Float64</span>}}(<span style="color:#a2f">undef</span>, nrow(dat_shift));
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> subdf <span style="color:#a2f;font-weight:bold">in</span> groupby(dat_shift, <span style="color:#b8860b">:origin</span>)    
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">for</span> date_iter <span style="color:#a2f;font-weight:bold">in</span> subdf<span style="color:#666">.</span>date
+</span></span><span style="display:flex;"><span>           idx <span style="color:#666">=</span> isequal<span style="color:#666">.</span>(subdf<span style="color:#666">.</span>date, date_iter <span style="color:#666">-</span> Dates<span style="color:#666">.</span>Month(<span style="color:#666">3</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">if</span> (sum(idx)<span style="color:#666">==</span><span style="color:#666">1</span>)
+</span></span><span style="display:flex;"><span>            subdf[ subdf<span style="color:#666">.</span>date <span style="color:#666">.==</span> date_iter, <span style="color:#b8860b">:l3m_arr_delay</span>] <span style="color:#666">.=</span> subdf[idx, <span style="color:#b8860b">:arr_delay</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># sort(dat_shift, [:origin, :date])</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># using PanelShift</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(groupby(dat_shift, <span style="color:#b8860b">:origin</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:l3m_arr_delay</span> <span style="color:#666">=</span> tlag(<span style="color:#b8860b">:date</span>, <span style="color:#b8860b">:arr_delay</span>, Month(<span style="color:#666">3</span>) ) )
+</span></span><span style="display:flex;"><span>panellag!(dat_shift, <span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:date</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:arr_delay</span>, <span style="color:#b8860b">:l3m_arr_delay</span>, Month(<span style="color:#666">3</span>))
+</span></span></code></pre></div>
+</div>
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> dat[, .(arr_delay <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(arr_delay, na.rm<span style="color:#666">=</span>T)), 
+</span></span><span style="display:flex;"><span>    by <span style="color:#666">=</span> .(origin, date<span style="color:#666">=</span><span style="color:#00a000">parse_date_time2</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#34;-&#34;</span>), <span style="color:#b44">&#34;Y-m-d&#34;</span>))]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dat_shift[, l3m_arr_delay <span style="color:#666">:=</span> <span style="color:#00a000">tlag</span>(arr_delay, n<span style="color:#666">=</span><span style="color:#00a000">months</span>(<span style="color:#666">3</span>), time<span style="color:#666">=</span>date), by <span style="color:#666">=</span> .(origin) ]
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># setorder(dat_shift, origin, date)</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="advanced-examples">
+  Advanced examples
+  <a class="anchor" href="#advanced-examples">#</a>
+</h2>
+<h4 id="applying-functions-to-multiple-variables">
+  Applying functions to multiple variables
+  <a class="anchor" href="#applying-functions-to-multiple-variables">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    
+  </div>
+</div>
+
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    <ul>
+<li>Loops: if you have to use loops for convenience, data.table provides <code>set</code> which allows to change values withouth the overhead of data.table. The syntax is of the form <code>set(dat, i, j,value)</code>, where <code>i</code> is the row index, and <code>j</code> the column index (or name).</li>
+</ul>
+
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Loops</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> col <span style="color:#a2f;font-weight:bold">in</span> (<span style="color:#b8860b">:tot_delay</span>, <span style="color:#b8860b">:dep_delay</span>) 
+</span></span><span style="display:flex;"><span>    dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span>, col] <span style="color:#666">=</span> <span style="color:#666">-</span> dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span>, col]
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Control flows </span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:arr_delay_penaly</span> <span style="color:#666">=</span> ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;</span><span style="color:#666">12</span>, <span style="color:#666">1</span>, <span style="color:#666">-</span><span style="color:#666">1</span>) )
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:arr_delay_penaly</span> <span style="color:#666">=</span> ifelse( <span style="color:#080;font-style:italic"># no case function in julia</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;=</span><span style="color:#666">15</span>, <span style="color:#666">3</span>, 
+</span></span><span style="display:flex;"><span>    ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;=</span><span style="color:#666">6</span>, <span style="color:#666">2</span>, 
+</span></span><span style="display:flex;"><span>    ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;=</span><span style="color:#666">0</span>, <span style="color:#666">1</span>, <span style="color:#666">0</span>) ) ) )     
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Modify multiple variables at the same time (same function)</span>
+</span></span><span style="display:flex;"><span>cols <span style="color:#666">=</span> [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:dest</span>]
+</span></span><span style="display:flex;"><span>transform!(dat, cols <span style="color:#666">.=&gt;</span> (x <span style="color:#666">-&gt;</span> x <span style="color:#666">.*</span> <span style="color:#b44">&#34;Airport&#34;</span>) <span style="color:#666">.=&gt;</span> cols)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Apply multiple functions to one variable</span>
+</span></span><span style="display:flex;"><span>list_fun <span style="color:#666">=</span> [mean, median, x<span style="color:#666">-&gt;</span>quantile(x, <span style="color:#666">0.25</span>)]
+</span></span><span style="display:flex;"><span>transform(dat, <span style="color:#b8860b">:dep_delay</span> <span style="color:#666">.=&gt;</span> list_fun <span style="color:#666">.=&gt;</span> [<span style="color:#b8860b">:delay_mean</span>, <span style="color:#b8860b">:delay_median</span>, <span style="color:#b8860b">:delay_q25</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Apply multiple functions to multiple variables (automatic renaming)</span>
+</span></span><span style="display:flex;"><span>cols <span style="color:#666">=</span> [<span style="color:#b8860b">:dep_delay</span> <span style="color:#b8860b">:arr_delay</span>]
+</span></span><span style="display:flex;"><span>res_cols <span style="color:#666">=</span> kron([<span style="color:#b44">&#34;mean_&#34;</span>, <span style="color:#b44">&#34;median_&#34;</span>, <span style="color:#b44">&#34;q25_&#34;</span>], string<span style="color:#666">.</span>(cols)) 
+</span></span><span style="display:flex;"><span>transform(dat, cols <span style="color:#666">.=&gt;</span> list_fun <span style="color:#666">.=&gt;</span> res_cols)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Function of multiple variables (by rows)</span>
+</span></span><span style="display:flex;"><span>ratio_airtime(x<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">NamedTuple</span>) <span style="color:#666">=</span> (x[<span style="color:#666">1</span>] <span style="color:#666">/</span>(x[<span style="color:#666">1</span>]<span style="color:#666">+</span>x[<span style="color:#666">2</span>]))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span> dat <span style="color:#666">:</span>frac_air <span style="color:#666">=</span> ratio_airtime(AsTable([<span style="color:#b8860b">:air_time</span>, <span style="color:#b8860b">:tot_delay</span>]))
+</span></span><span style="display:flex;"><span>ratio_airtime(x, y) <span style="color:#666">=</span> (x <span style="color:#666">/</span>(x<span style="color:#666">+</span>y))
+</span></span><span style="display:flex;"><span>transform(dat, [<span style="color:#b8860b">:air_time</span>, <span style="color:#b8860b">:tot_delay</span>] <span style="color:#666">=&gt;</span> ByRow((ratio_airtime)) <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:frac_air</span>)
+</span></span></code></pre></div>
+</div>
+
+ 
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Loops</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> (j <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;tot_delay&#34;</span>, <span style="color:#b44">&#34;dep_delay&#34;</span>)){ <span style="color:#080;font-style:italic"># (faster) loops </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a000">set</span>(dat, <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span>, j<span style="color:#666">=</span>j, value<span style="color:#666">=-</span>dat[1<span style="color:#666">:</span><span style="color:#666">10</span>][[j]])
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Control flows </span>
+</span></span><span style="display:flex;"><span>dat[, arr_delay_penaly <span style="color:#666">:=</span> <span style="color:#00a000">fifelse</span>(arr_delay<span style="color:#666">&gt;</span><span style="color:#666">12</span>, <span style="color:#666">1</span>, <span style="color:#666">-1</span>) ]
+</span></span><span style="display:flex;"><span>dat[, arr_delay_penaly <span style="color:#666">:=</span> <span style="color:#00a000">fcase</span>(arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">15</span>, <span style="color:#666">3</span>, 
+</span></span><span style="display:flex;"><span>                                arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">6</span>,  <span style="color:#666">2</span>,
+</span></span><span style="display:flex;"><span>                                arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">0</span>,  <span style="color:#666">1</span>,
+</span></span><span style="display:flex;"><span>                                default <span style="color:#666">=</span> <span style="color:#666">0</span>) ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Modify multiple variables at the same time</span>
+</span></span><span style="display:flex;"><span>cols <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;origin&#34;</span>, <span style="color:#b44">&#34;dest&#34;</span>)
+</span></span><span style="display:flex;"><span>dat[, (cols) <span style="color:#666">:=</span> <span style="color:#00a000">lapply</span>(.SD, <span style="color:#00a000">\</span>(x) <span style="color:#00a000">paste</span>(x,<span style="color:#b44">&#34;Airport&#34;</span>)), 
+</span></span><span style="display:flex;"><span>    .SDcols <span style="color:#666">=</span> cols]   
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Apply multiple functions to one variable  3b736f67aa239ba993b9674f5b5496bc))</span>
+</span></span><span style="display:flex;"><span>list_fun <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">function</span>(x) <span style="color:#00a000">list</span>(<span style="color:#00a000">mean</span>(x), <span style="color:#00a000">median</span>(x), <span style="color:#00a000">quantile</span>(x, <span style="color:#666">0.25</span>))
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;delay_mean&#34;</span>, <span style="color:#b44">&#34;delay_median&#34;</span>, <span style="color:#b44">&#34;delay_q25&#34;</span>) <span style="color:#666">:=</span> <span style="color:#00a000">sapply</span>(.SD, list_fun), 
+</span></span><span style="display:flex;"><span>    .SDcols <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dep_delay&#34;</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Apply multiple functions to multiple variables </span>
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">as.list</span>(<span style="color:#00a000">unlist</span>(<span style="color:#00a000">lapply</span>(.SD, list_fun))), .SDcols <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dep_delay&#34;</span>, <span style="color:#b44">&#34;arr_delay&#34;</span>) ] <span style="color:#080;font-style:italic">#&lt;1&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># other method</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">melt</span>(dat, measure.vars<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dep_delay&#34;</span>, <span style="color:#b44">&#34;arr_delay&#34;</span>) )[
+</span></span><span style="display:flex;"><span>    , <span style="color:#00a000">sapply</span>(.SD, list_fun), .SDcols <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;value&#34;</span>), by <span style="color:#666">=</span> .(variable)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Function of multiple variables </span>
+</span></span><span style="display:flex;"><span>dat[, tot_delay <span style="color:#666">:=</span> <span style="color:#00a000">rowSums</span>(.SD), .SDcols<span style="color:#666">=</span><span style="color:#00a000">patterns</span>(<span style="color:#b44">&#39;*_delay&#39;</span>)]
+</span></span><span style="display:flex;"><span>ratio_airtime <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">function</span>(air, tot)  (air <span style="color:#666">/</span>(air<span style="color:#666">+</span>tot))
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># dat[, frac_air := ratio_airtime(air_time, tot_delay) ]</span>
+</span></span><span style="display:flex;"><span>dat[, frac_air <span style="color:#666">:=</span> <span style="color:#00a000">ratio_airtime</span>(air_time, tot_delay), by<span style="color:#666">=</span>.I] <span style="color:#080;font-style:italic"># row-wise operation</span>
+</span></span></code></pre></div><ol>
+<li>See caveat 
+  <a href="https://gist.github.com/pbaylis/3b736f67aa239ba993b9674f5b5496bc">here</a></li>
+</ol>
+
+</div>
+
+
+</div>
+
+
+<h4 id="applying-complex-functions">
+  Applying complex functions
+  <a class="anchor" href="#applying-complex-functions">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Regressions by groups</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># using FixedEffectModels</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> subdf <span style="color:#a2f;font-weight:bold">in</span> groupby(dat, [<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>])
+</span></span><span style="display:flex;"><span>    reg_res <span style="color:#666">=</span> reg(subdf, <span style="color:#a2f">@formula</span>(tot_delay <span style="color:#666">~</span> air_time))
+</span></span><span style="display:flex;"><span>    subdf[<span style="color:#666">:</span>, <span style="color:#b8860b">:β</span>] <span style="color:#666">.=</span> coef(reg_res)[<span style="color:#666">2</span>]
+</span></span><span style="display:flex;"><span>    subdf[<span style="color:#666">:</span> , <span style="color:#b8860b">:σ</span>] <span style="color:#666">.=</span> sqrt<span style="color:#666">.</span>(vcov(reg_res)[<span style="color:#666">2</span>,<span style="color:#666">2</span>])
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>select(dat, [<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:β</span>, <span style="color:#b8860b">:σ</span>]) <span style="color:#666">|&gt;</span> unique
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Regressions by groups</span>
+</span></span><span style="display:flex;"><span>dat_reg <span style="color:#666">=</span> dat[, .(
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        y <span style="color:#666">=</span> <span style="color:#00a000">as.matrix</span>(.SD[[<span style="color:#b44">&#34;tot_delay&#34;</span>]]) 
+</span></span><span style="display:flex;"><span>        x <span style="color:#666">=</span> <span style="color:#00a000">as.matrix</span>(<span style="color:#00a000">cbind</span>(<span style="color:#666">1</span>, .SD[[<span style="color:#b44">&#34;air_time&#34;</span>]]) )
+</span></span><span style="display:flex;"><span>        reg_res <span style="color:#666">=</span> <span style="color:#00a000">lm.fit</span>(x, y)
+</span></span><span style="display:flex;"><span>        b <span style="color:#666">=</span> <span style="color:#00a000">coefficients</span>(reg_res)[2]
+</span></span><span style="display:flex;"><span>        se <span style="color:#666">=</span> <span style="color:#00a000">sqrt</span>(<span style="color:#00a000">sum</span>(reg_res[[<span style="color:#b44">&#34;residuals&#34;</span>]]^2) <span style="color:#666">/</span> <span style="color:#00a000">var</span>(.SD[[<span style="color:#b44">&#34;air_time&#34;</span>]]) ) <span style="color:#666">/</span> .N
+</span></span><span style="display:flex;"><span>        <span style="color:#00a000">c</span>(b,se)
+</span></span><span style="display:flex;"><span>    }, 
+</span></span><span style="display:flex;"><span>    <span style="color:#00a000">seq</span>(<span style="color:#666">1</span>,<span style="color:#666">2</span>) ),
+</span></span><span style="display:flex;"><span>    by <span style="color:#666">=</span> .(year, month) ]
+</span></span><span style="display:flex;"><span><span style="color:#00a000">dcast</span>(dat_reg, year <span style="color:#666">+</span> month <span style="color:#666">~</span> V2, value.var<span style="color:#666">=</span><span style="color:#b44">&#34;V1&#34;</span>) <span style="color:#080;font-style:italic"># anticipating on reshape section</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="aggregating">
+  Aggregating
+  <a class="anchor" href="#aggregating">#</a>
+</h1>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#b8860b">:mean_dep_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:dep_delay</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#b8860b">:mean_dep_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:dep_delay</span>), <span style="color:#b8860b">:mean_arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>))
+</span></span><span style="display:flex;"><span>combine(dat, [<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] <span style="color:#666">.=&gt;</span> mean <span style="color:#666">.=&gt;</span> [<span style="color:#b8860b">:mean_dep_delay</span>, <span style="color:#b8860b">:mean_arr_elay</span>])
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#666">$</span>AsTable <span style="color:#666">=</span> mean<span style="color:#666">.</span>([<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>]))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#666">$</span>([<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] <span style="color:#666">.=&gt;</span> mean) )
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># More complex but useful for quantiles</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#666">$</span>AsTable <span style="color:#666">=</span> <span style="color:#0b0;font-weight:bold">NamedTuple</span>( (<span style="color:#666">^</span>(<span style="color:#b8860b">:q25_dep_delay</span>), <span style="color:#666">^</span>(<span style="color:#b8860b">:q75_dep_delay</span>)) <span style="color:#666">.=&gt;</span> 
+</span></span><span style="display:flex;"><span>    (quantile(<span style="color:#b8860b">:dep_delay</span>, [<span style="color:#666">0.25</span>, <span style="color:#666">0.75</span>])) ) )
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[, <span style="color:#00a000">mean</span>(dep_delay)] <span style="color:#080;font-style:italic"># returns a scalar</span>
+</span></span><span style="display:flex;"><span>dat[, .(mean_ddel <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(dep_delay))] <span style="color:#080;font-style:italic"># returns a data.table</span>
+</span></span><span style="display:flex;"><span>dat[, .(mean_ddel<span style="color:#666">=</span><span style="color:#00a000">mean</span>(dep_delay), mean_adel<span style="color:#666">=</span><span style="color:#00a000">mean</span>(arr_delay))]
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">lapply</span>(.SD, mean), .SDcols<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#39;arr_delay&#39;</span>,<span style="color:#b44">&#39;dep_delay&#39;</span>)] 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># More than one variable</span>
+</span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">as.list</span>(<span style="color:#00a000">quantile</span>(.SD, <span style="color:#00a000">c</span>(<span style="color:#666">.25</span>, <span style="color:#666">.75</span>), na.rm <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)), .SDcols<span style="color:#666">=</span><span style="color:#b44">&#34;dep_delay&#34;</span> ]   
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># and merge back ...</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="reshaping">
+  Reshaping
+  <a class="anchor" href="#reshaping">#</a>
+</h1>
+<h4 id="wide-to-long">
+  Wide to long
+  <a class="anchor" href="#wide-to-long">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    Julia uses <code>stack</code> for going from wide to long.
+  </div>
+</div>
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In data.table, we use the built-in tool <code>melt</code> for going from wide to long.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is easier if we give all the flights a unique identifier </span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(dat, <span style="color:#b8860b">:uid</span> <span style="color:#666">=</span> <span style="color:#666">1</span><span style="color:#666">:</span>nrow(dat))
+</span></span><span style="display:flex;"><span>stack(dat, [<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] )
+</span></span><span style="display:flex;"><span>stack(dat, <span style="color:#b44">r</span><span style="color:#b68">&#34;_delay&#34;</span>)
+</span></span><span style="display:flex;"><span>dat_long <span style="color:#666">=</span> stack(dat, 
+</span></span><span style="display:flex;"><span>    [<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>], 
+</span></span><span style="display:flex;"><span>    [<span style="color:#b8860b">:uid</span>, <span style="color:#b8860b">:carrier</span>, <span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:dest</span>])
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is easier if we give all the flights a unique identifier </span>
+</span></span><span style="display:flex;"><span>dat[, uid <span style="color:#666">:=</span> <span style="color:#00a000">seq</span>(<span style="color:#666">1</span>, .N) ]
+</span></span><span style="display:flex;"><span><span style="color:#00a000">melt</span>(dat, measure<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dep_delay&#34;</span>, <span style="color:#b44">&#34;arr_delay&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#00a000">melt</span>(dat, measure<span style="color:#666">=</span><span style="color:#00a000">patterns</span>(<span style="color:#b44">&#39;_delay&#39;</span>))
+</span></span><span style="display:flex;"><span>dat_long <span style="color:#666">=</span> <span style="color:#00a000">melt</span>(dat, 
+</span></span><span style="display:flex;"><span>    measure<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dep_delay&#34;</span>, <span style="color:#b44">&#34;arr_delay&#34;</span>),
+</span></span><span style="display:flex;"><span>    id.vars<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#34;uid&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>, <span style="color:#b44">&#34;origin&#34;</span>, <span style="color:#b44">&#34;dest&#34;</span>))
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h4 id="long-to-wide">
+  Long to wide
+  <a class="anchor" href="#long-to-wide">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    Julia uses <code>unstack</code> for going from long to wide.
+</div>
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In data.table, we use the built-in tool <code>dcast</code> for going from long to wide.
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We start with the long data from above</span>
+</span></span><span style="display:flex;"><span>dat_wide <span style="color:#666">=</span> unstack(dat_long)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># If you only want to keep the id &amp; *_delay cols</span>
+</span></span><span style="display:flex;"><span>unstack(dat_long, <span style="color:#b8860b">:uid</span>, <span style="color:#b8860b">:variable</span>, <span style="color:#b8860b">:value</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We start with the long data from above</span>
+</span></span><span style="display:flex;"><span>dat_wide <span style="color:#666">=</span> <span style="color:#00a000">dcast</span>(dat_long, <span style="color:#a2f;font-weight:bold">...</span> <span style="color:#666">~</span> variable)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># If you only want to keep the id &amp; *_delay cols</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">dcast</span>(dat_long, uid <span style="color:#666">~</span> variable)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------- -->
+<h1 id="merging">
+  Merging
+  <a class="anchor" href="#merging">#</a>
+</h1>
+<h2 id="basic-merge">
+  Basic merge
+  <a class="anchor" href="#basic-merge">#</a>
+</h2>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load second dataset</span>
+</span></span><span style="display:flex;"><span>dat_airports <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(
+</span></span><span style="display:flex;"><span>    HTTP<span style="color:#666">.</span>get(<span style="color:#b44">&#34;https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv&#34;</span>)<span style="color:#666">.</span>body,
+</span></span><span style="display:flex;"><span>    DataFrame) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Inner join</span>
+</span></span><span style="display:flex;"><span>innerjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span> <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:faa</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if the datasets share a common name for the merge variable</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rename!</span>(dat_airports, <span style="color:#b8860b">:dest</span><span style="color:#666">=</span><span style="color:#b8860b">:faa</span>)
+</span></span><span style="display:flex;"><span>innerjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># _join also have an in-place components that updates the first dataframe argument</span>
+</span></span><span style="display:flex;"><span>innerjoin!(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># with missing values</span>
+</span></span><span style="display:flex;"><span>innerjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>; matchmissing<span style="color:#666">=</span><span style="color:#b8860b">:error</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Other types of merge</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Left join</span>
+</span></span><span style="display:flex;"><span>leftjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span>leftjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>, source<span style="color:#666">=</span><span style="color:#b44">&#34;_merge&#34;</span>) <span style="color:#080;font-style:italic"># stata style merge info</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if there are missing values in the merge columns</span>
+</span></span><span style="display:flex;"><span>leftjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>, matchmissing<span style="color:#666">=</span><span style="color:#b8860b">:notequal</span>) <span style="color:#080;font-style:italic"># </span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Right join</span>
+</span></span><span style="display:flex;"><span>rightjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Outer join</span>
+</span></span><span style="display:flex;"><span>outerjoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Semi join (filtering)</span>
+</span></span><span style="display:flex;"><span>semijoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Anti join</span>
+</span></span><span style="display:flex;"><span>antijoin(dat, dat_airports, on<span style="color:#666">=</span><span style="color:#b8860b">:dest</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Cross join</span>
+</span></span><span style="display:flex;"><span>crossjoin(unique(select(dat, <span style="color:#b8860b">:origin</span>)), unique(select(dat, <span style="color:#b8860b">:dest</span>)) )
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load second dataset</span>
+</span></span><span style="display:flex;"><span>dat_airports <span style="color:#666">=</span> <span style="color:#00a000">fread</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv&#34;</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Inner join (default)</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports, by.x <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>), by.y <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;faa&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if the datasets share a common name for the merge variable</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat_airports, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;faa&#34;</span>), <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># with missing values</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Other types of merge</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Left join</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>), all.x <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Right join</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>), all.y <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Outer join</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>), all.x <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>, all.y <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Semi join (filtering)</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">merge</span>(dat, dat_airports[, .(dest)], by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dest&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Anti join</span>
+</span></span><span style="display:flex;"><span>dat<span style="color:#00a000">[fsetdiff</span>(dat[, .(dest)], dat_airports[, .(dest)]), on <span style="color:#666">=</span> <span style="color:#b44">&#34;dest&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Cross join</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">CJ</span>(<span style="color:#00a000">unique</span>(dat[[<span style="color:#b44">&#34;origin&#34;</span>]]), <span style="color:#00a000">unique</span>(dat[[<span style="color:#b44">&#34;dest&#34;</span>]])) <span style="color:#080;font-style:italic"># all combination of origin and destinations</span>
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h2 id="advanced-merging">
+  Advanced merging
+  <a class="anchor" href="#advanced-merging">#</a>
+</h2>
+<h4 id="non-equi-joins">
+  Non-equi joins
+  <a class="anchor" href="#non-equi-joins">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat3 <span style="color:#666">=</span> <span style="color:#00a000">data.table</span>(carrier     <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#39;AA&#39;</span>, <span style="color:#b44">&#39;UA&#39;</span>),
+</span></span><span style="display:flex;"><span>                  start_month <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#666">1</span>, <span style="color:#666">4</span>),
+</span></span><span style="display:flex;"><span>                  end_month   <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#666">3</span>, <span style="color:#666">6</span>)) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Rolling join that catches everything between the distinct</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># start and end dates for each carrier.</span>
+</span></span><span style="display:flex;"><span>dat[dat3, on <span style="color:#666">=</span> .(carrier,
+</span></span><span style="display:flex;"><span>                 month <span style="color:#666">&gt;=</span> start_month,
+</span></span><span style="display:flex;"><span>                 month <span style="color:#666">&lt;=</span> end_month)] 
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h4 id="rolling-joins">
+  Rolling joins
+  <a class="anchor" href="#rolling-joins">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Could not find it yet</span>
+</span></span></code></pre></div>
+</div>
+
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Make sure we have a date variable</span>
+</span></span><span style="display:flex;"><span>dat[, date <span style="color:#666">:=</span> <span style="color:#00a000">as.IDate</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#39;-&#39;</span>))] 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># New DT with the (random) target dates</span>
+</span></span><span style="display:flex;"><span>dat4 <span style="color:#666">=</span> <span style="color:#00a000">data.table</span>(carrier  <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#39;AA&#39;</span>, <span style="color:#b44">&#39;UA&#39;</span>),
+</span></span><span style="display:flex;"><span>                  new_date <span style="color:#666">=</span> <span style="color:#00a000">as.IDate</span>(<span style="color:#00a000">c</span>(<span style="color:#b44">&#39;2014-11-01&#39;</span>, <span style="color:#b44">&#39;2014-11-15&#39;</span>))) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Join on these target dates, so they take the last known value </span>
+</span></span><span style="display:flex;"><span>dat[dat4, on <span style="color:#666">=</span> .(carrier, date<span style="color:#666">=</span>new_date), roll<span style="color:#666">=</span><span style="color:#b44">&#39;nearest&#39;</span>]
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<h4 id="appending-data">
+  Appending data
+  <a class="anchor" href="#appending-data">#</a>
+</h4>
+
+
+
+<div class="grid" style="">
+  
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>vcat(dat, dat)
+</span></span><span style="display:flex;"><span>vcat(dat, dat, cols<span style="color:#666">=</span><span style="color:#b8860b">:union</span>)
+</span></span><span style="display:flex;"><span>reduce(vcat, [dat, dat])
+</span></span><span style="display:flex;"><span>reduce(vcat, [dat, dat], cols<span style="color:#666">=</span><span style="color:#b8860b">:union</span>)
+</span></span></code></pre></div>
+</div>
+
+
+
+<div class="code-column" style="">
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">rbind</span>(dat, dat)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">rbind</span>(dat, dat, fill <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#00a000">rbindlist</span>(<span style="color:#00a000">list</span>(dat, dat)) <span style="color:#080;font-style:italic"># useful if working with list (purrr)</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">rbindlist</span>(<span style="color:#00a000">list</span>(dat, dat), fill <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
+</span></span></code></pre></div>
+</div>
+
+
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------- -->
+<br>
+
+</br>
+
+</article>
+
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+  <div>
+    
+      <a href="/www/blog/categories/code/">Code</a>, 
+      <a href="/www/blog/categories/finance/">Finance</a>
+  </div>
+  
+
+  
+  <div>
+    
+      <a href="/www/blog/tags/julia/">Julia</a>, 
+      <a href="/www/blog/tags/R/">R</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+
+    
+
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www/blog/"><span>EL Misc.</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/www/blog/"  >
+        
+      </a>
+  </li>
+  
+  <li>
+    <a href="/www/blog/posts/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#file-io">File I/O</a></li>
+    <li><a href="#inspecting-the-dataset">Inspecting the dataset</a></li>
+    <li><a href="#filtering">Filtering</a></li>
+    <li><a href="#creatingmodifying-variables">Creating/modifying variables</a></li>
+    <li><a href="#aggregating">Aggregating</a></li>
+    <li><a href="#reshaping">Reshaping</a></li>
+    <li><a href="#merging">Merging</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+
+
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

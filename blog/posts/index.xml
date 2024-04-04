@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on Erik Misc.</title>
+    <title>Blog on EL Misc.</title>
     <link>https://loualiche.gitlab.io/www/blog/posts/</link>
-    <description>Recent content in Blog on Erik Misc.</description>
+    <description>Recent content in Blog on EL Misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
@@ -21,6 +21,13 @@
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</guid>
       <description>How to set up Sublime Text to work as a julia IDE.</description>
+    </item>
+    <item>
+      <title>DataFrames and datatable</title>
+      <link>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</link>
+      <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</guid>
+      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table.</description>
     </item>
     <item>
       <title>KP-Fstats-Julia</title>
