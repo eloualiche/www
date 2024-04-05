@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Example of a workflow to deal with annoying TAQ data.">
+<meta name="description" content="For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:title" content="TAQ Consolidated" />
-<meta property="og:description" content="Example of a workflow to deal with annoying TAQ data." />
+<meta property="og:description" content="For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-03-15T00:00:00+00:00" />
 <meta property="article:modified_time" content="2024-03-15T00:00:00+00:00" />
-<title>Processing TAQ Consolidated Data | EL Misc.</title>
+<title>Processing TAQ Consolidated Data | loualiche misc.</title>
 <link rel="manifest" href="/www/blog/manifest.json">
 <link rel="icon" href="/www/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/">
-<link rel="stylesheet" href="/www/blog/book.min.14bdc6ba62740a5ea9520c7c34f6bc224802166cc73d5287f7a950adac82cd43.css" integrity="sha256-FL3GumJ0Cl6pUgx8NPa8IkgCFmzHPVKH96lQrayCzUM=" crossorigin="anonymous">
+<link rel="stylesheet" href="/www/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
   <script defer src="/www/blog/flexsearch.min.js"></script>
-  <script defer src="/www/blog/en.search.min.93895ea0f932605993025182706ffdb5562be8fcaf54634e7faf0f4dd7fefed7.js" integrity="sha256-k4leoPkyYFmTAlGCcG/9tVYr6PyvVGNOf68PTdf&#43;/tc=" crossorigin="anonymous"></script>
+  <script defer src="/www/blog/en.search.min.45ff9d5c061d6fe54cee86fd99ecfba8195b000e0bab44a4a6e9a183a717544d.js" integrity="sha256-Rf&#43;dXAYdb&#43;VM7ob9mez7qBlbAA4Lq0Skpumhg6cXVE0=" crossorigin="anonymous"></script>
 
   <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
 <!--
@@ -36,10 +36,6 @@ https://github.com/alex-shpak/hugo-book
   <input type="checkbox" class="hidden toggle" id="toc-control" />
   <main class="container flex">
     
-    
-    
-
-
     <div class="book-page">
       <header class="book-header">
         
@@ -103,7 +99,7 @@ Order imbalance is defined as the difference between volume bought and sold scal
 </ul>
 <p>It is too onerous (memory) to process everything at once, the goal of this guide is to show how to parallelize the process of working with this data stock by stock.</p>
 <h1 id="data">
-  Data
+  Data 
   <a class="anchor" href="#data">#</a>
 </h1>
 <p>For this I worked with the Trade and Quote (TAQ) data.
@@ -112,13 +108,13 @@ Specifically, I downloaded consolidated trades data which is available from 1993
 Once downloaded, I reuploaded all the data to a s3 bucket where I have easy access to it.</p>
 <p>The data includes a symbol for the stock id (there is a match table to permno on WRDS), a price, and a size.</p>
 <h1 id="preprocessing">
-  Preprocessing
+  Preprocessing 
   <a class="anchor" href="#preprocessing">#</a>
 </h1>
 <p>I will process one year of data at a time &mdash; technically, the algorithm for estimating whether a trade is a buy or sell could suffer from this, but I think the error is minimal here.</p>
 <p>The preprocessing happens using a standard shell (bash or zsh).</p>
 <h2 id="defining-variables">
-  Defining variables
+  Defining variables 
   <a class="anchor" href="#defining-variables">#</a>
 </h2>
 <p>It is important to define a few variables for the shell</p>
@@ -130,7 +126,7 @@ Once downloaded, I reuploaded all the data to a s3 bucket where I have easy acce
 <li></li>
 </ol>
 <h2 id="download-and-expand-the-data">
-  Download and expand the data
+  Download and expand the data 
   <a class="anchor" href="#download-and-expand-the-data">#</a>
 </h2>
 <p>First I download the data from the s3 bucket using <code>s5cmd</code> as:<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
@@ -152,7 +148,7 @@ Simply replace the previous command with:</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    xsv <span style="color:#a2f;font-weight:bold">select</span> <span style="color:#b44">&#34;SYMBOL,DATE,TIME,PRICE,SIZE&#34;</span> &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv 
 </span></span></code></pre></div><p>Note that this is fairly slow and can take upwards of 20 minutes even reading the file from the ram disk.</p>
 <h2 id="sort-the-data">
-  Sort the data
+  Sort the data 
   <a class="anchor" href="#sort-the-data">#</a>
 </h2>
 <p>In theory the data coming out of WRDS are already sorted by &ldquo;SYMBOL&rdquo;.
@@ -169,7 +165,7 @@ Given the memory allocation defined above, we restrict <code>sort</code> to only
 </span></span></code></pre></div><p>This can take a while. I have waited close to one hour for the largest files (128 cores, 490Gb of memory allocated).</p>
 <p>Note: you can clean up the non sorted file to save a little bit of space at this stage <code>rm $TAQ_HOME/taq_select.csv</code></p>
 <h2 id="split-the-data">
-  Split the data
+  Split the data 
   <a class="anchor" href="#split-the-data">#</a>
 </h2>
 <p>Last of the preprocessing, we split the data in chunks: one chunk for each symbol/stock.
@@ -191,7 +187,7 @@ Given the sorted nature of the data, this is a straightforward (I only spent a d
 The created files are named based on the first column.</p>
 <p>This process is sequential and can be quite slow (close to one hour for the largest file).</p>
 <h1 id="processing-of-stock-specific-statistics-in-julia">
-  Processing of stock specific statistics in julia
+  Processing of stock specific statistics in julia 
   <a class="anchor" href="#processing-of-stock-specific-statistics-in-julia">#</a>
 </h1>
 <p>We have close to 10,000 files in <code>$TAQ_CHUNKS</code> ready to be read one by one and processed.
@@ -199,7 +195,7 @@ For this we are going to do some standard data processing in julia &mdash; I com
 <p>If you have access to multiple cores, it makes sense to process this in paralle.
 It is fairly easy to implement; you still need to be careful not to trigger segfaults though.</p>
 <h2 id="preamble">
-  Preamble
+  Preamble 
   <a class="anchor" href="#preamble">#</a>
 </h2>
 <p>My preamble is pretty standard and only use basic julia <code>DataFrame</code> stuff.</p>
@@ -286,7 +282,7 @@ This is the step that is the slowest when working with the whole dataset at a ti
 The command I pass reads:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -t <span style="color:#b8860b">$nprocs</span> import_taq_chunks.jl <span style="color:#b8860b">$DATEY</span> <span style="color:#b8860b">$TAQ_CHUNKS</span> &amp;&gt; import_taq_chunks.log.jl
 </span></span></code></pre></div><h1 id="slurm-specifics">
-  SLURM Specifics
+  SLURM Specifics 
   <a class="anchor" href="#slurm-specifics">#</a>
 </h1>
 <p>If you are running on the job on a cluster with the slurm scheduler, I have attached the commands I have used to make my life easier.</p>
@@ -370,10 +366,11 @@ The command I pass reads:</p>
       <div class="book-menu-content">
         
   <nav>
-<h2 class="book-brand">
-  <a class="flex align-center" href="/www/blog/"><span>EL Misc.</span>
+<h-title-site class="book-brand">
+  <a class="flex align-center" href="/www/blog/"><span>loualiche misc.</span>
+    
   </a>
-</h2>
+</h-title-site>
 
 
 <div class="book-search">
@@ -399,7 +396,7 @@ The command I pass reads:</p>
   
   <li>
     <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
-        Github
+        My Github
       </a>
   </li>
   

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on EL Misc.</title>
+    <title>R on loualiche misc.</title>
     <link>https://loualiche.gitlab.io/www/blog/tags/R/</link>
-    <description>Recent content in R on EL Misc.</description>
+    <description>Recent content in R on loualiche misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 07 Jan 2024 00:00:00 +0000</lastBuildDate>
@@ -13,7 +13,7 @@
       <link>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</guid>
-      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table.</description>
+      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
     </item>
   </channel>
 </rss>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Finance on EL Misc.</title>
+    <title>Finance on loualiche misc.</title>
     <link>https://loualiche.gitlab.io/www/blog/categories/finance/</link>
-    <description>Recent content in Finance on EL Misc.</description>
+    <description>Recent content in Finance on loualiche misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
@@ -13,14 +13,14 @@
       <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
       <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
-      <description>Example of a workflow to deal with annoying TAQ data.</description>
+      <description>For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!</description>
     </item>
     <item>
       <title>DataFrames and datatable</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</guid>
-      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table.</description>
+      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
     </item>
   </channel>
 </rss>

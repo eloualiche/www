@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>TeX on EL Misc.</title>
+    <title>TeX on loualiche misc.</title>
     <link>https://loualiche.gitlab.io/www/blog/tags/TeX/</link>
-    <description>Recent content in TeX on EL Misc.</description>
+    <description>Recent content in TeX on loualiche misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 29 Jul 2021 00:00:00 +0000</lastBuildDate>
@@ -13,21 +13,21 @@
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/</link>
       <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Entry-Competition/</guid>
-      <description>Some pictures in TikZ for Asset Pricing with Entry and Imperfect Competition</description>
+      <description>Some pictures in TikZ for my JF paper on Asset Pricing with Entry and Imperfect Competition: (i) a stylized Hopenhayn model; (ii) a Hotelling-Salop circle; (iii) some demand elasticity curves.</description>
     </item>
     <item>
       <title>TikZ-Options</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2021-07-Tikz-Bubbles/</link>
       <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2021-07-Tikz-Bubbles/</guid>
-      <description>Some pictures in TikZ for Bubbles and Innovation</description>
+      <description>Some pictures in TikZ for our JFE paper on &lt;em&gt;Bubbles and the Value of Innovation&lt;/em&gt;: (i) a picture of detailed disagreement (favorite); (ii) standard blocks of an equilibrium model with heterogeneous firms.</description>
     </item>
     <item>
       <title>TikZ-Investments</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/</link>
       <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/</guid>
-      <description>Some pictures in TikZ for an investment&amp;rsquo;s class</description>
+      <description>Some pictures in TikZ for teaching a standard course on investment: (i) Capital Allocation Line (CAL); (ii) Efficient Frontier and Optimal CAL; (iii) Security Market Line; (iv) the link between the optimal CAL and the SML; (v) Treynor-Black portfolio selection</description>
     </item>
     <item>
       <title>TikZ-MWE</title>

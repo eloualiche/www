@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Statistics on EL Misc.</title>
+    <title>Statistics on loualiche misc.</title>
     <link>https://loualiche.gitlab.io/www/blog/categories/statistics/</link>
-    <description>Recent content in Statistics on EL Misc.</description>
+    <description>Recent content in Statistics on loualiche misc.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 28 Oct 2021 00:00:00 +0000</lastBuildDate>
@@ -13,7 +13,7 @@
       <link>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</link>
       <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</guid>
-      <description>There are (were?) some issues with F-statistics estimation in stata for IV regressions</description>
+      <description>There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.</description>
     </item>
   </channel>
 </rss>
