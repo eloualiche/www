@@ -55,28 +55,28 @@
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/</link>
       <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Investments/</guid>
-      <description>Some pictures in TikZ for teaching a standard course on investment: (i) Capital Allocation Line (CAL); (ii) Efficient Frontier and Optimal CAL; (iii) Security Market Line; (iv) the link between the optimal CAL and the SML; (v) Treynor-Black portfolio selection</description>
+      <description>Some pictures in TikZ for teaching a standard course on investment: (i) Capital Allocation Line (CAL); (ii) Efficient Frontier and Optimal CAL; (iii) Security Market Line; (iv) the link between the optimal CAL and the SML; (v) Treynor-Black portfolio selection.</description>
     </item>
     <item>
       <title>TikZ-MWE</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-MWE/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-MWE/</guid>
-      <description>Integrating TikZ Pictures in a LaTeX environment</description>
+      <description>A minimal working example to integrate the TikZ and PGFPlots pictures I collected &#xA;  &lt;a href=&#34;../blog/tags/TeX/&#34;&gt;here&lt;/a&gt;.</description>
     </item>
     <item>
       <title>TikZ-Discussions</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-for-Discussions/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2020-05-Tikz-for-Discussions/</guid>
-      <description>Some pictures in TikZ for conference discussions</description>
+      <description>Some pictures in TikZ for discussions of papers I have done: (i) utility in prospect theory.</description>
     </item>
     <item>
       <title>TikZ-Options</title>
       <link>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Options/</link>
       <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
       <guid>https://loualiche.gitlab.io/www/blog/posts/2020-01-Tikz-Options/</guid>
-      <description>Some pictures in TikZ for an options and derivatives class</description>
+      <description>Some pictures in TikZ for teaching a standard course on options and derivatives: (i) Payoffs of a forward contract; (ii) Covered Interest Parity.</description>
     </item>
   </channel>
 </rss>
