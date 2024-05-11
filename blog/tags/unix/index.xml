@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Unix on loualiche misc.</title>
-    <link>https://loualiche.gitlab.io/www/blog/tags/unix/</link>
+    <link>https://loualiche.com/blog/tags/unix/</link>
     <description>Recent content in Unix on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://loualiche.gitlab.io/www/blog/tags/unix/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://loualiche.com/blog/tags/unix/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TAQ Consolidated</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
+      <link>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
       <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
+      <guid>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
       <description>For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!</description>
     </item>
   </channel>

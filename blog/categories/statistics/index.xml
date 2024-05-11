@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Statistics on loualiche misc.</title>
-    <link>https://loualiche.gitlab.io/www/blog/categories/statistics/</link>
+    <link>https://loualiche.com/blog/categories/statistics/</link>
     <description>Recent content in Statistics on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 28 Oct 2021 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://loualiche.gitlab.io/www/blog/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://loualiche.com/blog/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>KP-Fstats-Julia</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</link>
+      <link>https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/</link>
       <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</guid>
+      <guid>https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/</guid>
       <description>There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.</description>
     </item>
   </channel>

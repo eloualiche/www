@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia on loualiche misc.</title>
-    <link>https://loualiche.gitlab.io/www/blog/tags/julia/</link>
+    <link>https://loualiche.com/blog/tags/julia/</link>
     <description>Recent content in Julia on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://loualiche.gitlab.io/www/blog/tags/julia/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://loualiche.com/blog/tags/julia/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TAQ Consolidated</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
+      <link>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
       <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
+      <guid>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
       <description>For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!</description>
     </item>
     <item>
       <title>ST-Julia-IDE</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</link>
+      <link>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</guid>
+      <guid>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</guid>
       <description>I have been asked how to set up a simple julia IDE (not VSCode) for people who are already using Sublime Test. There are a few things that need to line up for it to work smoothly. I wrote these steps down.</description>
     </item>
     <item>
       <title>DataFrames and datatable</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</link>
+      <link>https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2023-07-DataFrames-and-datatable/</guid>
+      <guid>https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/</guid>
       <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
     </item>
     <item>
       <title>KP-Fstats-Julia</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</link>
+      <link>https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/</link>
       <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/</guid>
+      <guid>https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/</guid>
       <description>There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.</description>
     </item>
   </channel>

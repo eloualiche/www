@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>IDE on loualiche misc.</title>
-    <link>https://loualiche.gitlab.io/www/blog/tags/IDE/</link>
+    <link>https://loualiche.com/blog/tags/IDE/</link>
     <description>Recent content in IDE on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Fri, 01 Mar 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://loualiche.gitlab.io/www/blog/tags/IDE/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://loualiche.com/blog/tags/IDE/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ST-Julia-IDE</title>
-      <link>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</link>
+      <link>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.gitlab.io/www/blog/posts/2024-03-ST-and-Julia/</guid>
+      <guid>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</guid>
       <description>I have been asked how to set up a simple julia IDE (not VSCode) for people who are already using Sublime Test. There are a few things that need to line up for it to work smoothly. I wrote these steps down.</description>
     </item>
   </channel>

@@ -6,7 +6,7 @@
 <meta name="description" content="There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/">
   <meta property="og:site_name" content="loualiche misc.">
   <meta property="og:title" content="KP-Fstats-Julia">
   <meta property="og:description" content="There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.">
@@ -18,14 +18,14 @@
     <meta property="article:tag" content="Julia">
     <meta property="article:tag" content="Statistics">
 <title>Kleibergen-Paap F-statistics in stata and julia | loualiche misc.</title>
-<link rel="manifest" href="/www/blog/manifest.json">
-<link rel="icon" href="/www/images/favicon.ico" >
-<link rel="canonical" href="https://loualiche.gitlab.io/www/blog/posts/2021-10-Kleibergen-Paap/">
-<link rel="stylesheet" href="/www/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
-  <script defer src="/www/blog/flexsearch.min.js"></script>
-  <script defer src="/www/blog/en.search.min.10c473c35203c2a27630bf7bdb1895bef6881d0e491e2401fc0f94d09d9a930e.js" integrity="sha256-EMRzw1IDwqJ2ML972xiVvvaIHQ5JHiQB/A&#43;U0J2akw4=" crossorigin="anonymous"></script>
+<link rel="manifest" href="/blog/manifest.json">
+<link rel="icon" href="/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/">
+<link rel="stylesheet" href="/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
+  <script defer src="/blog/flexsearch.min.js"></script>
+  <script defer src="/blog/en.search.min.168477c208e7949fa00e467f5cc2dc8b9452dbb1202f9f3eb243f87eb3b6c474.js" integrity="sha256-FoR3wgjnlJ&#43;gDkZ/XMLci5RS27EgL58&#43;skP4frO2xHQ=" crossorigin="anonymous"></script>
 
-  <script defer src="/www/blog/sw.min.239fe4a98a48b68f3958ff955903f03780ca9aaa85d3c67c3515a27f8121516b.js" integrity="sha256-I5/kqYpIto85WP&#43;VWQPwN4DKmqqF08Z8NRWif4EhUWs=" crossorigin="anonymous"></script>
+  <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 
   
 
@@ -110,14 +110,14 @@ https://github.com/alex-shpak/hugo-book
         
   <div class="flex align-center justify-between">
   <label for="menu-control">
-    <img src="/www/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+    <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
   <strong>Kleibergen-Paap F-statistics in stata and julia</strong>
 
   <label for="toc-control">
     
-    <img src="/www/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
     
   </label>
 </div>
@@ -148,7 +148,7 @@ https://github.com/alex-shpak/hugo-book
       
 <article class="markdown book-post">
   <h1>
-    <a href="/www/blog/posts/2021-10-Kleibergen-Paap/">Kleibergen-Paap F-statistics in stata and julia</a>
+    <a href="/blog/posts/2021-10-Kleibergen-Paap/">Kleibergen-Paap F-statistics in stata and julia</a>
   </h1>
   
   <h5>October 28, 2021</h5>
@@ -432,16 +432,16 @@ At this point it is not clear how to deal with this type of regressions in R.</p
   
   <div>
     
-      <a href="/www/blog/categories/code/">Code</a>, 
-      <a href="/www/blog/categories/statistics/">Statistics</a>
+      <a href="/blog/categories/code/">Code</a>, 
+      <a href="/blog/categories/statistics/">Statistics</a>
   </div>
   
 
   
   <div>
     
-      <a href="/www/blog/tags/julia/">Julia</a>, 
-      <a href="/www/blog/tags/statistics/">Statistics</a>
+      <a href="/blog/tags/julia/">Julia</a>, 
+      <a href="/blog/tags/statistics/">Statistics</a>
   </div>
   
 
@@ -471,7 +471,7 @@ At this point it is not clear how to deal with this type of regressions in R.</p
         
   <nav>
 <h-title-site class="book-brand">
-  <a class="flex align-center" href="/www/blog/"><span>loualiche misc.</span>
+  <a class="flex align-center" href="/blog/"><span>loualiche misc.</span>
     
   </a>
 </h-title-site>
@@ -493,7 +493,7 @@ At this point it is not clear how to deal with this type of regressions in R.</p
 <ul>
   
   <li>
-    <a href="https://loualiche.gitlab.io/www/"  target="_blank" rel="noopener">
+    <a href="https://loualiche.com/"  target="_blank" rel="noopener">
         My Website
       </a>
   </li>
@@ -529,13 +529,13 @@ At this point it is not clear how to deal with this type of regressions in R.</p
 <ul>
   
   <li>
-    <a href="/www/blog/"  >
+    <a href="/blog/"  >
         
       </a>
   </li>
   
   <li>
-    <a href="/www/blog/posts/"  >
+    <a href="/blog/posts/"  >
         
       </a>
   </li>
