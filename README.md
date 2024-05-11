@@ -1,5 +1,5 @@
-+ My website: [https://loualiche.gitlab.io/www/](https://loualiche.gitlab.io/www/)
++ My website: [https://loualiche.com](https://loualiche.com/)
 + Aggregate Risk Premium [website](https://eloualiche.github.io/RiskPremium/)
-+ Tikz [website](https://eloualiche.github.io/TikZ-PGF/)
++ [blog](https://www.loualiche.com/blog/)
 
 
