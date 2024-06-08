@@ -23,7 +23,7 @@
 <link rel="canonical" href="https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/">
 <link rel="stylesheet" href="/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.168477c208e7949fa00e467f5cc2dc8b9452dbb1202f9f3eb243f87eb3b6c474.js" integrity="sha256-FoR3wgjnlJ&#43;gDkZ/XMLci5RS27EgL58&#43;skP4frO2xHQ=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.b44ada36a1745aaf430ffd97f95c6fe257702e7e505a8c46c23373d08baa5e64.js" integrity="sha256-tEraNqF0Wq9DD/2X&#43;Vxv4ldwLn5QWoxGwjNz0IuqXmQ=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 
@@ -975,9 +975,17 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Conditional modification</span>
 </span></span><span style="display:flex;"><span>dat[dat<span style="color:#666">.</span>month<span style="color:#666">.==</span><span style="color:#666">9</span>, <span style="color:#b8860b">:distance</span>] <span style="color:#666">=</span> dat[dat<span style="color:#666">.</span>month<span style="color:#666">.==</span><span style="color:#666">9</span>, <span style="color:#b8860b">:distance</span>] <span style="color:#666">.+</span> <span style="color:#666">1</span>;
 </span></span><span style="display:flex;"><span>dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">2</span>, <span style="color:#b8860b">:air_time</span>] <span style="color:#666">.=</span> <span style="color:#666">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Using views (see https://bkamins.github.io/julialang/2024/05/10/jda.html)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@chain</span> dat <span style="color:#a2f;font-weight:bold">begin</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@rsubset</span>(<span style="color:#b8860b">:month</span> <span style="color:#666">==</span> <span style="color:#666">1</span>; view<span style="color:#666">=</span><span style="color:#a2f">true</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">@rtransform!</span>(<span style="color:#b8860b">:distance</span> <span style="color:#666">=</span> <span style="color:#b8860b">:distance</span> <span style="color:#666">-</span> <span style="color:#666">1</span>)
+</span></span><span style="display:flex;"><span>    parent <span style="color:#080;font-style:italic"># to recover the source dat</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Or with missing values</span>
 </span></span><span style="display:flex;"><span>dat_missing[isequal<span style="color:#666">.</span>(dat_missing<span style="color:#666">.</span>Population, <span style="color:#a2f">missing</span>), <span style="color:#b8860b">:City</span>] <span style="color:#666">.=</span> <span style="color:#b44">&#34;NOPOP&#34;</span>;
-</span></span></code></pre></div>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Using ternary operator</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat_missing, <span style="color:#b8860b">:City</span> <span style="color:#666">=</span> ismissing(<span style="color:#b8860b">:Population</span>) <span style="color:#666">?</span> <span style="color:#b44">&#34;NOPOP : :City)
+</span></span></span></code></pre></div>
 </div>
 
 
