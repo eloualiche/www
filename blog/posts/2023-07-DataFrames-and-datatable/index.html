@@ -23,7 +23,7 @@
 <link rel="canonical" href="https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/">
 <link rel="stylesheet" href="/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.b44ada36a1745aaf430ffd97f95c6fe257702e7e505a8c46c23373d08baa5e64.js" integrity="sha256-tEraNqF0Wq9DD/2X&#43;Vxv4ldwLn5QWoxGwjNz0IuqXmQ=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.10d574b272a808b1c3196670320eac3fc6a03024ef6782f43b98e1f8c5e11a3a.js" integrity="sha256-ENV0snKoCLHDGWZwMg6sP8agMCTvZ4L0O5jh&#43;MXhGjo=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 
@@ -984,8 +984,8 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Or with missing values</span>
 </span></span><span style="display:flex;"><span>dat_missing[isequal<span style="color:#666">.</span>(dat_missing<span style="color:#666">.</span>Population, <span style="color:#a2f">missing</span>), <span style="color:#b8860b">:City</span>] <span style="color:#666">.=</span> <span style="color:#b44">&#34;NOPOP&#34;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Using ternary operator</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat_missing, <span style="color:#b8860b">:City</span> <span style="color:#666">=</span> ismissing(<span style="color:#b8860b">:Population</span>) <span style="color:#666">?</span> <span style="color:#b44">&#34;NOPOP : :City)
-</span></span></span></code></pre></div>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat_missing, <span style="color:#b8860b">:City</span> <span style="color:#666">=</span> ismissing(<span style="color:#b8860b">:Population</span>) <span style="color:#666">?</span> <span style="color:#b44">&#34;NOPOP&#34;</span> <span style="color:#666">:</span> <span style="color:#b8860b">:City</span>)
+</span></span></code></pre></div>
 </div>
 
 
@@ -1003,6 +1003,10 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 </span></span><span style="display:flex;"><span>dat[1<span style="color:#666">:</span><span style="color:#666">2</span>, origin <span style="color:#666">:=</span> <span style="color:#b44">&#34;OBS&#34;</span>]
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Or with missing values</span>
 </span></span><span style="display:flex;"><span>dat_missing<span style="color:#00a000">[is.na</span>(population), City <span style="color:#666">:=</span> <span style="color:#b44">&#34;NOPOP&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  
 </span></span></code></pre></div>
 </div>
 
