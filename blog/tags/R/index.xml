@@ -13,7 +13,7 @@
       <link>https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/</guid>
-      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
+      <description>A guide for moving between Julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
     </item>
   </channel>
 </rss>

@@ -13,7 +13,7 @@
       <link>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</link>
       <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</guid>
-      <description>Some data tasks can be conveniently outsourced to DuckDB instead of using DataFrames. I go over the bindings and how I use it from within julia.</description>
+      <description>Some data tasks can be conveniently outsourced to DuckDB instead of using DataFrames. I go over the bindings and how I use it from within Julia.</description>
     </item>
     <item>
       <title>TAQ Consolidated</title>
@@ -27,14 +27,14 @@
       <link>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</guid>
-      <description>I have been asked how to set up a simple julia IDE (not VSCode) for people who are already using Sublime Test. There are a few things that need to line up for it to work smoothly. I wrote these steps down.</description>
+      <description>I have been asked how to set up a simple Julia IDE (not VSCode) for people who are already using Sublime Test. There are a few things that need to line up for it to work smoothly. I wrote these steps down.</description>
     </item>
     <item>
       <title>DataFrames and datatable</title>
       <link>https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/</guid>
-      <description>A guide for moving between julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
+      <description>A guide for moving between Julia&amp;rsquo;s DataFrames.jl and R data.table. This follows the template of &lt;code&gt;stata2r&lt;/code&gt; and gives side by side matches of common operation for data wrangling.</description>
     </item>
     <item>
       <title>KP-Fstats-Julia</title>

@@ -13,7 +13,7 @@
       <link>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2024-03-ST-and-Julia/</guid>
-      <description>I have been asked how to set up a simple julia IDE (not VSCode) for people who are already using Sublime Test. There are a few things that need to line up for it to work smoothly. I wrote these steps down.</description>
+      <description>I have been asked how to set up a simple Julia IDE (not VSCode) for people who are already using Sublime Test. There are a few things that need to line up for it to work smoothly. I wrote these steps down.</description>
     </item>
   </channel>
 </rss>

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="A guide for moving between julia&rsquo;s DataFrames.jl and R data.table. This follows the template of stata2r and gives side by side matches of common operation for data wrangling.">
+<meta name="description" content="A guide for moving between Julia&rsquo;s DataFrames.jl and R data.table. This follows the template of stata2r and gives side by side matches of common operation for data wrangling.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/">
   <meta property="og:site_name" content="loualiche misc.">
   <meta property="og:title" content="DataFrames and datatable">
-  <meta property="og:description" content="A guide for moving between julia’s DataFrames.jl and R data.table. This follows the template of stata2r and gives side by side matches of common operation for data wrangling.">
+  <meta property="og:description" content="A guide for moving between Julia’s DataFrames.jl and R data.table. This follows the template of stata2r and gives side by side matches of common operation for data wrangling.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -17,13 +17,13 @@
     <meta property="article:modified_time" content="2024-01-07T00:00:00+00:00">
     <meta property="article:tag" content="Julia">
     <meta property="article:tag" content="R">
-<title>From R data.table to julia DataFrames.jl | loualiche misc.</title>
+<title>From R data.table to Julia DataFrames.jl | loualiche misc.</title>
 <link rel="manifest" href="/blog/manifest.json">
 <link rel="icon" href="/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/">
 <link rel="stylesheet" href="/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.c01a79d3b146fdbb6600a1a78c74536d23c2ceb35f707408d99749fe2b80954d.js" integrity="sha256-wBp507FG/btmAKGnjHRTbSPCzrNfcHQI2ZdJ/iuAlU0=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.67bdf8a801c21de74e16330511c9f50c2454f35eb9117d122484c27247045b9d.js" integrity="sha256-Z734qAHCHedOFjMFEcn1DCRU8165EX0SJITCckcEW50=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 <!--
@@ -89,7 +89,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>From R data.table to julia DataFrames.jl</strong>
+  <strong>From R data.table to Julia DataFrames.jl</strong>
 
   <label for="toc-control">
     
@@ -128,7 +128,7 @@ https://github.com/alex-shpak/hugo-book
       
 <article class="markdown book-post">
   <h1>
-    <a href="/blog/posts/2023-07-DataFrames-and-datatable/">From R data.table to julia DataFrames.jl</a>
+    <a href="/blog/posts/2023-07-DataFrames-and-datatable/">From R data.table to Julia DataFrames.jl</a>
   </h1>
   
   <h5>January 7, 2024</h5>
@@ -140,7 +140,7 @@ https://github.com/alex-shpak/hugo-book
   Introduction 
   <a class="anchor" href="#introduction">#</a>
 </h1>
-<p>This is meant as a resource for people trying to move between R and julia who are using data.table on the one hand and DataFrames.jl on the other.
+<p>This is meant as a resource for people trying to move between R and Julia who are using data.table on the one hand and DataFrames.jl on the other.
 I have gathered function I tend to use frequently or that I find frustrating to look for when I need them.
 There are probably glaring omissions.
 Feel free to open an issue 
@@ -162,10 +162,10 @@ Feel free to open an issue
   <a class="anchor" href="#a-word-of-warning">#</a>
 </h4>
 <ul>
-<li><strong>Missing Data.</strong> Dealing with missing data in julia requires to be explicit as most functions will return a <code>missing</code> value if an array includes a missing element. Some functions will error. I will try to point out the equivalence with the <code>R</code> code but be aware that the equivalence might not be always be strictly the same if you implement it. I show some of the examples on the <em>Freedman</em> dataset from the <code>car</code> package in R.</li>
+<li><strong>Missing Data.</strong> Dealing with missing data in Julia requires to be explicit as most functions will return a <code>missing</code> value if an array includes a missing element. Some functions will error. I will try to point out the equivalence with the <code>R</code> code but be aware that the equivalence might not be always be strictly the same if you implement it. I show some of the examples on the <em>Freedman</em> dataset from the <code>car</code> package in R.</li>
 <li><strong>Need improvement.</strong>
 <ul>
-<li>A few specific sections could use some user inputs as the julia solutions were less than ideal: 
+<li>A few specific sections could use some user inputs as the Julia solutions were less than ideal: 
   <a href="/blog/#leads-and-lags"><em>Leads and lags</em></a>; <em>Dates</em>; <em>Complex merges</em></li>
 </ul>
 </li>
@@ -194,9 +194,9 @@ Feel free to open an issue
   <div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
   <div class="column-content" style="align-self: start;">
     Installation can sometime be challenging.
-This should not be an issue in <code>julia</code> here.
+This should not be an issue in <code>Julia</code> here.
 We will mostly use the base <code>DataFrames</code> package and the convenient macros in the <code>DataFramesMeta</code> package.
-To read in data  we will use the <code>CSV</code> package while julia supports many different file formats (see 
+To read in data  we will use the <code>CSV</code> package while Julia supports many different file formats (see 
   <a href="https://github.com/JuliaIO/FileIO.jl"><code>FileIO.jl</code></a>)
   </div>
 </div>
@@ -248,7 +248,7 @@ I recommend that you look at the
 
 
 <p>We will also use other packages to load auxiliary datasets, download data etc.
-I use the pipe macro in julia and the magrittr package in R to compose commands (though both packages have some amount of chaining built-in)</p>
+I use the pipe macro in Julia and the magrittr package in R to compose commands (though both packages have some amount of chaining built-in)</p>
 
 
 
@@ -1749,13 +1749,14 @@ What is nice with julia is that you can simply loop over the data and do exactly
 </span></span><span style="display:flex;"><span>    multi<span style="color:#666">=</span>(identity, closest)
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># I could not find a distance on dates so inelegantly I converted date to float</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(df1, <span style="color:#b8860b">:dunix</span> <span style="color:#666">=</span> datetime2unix(DateTime(<span style="color:#b8860b">:date</span>)) )
-</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(df2, <span style="color:#b8860b">:dunix_event</span> <span style="color:#666">=</span> datetime2unix(DateTime(<span style="color:#b8860b">:event_date</span>)) )
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># I could not find a distance on dates so inelegantly I converted date to Int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">const</span> DATEREF <span style="color:#666">=</span> Date(<span style="color:#b44">&#34;1900-01-01&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(df1, <span style="color:#b8860b">:date_days</span> <span style="color:#666">=</span> Dates<span style="color:#666">.</span>value(<span style="color:#b8860b">:date</span>) <span style="color:#666">-</span> Dates<span style="color:#666">.</span>value(DATEREF) )
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(df2, <span style="color:#b8860b">:event_date_days</span> <span style="color:#666">=</span> Dates<span style="color:#666">.</span>value(<span style="color:#b8860b">:event_date</span>) <span style="color:#666">-</span> Dates<span style="color:#666">.</span>value(DATEREF) )
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># rolling to nearest </span>
 </span></span><span style="display:flex;"><span>leftjoin(
 </span></span><span style="display:flex;"><span>    (df1, df2),
-</span></span><span style="display:flex;"><span>    by_key(<span style="color:#b8860b">:name</span>) <span style="color:#666">&amp;</span> by_distance(<span style="color:#b8860b">:dunix</span>, <span style="color:#b8860b">:dunix_event</span>, Euclidean(), <span style="color:#666">&lt;=</span>(<span style="color:#a2f">Inf</span>)),
+</span></span><span style="display:flex;"><span>    by_key(<span style="color:#b8860b">:name</span>) <span style="color:#666">&amp;</span> by_distance(<span style="color:#b8860b">:date_days</span>, <span style="color:#b8860b">:event_date_days</span>, Euclidean(), <span style="color:#666">&lt;=</span>(<span style="color:#a2f">Inf</span>)),
 </span></span><span style="display:flex;"><span>    multi<span style="color:#666">=</span>(identity, closest)
 </span></span><span style="display:flex;"><span>    )
 </span></span></code></pre></div>
