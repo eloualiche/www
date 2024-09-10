@@ -6,8 +6,15 @@
     <description>Recent content in Blog on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jul 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using DuckDB with Julia</title>
+      <link>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</link>
+      <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</guid>
+      <description>Some data tasks can be conveniently outsourced to DuckDB instead of using DataFrames. I go over the bindings and how I use it from within julia.</description>
+    </item>
     <item>
       <title>TAQ Consolidated</title>
       <link>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
