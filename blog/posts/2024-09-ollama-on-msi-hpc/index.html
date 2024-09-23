@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How to get set up with ollama on the msi hpc cluster; from installation to running and pulling weights from hugging face.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/">
+  <meta property="og:site_name" content="loualiche misc.">
+  <meta property="og:title" content="Using ollama on the Minnesota HPC cluster">
+  <meta property="og:description" content="How to get set up with ollama on the msi hpc cluster; from installation to running and pulling weights from hugging face.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-07-08T00:00:00+00:00">
+    <meta property="article:tag" content="Ollama">
+<title>ollama msi hpc | loualiche misc.</title>
+<link rel="manifest" href="/blog/manifest.json">
+<link rel="icon" href="/images/favicon.ico" >
+<link rel="canonical" href="https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/">
+<link rel="stylesheet" href="/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
+  <script defer src="/blog/flexsearch.min.js"></script>
+  <script defer src="/blog/en.search.min.4b56d47bdb80c4015ce9679007303a9f3e50d8d7f455c48bf1c2959b48f8ec3f.js" integrity="sha256-S1bUe9uAxAFc6WeQBzA6nz5Q2Nf0VcSL8cKVm0j47D8=" crossorigin="anonymous"></script>
+
+  <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  <meta name="robots" content="index,follow">
+  
+  
+  <meta name="google-site-verification" content="GTM-MB6RT5V">
+  <meta name="google-site-verification" content="Qh9qc4AsLoAOkKpw8lYQZDdlptkeG5WDXHPxaX_aTlI" />
+
+  <meta name="subject" content="Non Academic Webpage of Erik Loualiche, University of Minnesota">
+  <meta name="description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff" />
+  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity" />
+
+
+  
+  <meta property="og:title" content="Erik Loualiche | Non Academic Webpage">
+  <meta property="og:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
+  <meta property="og:image" content="https://loualiche.gitlab.io/www/images/loualiche_pic2.jpg">
+  <meta property="og:image:alt" content="Erik Loualiche, University of Minnesota">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:type" content="blog">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@erikloulou">
+  <meta name="twitter:url" content="https://loualiche.gitlab.io/www/index.html">
+  <meta name="twitter:title" content="Erik Loualiche | Academic Webpage">
+  <meta name="twitter:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
+  <meta name="twitter:image" content="https://loualiche.gitlab.io/www/images/loualiche_pic2.jpg">
+  <meta name="twitter:image:alt" content="Erik Loualiche, University of Minnesota">
+  <meta name="twitter:dnt" content="on">
+
+
+<script>
+  (function() {
+    var script = document.createElement('script');
+    window.counter = 'https://loulou.goatcounter.com/count'
+    script.async = 1;
+    script.src = '//gc.zgo.at/count.js';
+    var ins = document.getElementsByTagName('script')[0];
+    ins.parentNode.insertBefore(script, ins)
+  })();
+</script>
+
+  
+
+    
+
+
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>ollama msi hpc</strong>
+
+  <label for="toc-control">
+    
+    <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#installing-ollama">Installing ollama</a></li>
+    <li><a href="#settings-up-and-downloading-a-model">Settings up and downloading a model</a></li>
+    <li><a href="#running-a-model-properly">Running a model properly</a></li>
+    <li><a href="#pulling-weights-and-compiling-them-into-an-ollama-model">Pulling weights and &ldquo;compiling&rdquo; them into an ollama model</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/blog/posts/2024-09-ollama-on-msi-hpc/">ollama msi hpc</a>
+  </h1>
+  
+  <h5>July 8, 2024</h5>
+
+
+
+
+<h1 id="installing-ollama">
+  Installing ollama 
+  <a class="anchor" href="#installing-ollama">#</a>
+</h1>
+<p>You probably do not have sufficient right to write to <code>/usr/</code>, so the alternative is to download the binary and to install it somewhere in your home directory.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#a2f">cd</span> <span style="color:#b8860b">$HOME</span>/local/ollama/ <span style="color:#080;font-style:italic"># where you want your install</span>
+</span></span><span style="display:flex;"><span>curl -fsSL https://ollama.com/download/ollama-linux-amd64.tgz -o ./ollama-linux-amd64.tgz
+</span></span><span style="display:flex;"><span>tar -xzf ./ollama-linux-amd64.tgz -C .
+</span></span></code></pre></div><p>You should now be able to start ollama; as a check you can look at your version number</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">$HOME</span>/local/ollama/bin/ollama --version
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Warning: could not connect to a running Ollama instance</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Warning: client version is 0.3.8</span>
+</span></span></code></pre></div><p>Details come from the official linux installation 
+  <a href="https://github.com/ollama/ollama/blob/main/docs/linux.md">webpage</a></p>
+<h1 id="settings-up-and-downloading-a-model">
+  Settings up and downloading a model 
+  <a class="anchor" href="#settings-up-and-downloading-a-model">#</a>
+</h1>
+<p>Right now this is just an executable but we do not have any model available to us, so we are going to go through a few more steps for setup.</p>
+<h2 id="setting-up">
+  Setting up 
+  <a class="anchor" href="#setting-up">#</a>
+</h2>
+<p>First models can be fairly large, and you might not want them to reside in your home partition which has limited space.
+We are going to change a few of the ollama environment files to setup where the models will be downloaded to.
+The 
+  <a href="https://github.com/ollama/ollama/blob/main/docs/faq.md#where-are-models-stored">official doc</a> suggests using <code>systemctl edit ollama.service</code> but I could not find a way to make this work (it modifies a file under <code>/etc/systemd/</code> which is not writable for us).
+I resort to setting environment variables by hand in bash; I found a list of the variables 
+  <a href="https://github.com/ollama/ollama/issues/2941#issuecomment-2322778733">here</a></p>
+<p>The one environment variable of interest in here is <code>OLLAMA_MODELS</code> (for now, we will use some of the other ones later).</p>
+<h2 id="downlading-and-running-a-first-model">
+  Downlading and &ldquo;running&rdquo; a first model 
+  <a class="anchor" href="#downlading-and-running-a-first-model">#</a>
+</h2>
+<p>We are going to store the models on the scratch space on the server which has very little limitation (no backup though, be careful).
+In my example I choose <code>/scratch.global/$USERNAME/llm/ollama</code> (to make sure it exists simply create it <code>mkdir -p /scratch.global/$USERNAME/llm/ollama</code>)</p>
+<p>We are ready to start the ollama server instance; as we start the server we also pass our environment variable</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">OLLAMA_MODELS</span><span style="color:#666">=</span>/scratch.global/eloualic/llm/ollama ollama serve &amp;
+</span></span></code></pre></div><p>The <code>&amp;</code> makes the command run in the background.</p>
+<p>First, you can check whether you have any models installed on your machine by running <code>ollama list</code> but if this is your first time doing this, this should be empty.</p>
+<p>To run your first model, you need to download it first.
+Luckily, this is automatic once you ask ollama to run a model as follows:
+Pick of model of your choice from 
+  <a href="https://ollama.com/library">here</a> and you are almost good to go; in this example I choose <code>mistral-nemo</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ollama run mistral-nemo
+</span></span></code></pre></div><p>You should see it download the model, before it starts running.
+Chances are (depending on your node configuration), that the model is either not able to run or excruciatingly slow.
+This is because we have not setup any GPU &hellip; this is the next section.</p>
+<p>Before we move on, we still need to clean up as the server is still running in the background.
+To do this we can simply find the <code>id</code> of the ollama server and then kill it:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pgrep ollama
+</span></span><span style="display:flex;"><span><span style="color:#666">951128</span> <span style="color:#080;font-style:italic"># this is the id of the pricess</span>
+</span></span><span style="display:flex;"><span>$ <span style="color:#a2f">kill</span> <span style="color:#666">951128</span>
+</span></span></code></pre></div><p>You can check if the server is still running with <code>ollama list</code>.</p>
+<h1 id="running-a-model-properly">
+  Running a model properly 
+  <a class="anchor" href="#running-a-model-properly">#</a>
+</h1>
+<h2 id="requesting-an-appropriate-node">
+  Requesting an appropriate node 
+  <a class="anchor" href="#requesting-an-appropriate-node">#</a>
+</h2>
+<p>For the model to run somewhat smoothly, we need to provision some GPU resources on the cluster.
+This will be different on each HPC resources you have access to, but for us at MSI the command will be something like this:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>salloc --time<span style="color:#666">=</span>2:00:00 --nodes<span style="color:#666">=</span><span style="color:#666">1</span> --ntasks<span style="color:#666">=</span><span style="color:#666">16</span> --partition<span style="color:#666">=</span>interactive-gpu --gres<span style="color:#666">=</span>gpu:a40:2 --tmp<span style="color:#666">=</span>12gb --mem<span style="color:#666">=</span>64g
+</span></span></code></pre></div><p>This is a request for 2 hours of walltime, 1 node, 16 cpu cores, a node in one of the gpu-equipped partition (here named <code>interactive-gpu</code>), 2 a40 GPUs, 12gb of tmp space, and 64gb of RAM.
+Note that what matters here is the VRAM (not the CPU RAM); when we request a gpu allocation, we want it to be commensurate with the model we are interested in: broadly, the model needs to fit in the GPUs VRAM.</p>
+<p>To figure out the VRAM available to your GPU, there are multiple lists available (this 
+  <a href="https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units">one</a> for NVIDIA seems fine).
+So in my case, I have requested 2 A40 GPUS which adds up to <code>48 x 2 = 96gb</code> of VRAM!</p>
+<p>I assume that you are running the ollama server in the background (we will get back to this), such that you can run</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ollama list
+</span></span><span style="display:flex;"><span>NAME                    ID              SIZE    MODIFIED
+</span></span><span style="display:flex;"><span>mistral-nemo:latest     994f3b8b7801    7.1 GB  XX minutes ago
+</span></span></code></pre></div><p><code>mistral-nemo</code> is a small model so it will fit within 2 A40 without any problem.
+Of course the goal here is to use larger models, which will happen later.</p>
+<h2 id="running-ollama-with-a-gpu">
+  Running ollama with a GPU 
+  <a class="anchor" href="#running-ollama-with-a-gpu">#</a>
+</h2>
+<p>When we start the ollama server, it should automatically recognize your gpu.
+It has happened to me in the past, that the GPUs where not recognized, but there is an easy fix!
+To know whether your GPU has been recognized by the server, you can run the server in the foreground and look at the log.
+Here is what I have on my end</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">OLLAMA_MODELS</span><span style="color:#666">=</span>/scratch.global/eloualic/llm/ollama ollama serve
+</span></span><span style="display:flex;"><span>XXXX <span style="color:#080;font-style:italic"># some log of the server as it starts</span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">time</span><span style="color:#666">=</span>2024-09-21T11:24:05.564-05:00 <span style="color:#b8860b">level</span><span style="color:#666">=</span>INFO <span style="color:#b8860b">source</span><span style="color:#666">=</span>gpu.go:200 <span style="color:#b8860b">msg</span><span style="color:#666">=</span><span style="color:#b44">&#34;looking for compatible GPUs&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">time</span><span style="color:#666">=</span>2024-09-21T11:24:06.618-05:00 <span style="color:#b8860b">level</span><span style="color:#666">=</span>INFO <span style="color:#b8860b">source</span><span style="color:#666">=</span>types.go:107 <span style="color:#b8860b">msg</span><span style="color:#666">=</span><span style="color:#b44">&#34;inference compute&#34;</span> <span style="color:#b8860b">id</span><span style="color:#666">=</span>GPU-955e21e4-b472-f85c-cb8b-ccad7509910f <span style="color:#b8860b">library</span><span style="color:#666">=</span>cuda <span style="color:#b8860b">variant</span><span style="color:#666">=</span>v12 <span style="color:#b8860b">compute</span><span style="color:#666">=</span>8.6 <span style="color:#b8860b">driver</span><span style="color:#666">=</span>12.4 <span style="color:#b8860b">name</span><span style="color:#666">=</span><span style="color:#b44">&#34;NVIDIA A40&#34;</span> <span style="color:#b8860b">total</span><span style="color:#666">=</span><span style="color:#b44">&#34;44.3 GiB&#34;</span> <span style="color:#b8860b">available</span><span style="color:#666">=</span><span style="color:#b44">&#34;44.1 GiB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">time</span><span style="color:#666">=</span>2024-09-21T11:24:06.618-05:00 <span style="color:#b8860b">level</span><span style="color:#666">=</span>INFO <span style="color:#b8860b">source</span><span style="color:#666">=</span>types.go:107 <span style="color:#b8860b">msg</span><span style="color:#666">=</span><span style="color:#b44">&#34;inference compute&#34;</span> <span style="color:#b8860b">id</span><span style="color:#666">=</span>GPU-ef5223e4-8d47-cd57-a1ec-d60640467243 <span style="color:#b8860b">library</span><span style="color:#666">=</span>cuda <span style="color:#b8860b">variant</span><span style="color:#666">=</span>v12 <span style="color:#b8860b">compute</span><span style="color:#666">=</span>8.6 <span style="color:#b8860b">driver</span><span style="color:#666">=</span>12.4 <span style="color:#b8860b">name</span><span style="color:#666">=</span><span style="color:#b44">&#34;NVIDIA A40&#34;</span> <span style="color:#b8860b">total</span><span style="color:#666">=</span><span style="color:#b44">&#34;44.3 GiB&#34;</span> <span style="color:#b8860b">available</span><span style="color:#666">=</span><span style="color:#b44">&#34;44.1 GiB&#34;</span>
+</span></span></code></pre></div><p>So it looks like it has found my GPUs.</p>
+<p>If it has not, you will notice right away as querying the llm will be excruciatingly slow (low token/s).
+In this case, you have to hardwire into the environment variables the IDs of the GPUs; how do you find these ids?
+There is a command for this in the case of NVIDIA&rsquo;s GPUs:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nvidia-smi -L
+</span></span><span style="display:flex;"><span>GPU 0: NVIDIA A40 <span style="color:#666">(</span>UUID: GPU-955e21e4-b472-f85c-cb8b-ccad7509910f<span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>GPU 1: NVIDIA A40 <span style="color:#666">(</span>UUID: GPU-ef5223e4-8d47-cd57-a1ec-d60640467243<span style="color:#666">)</span>
+</span></span></code></pre></div><p>Thus you can copy the two unique ids (UUID) and pass them as environment variable when you start the server.</p>
+<p>Kill the existing server and restart it with proper environment variables (adding <code>CUDA_VISIBLE_DEVICES</code>)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">OLLAMA_MODELS</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/ollama <span style="color:#b8860b">CUDA_VISIBLE_DEVICES</span><span style="color:#666">=</span>GPU-955e21e4-b472-f85c-cb8b-ccad7509910f,GPU-ef5223e4-8d47-cd57-a1ec-d60640467243 ollama serve
+</span></span></code></pre></div><p>Then on the other side, use <code>ollama run mistral-nemo</code> to run your model and you are good to go.</p>
+<h1 id="pulling-weights-and-compiling-them-into-an-ollama-model">
+  Pulling weights and &ldquo;compiling&rdquo; them into an ollama model 
+  <a class="anchor" href="#pulling-weights-and-compiling-them-into-an-ollama-model">#</a>
+</h1>
+<p>Now let&rsquo;s imagine, you are interested in a specialized model that you have seen on hugging face, and you want to run it locally.
+I will take the example of a medium-sized model here from 
+  <a href="https://huggingface.co/mattshumer/ref_70_e3">hugging face</a>
+Pull the model (this requires having access to the git large file system utility, I install it from source and then I add it to the path<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#a2f">cd</span> /scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># you will have to create an access token on hugging face to log-in</span>
+</span></span><span style="display:flex;"><span>$ git clone https://huggingface.co/mistralai/Mistral-Small-Instruct-2409
+</span></span></code></pre></div><p>Then we need to build the model into a form that is compatible with ollama (we make sure to specify a proper environment for OLLAMA_TMP_DIR or else it will build the model under /tmp where we only asked for 12gb of tmp space).
+There are two steps (official 
+  <a href="https://github.com/ollama/ollama/blob/main/docs/import.md">doc</a>): creating a model file, and then creating the model from the model file.
+We start by creating the modelfile which we will name ReflectionModel</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#a2f">cd</span> /scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/
+</span></span><span style="display:flex;"><span>$ cat <span style="color:#b44">&lt;&lt; &#39;EOF&#39; &gt; Modelfile
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">FROM /scratch.global/eloualic/llm/Mistral-Small-Instruct-2409
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">PARAMETER temperature 1
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">SYSTEM &#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">You are an AI assistant designed to be helpful, harmless, and honest. Your primary goal is to engage in friendly conversation and assist users with a wide range of tasks and questions.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">Guidelines:
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">1. Be polite and respectful at all times.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">2. Provide clear and concise answers.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">3. If you&#39;re unsure about something, admit it and offer to find more information.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">4. Use appropriate language and maintain a friendly tone.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">5. Respect user privacy and don&#39;t ask for personal information.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">6. Offer follow-up questions or suggestions to keep the conversation flowing naturally.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">Remember, you are an AI language model and should not pretend to have human experiences or emotions. If asked about your capabilities or limitations, be honest and straightforward.
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">EOF</span>
+</span></span></code></pre></div><p>Make sure to adjust your path as it is on your own machine, same with the folder where the model was downloaded.
+Obviously you can also adjust the system prompt.</p>
+<p>To create the model we are going to first start the server with a few options to make sure the temporary files from setting up the model do not get written to the default <code>/tmp</code> but to another a directory we control (I think this is the <code>TMPDIR</code> variable).
+On my end it looks like the following (first environment variable, then ollama command):</p>
+<p>Starting the server</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir -p /scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#080;font-style:italic"># create a tmp dir to buffer model creation</span>
+</span></span><span style="display:flex;"><span>$ <span style="color:#b8860b">TMPDIR</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#b8860b">OLLAMA_TMPDIR</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#b8860b">OLLAMA_RUNNERS_DIR</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#b8860b">OLLAMA_MODELS</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/ollama ollama serve
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#a2f">cd</span> /scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm <span style="color:#080;font-style:italic"># this is where we have created our Modelfile</span>
+</span></span><span style="display:flex;"><span>$ <span style="color:#b8860b">TMPDIR</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#b8860b">OLLAMA_TMPDIR</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#b8860b">OLLAMA_RUNNERS_DIR</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/tmp <span style="color:#b8860b">OLLAMA_MODELS</span><span style="color:#666">=</span>/scratch.global/<span style="color:#b8860b">$USERNAME</span>/llm/ollama ollama create Mistral-Small-Instruct-2409
+</span></span></code></pre></div><p>This might be a while (especially given our large scale example)&hellip; so be patient&hellip;
+This is the output I get upon success:</p>
+<pre tabindex="0"><code>transferring model data 100%
+converting model
+creating new layer sha256:abe736818cb4883a504b56fe77001810d62c3e59074782316f4fe7f3b9f6b7e8
+creating new layer sha256:74a694aa0d803257176eb4326cf255021afef1d8bff656e8a93998636eba2269
+creating new layer sha256:d8ba2f9a17b3bbdeb5690efaa409b3fcb0b56296a777c7a69c78aa33bbddf182
+creating new layer sha256:de7dae010413cc23ca780e05dafe5eb56e5919d87fe595304b45da3211bfe9b3
+writing manifest
+success
+</code></pre><p>I can check that my model has been properly added by listing all the installed models:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ollama list
+</span></span><span style="display:flex;"><span>NAME                              	ID          	SIZE  	MODIFIED
+</span></span><span style="display:flex;"><span>Mistral-Small-Instruct-2409:latest	42b2ae701882	<span style="color:#666">44</span> GB 	<span style="color:#666">11</span> hours ago
+</span></span><span style="display:flex;"><span>mistral-nemo:latest               	994f3b8b7801	7.1 GB	<span style="color:#666">21</span> hours ago
+</span></span></code></pre></div><p>Here it turns out that the model I downloaded did not quite fit in memory, so I had to go back and request an allocation with 4 A40 GPUs.
+Then I can simply load the model (do not forget to check if the server is running with all the environment variables being set)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama run Mistral-Small-Instruct-2409
+</span></span></code></pre></div><p>Do not hesitate to reach out for suggestions or tweaks!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">GITLFS_VERSION</span><span style="color:#666">=</span>3.5.1
+</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> /path/to/folder
+</span></span><span style="display:flex;"><span>wget https://github.com/git-lfs/git-lfs/archive/refs/tags/v<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">GITLFS_VERSION</span><span style="color:#b68;font-weight:bold">}</span>.tar.gz
+</span></span><span style="display:flex;"><span>tar xvfz v<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">GITLFS_VERSION</span><span style="color:#b68;font-weight:bold">}</span>.tar.gz
+</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> git-lfs-<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">GITLFS_VERSION</span><span style="color:#b68;font-weight:bold">}</span>; ./configure --prefix<span style="color:#666">=</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">HOME</span><span style="color:#b68;font-weight:bold">}</span>/local/git-lfs/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">GITLFS_VERSION</span><span style="color:#b68;font-weight:bold">}</span>; <span style="color:#080;font-style:italic"># this is where git-lfs will be installed</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> git-lfs-<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">GITLFS_VERSION</span><span style="color:#b68;font-weight:bold">}</span>; make <span style="color:#666">&amp;&amp;</span> make install
+</span></span></code></pre></div><p>Make sure to link the binary once you are done: <code>export PATH=$PATH:${HOME}/local/git-lfs/${GITLFS_VERSION}/bin</code></p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I installed <code>git-lfs</code> from source directly from their releases.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+<br>
+
+</br>
+
+</article>
+
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  
+  <div>
+    
+      <a href="/blog/categories/code/">Code</a>
+  </div>
+  
+
+  
+  <div>
+    
+      <a href="/blog/tags/ollama/">Ollama</a>
+  </div>
+  
+
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+
+    
+
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h-title-site class="book-brand">
+  <a class="flex align-center" href="/blog/"><span>loualiche misc.</span>
+    
+  </a>
+</h-title-site>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://loualiche.com/"  target="_blank" rel="noopener">
+        My Website
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
+        My Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/blog/"  >
+        
+      </a>
+  </li>
+  
+  <li>
+    <a href="/blog/posts/"  >
+        
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#installing-ollama">Installing ollama</a></li>
+    <li><a href="#settings-up-and-downloading-a-model">Settings up and downloading a model</a></li>
+    <li><a href="#running-a-model-properly">Running a model properly</a></li>
+    <li><a href="#pulling-weights-and-compiling-them-into-an-ollama-model">Pulling weights and &ldquo;compiling&rdquo; them into an ollama model</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+
+
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

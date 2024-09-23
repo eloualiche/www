@@ -16,6 +16,13 @@
       <description>Some data tasks can be conveniently outsourced to DuckDB instead of using DataFrames. I go over the bindings and how I use it from within Julia.</description>
     </item>
     <item>
+      <title>Using ollama on the Minnesota HPC cluster</title>
+      <link>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</link>
+      <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</guid>
+      <description>How to get set up with ollama on the msi hpc cluster; from installation to running and pulling weights from hugging face.</description>
+    </item>
+    <item>
       <title>TAQ Consolidated</title>
       <link>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
       <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
