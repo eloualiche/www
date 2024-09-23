@@ -2,10 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</loc>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</loc>
     <lastmod>2024-07-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</loc>
@@ -39,24 +39,24 @@
     <lastmod>2020-01-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/posts/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/categories/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/categories/code/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://loualiche.com/blog/tags/julia/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/tags/ollama/</loc>
-    <lastmod>2024-07-08T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/tags/</loc>
+    <lastmod>2024-09-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://loualiche.com/blog/tags/julia/</loc>
     <lastmod>2024-07-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://loualiche.com/blog/categories/finance/</loc>

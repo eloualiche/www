@@ -6,20 +6,20 @@
     <description>Recent content in Tags on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 08 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ollama</title>
+      <link>https://loualiche.com/blog/tags/ollama/</link>
+      <pubDate>Sun, 22 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/tags/ollama/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Julia</title>
       <link>https://loualiche.com/blog/tags/julia/</link>
       <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/julia/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ollama</title>
-      <link>https://loualiche.com/blog/tags/ollama/</link>
-      <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.com/blog/tags/ollama/</guid>
       <description></description>
     </item>
     <item>

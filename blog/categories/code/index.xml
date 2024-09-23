@@ -6,21 +6,21 @@
     <description>Recent content in Code on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 08 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/categories/code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ollama msi hpc</title>
+      <link>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</link>
+      <pubDate>Sun, 22 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</guid>
+      <description>How to get set up with ollama on the Minnesota MSI HPC cluster; from installation to running a model to pulling weights and setting up a model from hugging face.</description>
+    </item>
     <item>
       <title>DuckDB and Julia</title>
       <link>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</link>
       <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</guid>
       <description>Some data tasks can be conveniently outsourced to DuckDB instead of using DataFrames. I go over the bindings and how I use it from within Julia.</description>
-    </item>
-    <item>
-      <title>ollama msi hpc</title>
-      <link>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</link>
-      <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</guid>
-      <description>How to get set up with ollama on the Minnesota MSI HPC cluster; from installation to running a model to pulling weights and setting up a model from hugging face.</description>
     </item>
     <item>
       <title>TAQ Consolidated</title>
