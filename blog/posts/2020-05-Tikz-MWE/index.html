@@ -23,7 +23,7 @@
 <link rel="canonical" href="https://loualiche.com/blog/posts/2020-05-Tikz-MWE/">
 <link rel="stylesheet" href="/blog/book.min.9713cc00bf3fad301a8109e944fb0b92126714c86b47ff36a748b968ff7146f8.css" integrity="sha256-lxPMAL8/rTAagQnpRPsLkhJnFMhrR/82p0i5aP9xRvg=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.8778532f1601c3e1f82bfd03235503e940f6c314cd1d77238bcc0834ac6f6516.js" integrity="sha256-h3hTLxYBw&#43;H4K/0DI1UD6UD2wxTNHXcji8wINKxvZRY=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.a2c795243818ba6e9213b1c4c5d2ff3d73cadb71715e5e713316b12419350e36.js" integrity="sha256-oseVJDgYum6SE7HExdL/PXPK23FxXl5xMxaxJBk1DjY=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 <!--
@@ -31,7 +31,7 @@ Made with Book Theme
 https://github.com/alex-shpak/hugo-book
 -->
   <meta name="robots" content="index,follow">
-  
+
   
   <meta name="google-site-verification" content="GTM-MB6RT5V">
   <meta name="google-site-verification" content="Qh9qc4AsLoAOkKpw8lYQZDdlptkeG5WDXHPxaX_aTlI" />
@@ -44,17 +44,17 @@ https://github.com/alex-shpak/hugo-book
   
   <meta property="og:title" content="Erik Loualiche | Non Academic Webpage">
   <meta property="og:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
-  <meta property="og:image" content="https://loualiche.gitlab.io/www/images/loualiche_pic2.jpg">
+  <meta property="og:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
   <meta property="og:image:alt" content="Erik Loualiche, University of Minnesota">
   <meta property="og:locale" content="en_GB">
   <meta property="og:type" content="blog">
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@erikloulou">
-  <meta name="twitter:url" content="https://loualiche.gitlab.io/www/index.html">
+  <meta name="twitter:url" content="https://loualiche.com/index.html">
   <meta name="twitter:title" content="Erik Loualiche | Academic Webpage">
   <meta name="twitter:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
-  <meta name="twitter:image" content="https://loualiche.gitlab.io/www/images/loualiche_pic2.jpg">
+  <meta name="twitter:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
   <meta name="twitter:image:alt" content="Erik Loualiche, University of Minnesota">
   <meta name="twitter:dnt" content="on">
 
@@ -156,7 +156,7 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#minimal-working-example">#</a>
 </h1>
 <p>A simple document with the minimal class: view output from pdflatex 
-  <a href="../../images/tikz_img/cip_contract_standalone.pdf%22">here</a></p>
+  <a href="/images/tikz_img/cip_contract_standalone.pdf">here</a></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\documentclass</span><span style="color:#a2f">{</span>standalone<span style="color:#a2f">}</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% --------------------------------------------------------
@@ -206,11 +206,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Specification of nodes (position, etc.)
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> (start)             [activityStarts]                <span style="color:#a2f">{</span>US Investor at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (borrowing0)        [process, above=2.5cm of start]       <span style="color:#a2f">{</span>US Bank<span style="color:#a2f">}</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange0)         [process, below=2.5cm of start]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange0)         [process, below=2.5cm of start]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (lending01)         [process, right=3.5cm of start]       <span style="color:#a2f">{</span>Japanese Investor<span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (end)               [activityStarts, right=3.5cm of lending01] <span style="color:#a2f">{</span>US Investor at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">1</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (borrowing1)        [process, above=2.5cm of end]       <span style="color:#a2f">{</span>US Bank<span style="color:#a2f">}</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange1)         [process, below=2.5cm of end]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange1)         [process, below=2.5cm of end]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Link the nodes
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span> <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(borrowing0) -- node[]<span style="color:#a2f">{</span>Borrowing in USD<span style="color:#a2f">}</span> (start);
 </span></span><span style="display:flex;"><span> <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(start)  -- node[]<span style="color:#a2f">{</span>Buy Yen at rate <span style="color:#b44">$</span><span style="color:#a2f">x_</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f;font-weight:bold">\\</span> buy for <span style="color:#b44">$</span><span style="color:#b8860b">\$</span><span style="color:#666">1</span><span style="color:#b44">$</span> receive <span style="color:#b44">$</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{</span><span style="color:#b8860b">\textyen</span><span style="color:#a2f">}</span><span style="color:#b8860b">\ </span><span style="color:#666">1</span><span style="color:#a2f"> </span><span style="color:#666">/</span><span style="color:#a2f"> x_</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>(exchange0);
@@ -227,7 +227,7 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#standard-article-class">#</a>
 </h1>
 <p>A document with the article class: view output from pdflatex 
-  <a href="../../images/tikz_img/cip_contract_article.pdf">here</a></p>
+  <a href="/images/tikz_img/cip_contract_article.pdf">here</a></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-LaTeX" data-lang="LaTeX"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\documentclass</span><span style="color:#a2f">{</span>article<span style="color:#a2f">}</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">% --------------------------------------------------------
@@ -278,11 +278,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Specification of nodes (position, etc.)
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\node</span> (start)             [activityStarts]                <span style="color:#a2f">{</span>US Investor at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (borrowing0)        [process, above=2.5cm of start]       <span style="color:#a2f">{</span>US Bank<span style="color:#a2f">}</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange0)         [process, below=2.5cm of start]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange0)         [process, below=2.5cm of start]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (lending01)         [process, right=3.5cm of start]       <span style="color:#a2f">{</span>Japanese Investor<span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (end)               [activityStarts, right=3.5cm of lending01] <span style="color:#a2f">{</span>US Investor at <span style="color:#b44">$</span><span style="color:#a2f">t</span><span style="color:#666">=</span><span style="color:#666">1</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (borrowing1)        [process, above=2.5cm of end]       <span style="color:#a2f">{</span>US Bank<span style="color:#a2f">}</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange1)         [process, below=2.5cm of end]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;  
+</span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\node</span> (exchange1)         [process, below=2.5cm of end]       <span style="color:#a2f">{</span>Exchange Counterparty<span style="color:#a2f">}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#080;font-style:italic">% Link the nodes
 </span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(borrowing0) -- node[]<span style="color:#a2f">{</span>Borrowing in USD<span style="color:#a2f">}</span> (start);
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span>(start)  -- node[]<span style="color:#a2f">{</span>Buy Yen at rate <span style="color:#b44">$</span><span style="color:#a2f">x_</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f;font-weight:bold">\\</span> buy for <span style="color:#b44">$</span><span style="color:#b8860b">\$</span><span style="color:#666">1</span><span style="color:#b44">$</span> receive <span style="color:#b44">$</span><span style="color:#b8860b">\text</span><span style="color:#a2f">{</span><span style="color:#b8860b">\textyen</span><span style="color:#a2f">}</span><span style="color:#b8860b">\ </span><span style="color:#666">1</span><span style="color:#a2f"> </span><span style="color:#666">/</span><span style="color:#a2f"> x_</span><span style="color:#666">0</span><span style="color:#b44">$</span><span style="color:#a2f">}</span>(exchange0);
@@ -317,8 +317,6 @@ https://github.com/alex-shpak/hugo-book
 
 
   
-
-  
   <div>
     
       <a href="/blog/tags/TeX/">TeX</a>
@@ -350,13 +348,16 @@ https://github.com/alex-shpak/hugo-book
       <div class="book-menu-content">
         
   <nav>
-<h-title-site class="book-brand">
-  <a class="flex align-center" href="/blog/"><span>loualiche misc.</span>
-    
-  </a>
+    <h-title-site class="book-brand">
+    <a
+        class="flex align-center"
+        href="/blog/"
+    ><span>loualiche misc.</span>
+        
+    </a>
 </h-title-site>
 
-
+    
 <div class="book-search">
   <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
   <div class="book-search-spinner hidden"></div>
@@ -364,10 +365,9 @@ https://github.com/alex-shpak/hugo-book
 </div>
 
 
-
-
-
-
+    
+    
+    
 
   
 <ul>
@@ -390,11 +390,8 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-
-
-  
-
-
+    
+        
 
 
 
@@ -403,7 +400,8 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-
+    
+    
 
   
 <ul>
@@ -426,13 +424,15 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-
+    
 </nav>
 
 
 
 
-  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+<script>
+    (function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()
+</script>
 
 
  

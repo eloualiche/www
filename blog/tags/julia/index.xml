@@ -9,7 +9,7 @@
     <lastBuildDate>Mon, 08 Jul 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/tags/julia/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>DuckDB and Julia</title>
+      <title>DuckDB in Julia</title>
       <link>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</link>
       <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</guid>

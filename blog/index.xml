@@ -16,7 +16,7 @@
       <description>How to get set up with ollama on the Minnesota MSI HPC cluster; from installation to running a model to pulling weights and setting up a model from hugging face.</description>
     </item>
     <item>
-      <title>DuckDB and Julia</title>
+      <title>DuckDB in Julia</title>
       <link>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</link>
       <pubDate>Mon, 08 Jul 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2024-06-DuckDB-in-Julia/</guid>
