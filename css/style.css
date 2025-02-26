@@ -344,3 +344,109 @@ a:active {
 #footer a {
 	color: #8A8A8A;
 }
+
+
+/* ---------------------------------------------------------------------------------------------- */
+/* FOR MOBILE  */
+
+/* Add this at the end of your existing style.css file */
+
+/* Mobile Responsiveness */
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  pre {
+    font-size: 0.9em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  #header, #wrapper, #page, #content, #menu {
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  #masthead table {
+    width: 100%;
+  }
+  
+  #masthead table td {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  
+  #masthead table td img {
+    margin: 10px auto;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column.left, .column.right {
+    width: 100%;
+  }
+
+  .column.right {
+    text-align: center;
+  }
+
+  .column.right img {
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  /* Make links easier to tap */
+  a {
+    padding: 5px 0;
+    display: inline-block;
+  }
+
+  /* Handle PRE tags better on mobile */
+  PRE {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  /* Adjust spacing for sections */
+  HR {
+    margin: 20px 0;
+  }
+
+  /* Fix image scaling */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* For very small screens */
+@media only screen and (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  #masthead font[size="6"] {
+    font-size: 1.5em;
+  }
+
+  #masthead font[size="3"] {
+    font-size: 0.9em;
+  }
+  
+  /* Make the navigation more readable on small screens */
+  PRE a {
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------- */
