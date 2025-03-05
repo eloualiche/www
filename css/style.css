@@ -8,7 +8,7 @@ Released for free under a Creative Commons Attribution 2.5 License
 body {
 	margin: 0;
 	padding: 0;
-	background: #F7F7F7 url(images/img01.jpg) repeat-x left top;
+	background: #F7F7F7 url() repeat-x left top;
 	font-family: "Source Serif Pro", Arial, Helvetica, "sans-serif";
 	font-size: 12px;
 	color: #787878;
@@ -21,7 +21,7 @@ pre {
   font-size: 1.0em;
   font-family: Courier, "PT Mono", "Courier", "Fira Code", Consolas, "Liberation Mono", Menlo, monospace;
   /*font-size: 1rem;*/
-  line-height: 1.1; 
+  line-height: 1.1;
 }
 
 
@@ -74,13 +74,13 @@ a:hover {
 /* selected link */
 a:active {
   color:  blue;
-} 
+}
 
-/* Creating two columns */ 
+/* Creating two columns */
 /*https://www.w3schools.com/howto/howto_css_two_columns.asp*/
  .column {
   float: left;
-  /*width: 50%;*/
+  /* width: 50%; */
 }
 
 .left {
@@ -89,14 +89,14 @@ a:active {
 
 .right {
   width: 35%;
-} 
+}
 
 /* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
   clear: both;
-} 
+}
 
 
 
@@ -141,7 +141,7 @@ a:active {
 	padding: 26px 0 0 10px;
 	font: normal 14px "Georgia", "Source Serif Pro", "Times New Roman", Times, serif;
 	font-style: italic;
-} 
+}
 
 #logo a {
 	border: none;
@@ -318,7 +318,7 @@ a:active {
   margin-left: auto;
   margin-right: auto;
   /*width: 50%;*/
-} 
+}
 
 /* Footer */
 
@@ -348,105 +348,84 @@ a:active {
 
 /* ---------------------------------------------------------------------------------------------- */
 /* FOR MOBILE  */
-
-/* Add this at the end of your existing style.css file */
-
-/* Mobile Responsiveness */
 @media only screen and (max-width: 768px) {
-  body {
-    font-size: 14px;
-    padding: 0 10px;
+	body {
+	  font-size: 16px;
+	  padding: 0 10px;
+	}
+
+	pre {
+	  font-size: 1em;
+	  white-space: pre-wrap;
+	  word-wrap: break-word;
+	}
+
+	#header, #wrapper, #page, #content, #menu {
+	  width: 100%;
+	  padding: 0;
+	  margin: 0 auto;
+	}
+
+	#menu {
+	  display: flex;
+	  flex-direction: column;
+	  height: auto;
+	}
+
+	#menu ul {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	}
+
+	#menu li {
+	  float: none;
+	  width: 100%;
+	  text-align: center;
+	}
+
+	#menu a {
+	  width: 100%;
+	  padding: 12px 0;
+	  border-right: none;
+	  border-bottom: 1px solid #FFFFFF;
+	}
+
+	.row {
+	  display: flex;
+	  flex-direction: column;
+	}
+
+	.column.left, .column.right {
+	  width: 100%;
+	}
+
+	.column.right {
+	  text-align: center;
+	}
+
+	.column.right img {
+	  max-width: 200px;
+	  height: auto;
+	  margin: 0 auto;
+	}
+
+	a {
+	  padding: 5px 0;
+	  display: inline-block;
+	}
+
+	pre {
+	  overflow-x: auto;
+	  max-width: 100%;
+	}
+
+	img {
+	  max-width: 100%;
+	  height: auto;
+	}
   }
 
-  pre {
-    font-size: 0.9em;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
 
-  #header, #wrapper, #page, #content, #menu {
-    width: 100%;
-    padding: 0;
-    margin: 0 auto;
-  }
-
-  #masthead table {
-    width: 100%;
-  }
-  
-  #masthead table td {
-    display: block;
-    width: 100%;
-    text-align: center;
-  }
-  
-  #masthead table td img {
-    margin: 10px auto;
-  }
-
-  .row {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .column.left, .column.right {
-    width: 100%;
-  }
-
-  .column.right {
-    text-align: center;
-  }
-
-  .column.right img {
-    max-width: 200px;
-    height: auto;
-    margin: 0 auto;
-  }
-
-  /* Make links easier to tap */
-  a {
-    padding: 5px 0;
-    display: inline-block;
-  }
-
-  /* Handle PRE tags better on mobile */
-  PRE {
-    overflow-x: auto;
-    max-width: 100%;
-  }
-
-  /* Adjust spacing for sections */
-  HR {
-    margin: 20px 0;
-  }
-
-  /* Fix image scaling */
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-/* For very small screens */
-@media only screen and (max-width: 480px) {
-  body {
-    font-size: 13px;
-  }
-
-  #masthead font[size="6"] {
-    font-size: 1.5em;
-  }
-
-  #masthead font[size="3"] {
-    font-size: 0.9em;
-  }
-  
-  /* Make the navigation more readable on small screens */
-  PRE a {
-    display: block;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-  }
-}
 
 /* ---------------------------------------------------------------------------------------------- */
