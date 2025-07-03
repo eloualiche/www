@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Tax Configuration Form</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@rjsf/core@5.13.2/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@rjsf/validator-ajv8@5.13.2/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        body { padding: 20px; background-color: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .output { margin-top: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 4px; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+        .form-group { margin-bottom: 1.5rem; }
+        .btn { margin-top: 20px; }
+        .simple-form { padding: 20px; }
+        .simple-form label { display: block; margin-top: 15px; font-weight: bold; }
+        .simple-form input, .simple-form select, .simple-form textarea { 
+            width: 100%; 
+            padding: 8px; 
+            margin-top: 5px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+        }
+        .simple-form .checkbox-group { margin-top: 5px; }
+        .simple-form .checkbox-group label { font-weight: normal; margin-left: 5px; }
+        .columns-section { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-top: 10px; }
+        .column-entry { display: flex; gap: 10px; margin-bottom: 10px; }
+        .column-entry input { flex: 1; }
+        .column-entry select { flex: 1; }
+        .btn-add { background: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; }
+        .btn-remove { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Property Tax File Configuration</h1>
+        <p>Fill out this form to create a configuration for processing property tax files.</p>
+        
+        <form id="configForm" class="simple-form">
+            <h3>File Information</h3>
+            <label>Filename*
+                <input type="text" name="filename" required>
+            </label>
+            <label>Directory
+                <input type="text" name="directory" value="." required>
+            </label>
+            <label>File Type*
+                <select name="filetype" required>
+                    <option value="">Select...</option>
+                    <option value="JPEG">JPEG</option>
+                    <option value="PDF">PDF</option>
+                    <option value="PNG">PNG</option>
+                    <option value="TIFF">TIFF</option>
+                </select>
+            </label>
+
+            <h3>Basic Information</h3>
+            <label>Document Title*
+                <input type="text" name="title" required>
+            </label>
+            <label>State*
+                <select name="state" required>
+                    <option value="">Select...</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="WI">Wisconsin</option>
+                </select>
+            </label>
+            <label>Years Available* (comma-separated)
+                <input type="text" name="years" placeholder="2023, 2024" required>
+            </label>
+            
+            <label>Granularity Level* (check all that apply)</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="granularity" value="STATE"> STATE</label>
+                <label><input type="checkbox" name="granularity" value="COUNTY" checked> COUNTY</label>
+                <label><input type="checkbox" name="granularity" value="CITY"> CITY</label>
+                <label><input type="checkbox" name="granularity" value="TOWN"> TOWN</label>
+                <label><input type="checkbox" name="granularity" value="VILLAGE"> VILLAGE</label>
+            </div>
+
+            <label>Source Type*
+                <select name="source_type" required>
+                    <option value="">Select...</option>
+                    <option value="COUNTY_OFFICE">County Office</option>
+                    <option value="STATE_PORTAL">State Portal</option>
+                    <option value="LIBRARY">Library</option>
+                    <option value="FOI_REQUEST">FOI Request</option>
+                    <option value="PUBLIC_WEBSITE">Public Website</option>
+                    <option value="UNKNOWN_SOURCE">Unknown Source</option>
+                </select>
+            </label>
+            <label>Source Name*
+                <input type="text" name="source_name" required>
+            </label>
+            <label>Table ID (optional)
+                <input type="text" name="table_id" placeholder="For multiple tables in same document">
+            </label>
+
+            <h3>Expected Columns*</h3>
+            <div class="columns-section">
+                <div id="columnsContainer">
+                    <div class="column-entry">
+                        <input type="text" placeholder="Column name" value="property_id">
+                        <select>
+                            <option value="TEXT" selected>TEXT</option>
+                            <option value="CURRENCY">CURRENCY</option>
+                            <option value="PERCENTAGE">PERCENTAGE</option>
+                            <option value="DECIMAL">DECIMAL</option>
+                            <option value="INTEGER">INTEGER</option>
+                            <option value="DATE">DATE</option>
+                            <option value="BOOLEAN">BOOLEAN</option>
+                        </select>
+                    </div>
+                    <div class="column-entry">
+                        <input type="text" placeholder="Column name" value="assessed_value">
+                        <select>
+                            <option value="TEXT">TEXT</option>
+                            <option value="CURRENCY" selected>CURRENCY</option>
+                            <option value="PERCENTAGE">PERCENTAGE</option>
+                            <option value="DECIMAL">DECIMAL</option>
+                            <option value="INTEGER">INTEGER</option>
+                            <option value="DATE">DATE</option>
+                            <option value="BOOLEAN">BOOLEAN</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="btn-add" onclick="addColumn()">+ Add Column</button>
+            </div>
+
+            <label>Processor Type*
+                <select name="processor_type" required>
+                    <option value="">Select...</option>
+                    <option value="IMAGE_EXTRACTION">Image Extraction</option>
+                    <option value="PDF_EXTRACTION">PDF Extraction</option>
+                    <option value="TABLE_PARSER">Table Parser</option>
+                </select>
+            </label>
+
+            <label>Validation Rules (check all that apply)</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="validation" value="COUNTY_NAME"> COUNTY_NAME</label>
+                <label><input type="checkbox" name="validation" value="PERCENT_RANGE" checked> PERCENT_RANGE</label>
+                <label><input type="checkbox" name="validation" value="TOTAL"> TOTAL</label>
+            </div>
+
+            <label>URL (optional)
+                <input type="url" name="url" placeholder="https://...">
+            </label>
+            <label>Notes (optional)
+                <textarea name="notes" rows="4"></textarea>
+            </label>
+
+            <button type="submit" class="btn btn-primary">Generate Configuration</button>
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+        </form>
+
+        <div class="output" id="output" style="display: none;">
+            <h3>Generated Nickel Configuration:</h3>
+            <pre id="nickel-output"></pre>
+            <h3>JSON Output:</h3>
+            <pre id="json-output"></pre>
+        </div>
+    </div>
+
+    <script>
+        function addColumn() {
+            const container = document.getElementById('columnsContainer');
+            const entry = document.createElement('div');
+            entry.className = 'column-entry';
+            entry.innerHTML = `
+                <input type="text" placeholder="Column name">
+                <select>
+                    <option value="TEXT">TEXT</option>
+                    <option value="CURRENCY">CURRENCY</option>
+                    <option value="PERCENTAGE">PERCENTAGE</option>
+                    <option value="DECIMAL">DECIMAL</option>
+                    <option value="INTEGER">INTEGER</option>
+                    <option value="DATE">DATE</option>
+                    <option value="BOOLEAN">BOOLEAN</option>
+                </select>
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(entry);
+        }
+
+        function resetForm() {
+            document.getElementById('configForm').reset();
+            document.getElementById('output').style.display = 'none';
+        }
+
+        document.getElementById('configForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            
+            // Build the data object
+            const data = {
+                filepath: {
+                    filename: formData.get('filename'),
+                    directory: formData.get('directory'),
+                    filetype: formData.get('filetype')
+                },
+                title: formData.get('title'),
+                state: formData.get('state'),
+                year: formData.get('years').split(',').map(y => parseInt(y.trim())),
+                granularity_level: Array.from(document.querySelectorAll('input[name="granularity"]:checked')).map(cb => cb.value),
+                source_type: formData.get('source_type'),
+                source_name: formData.get('source_name'),
+                processor_type: formData.get('processor_type'),
+                validation_rules: Array.from(document.querySelectorAll('input[name="validation"]:checked')).map(cb => cb.value)
+            };
+
+            // Add optional fields
+            if (formData.get('table_id')) data.table_id = formData.get('table_id');
+            if (formData.get('url')) data.url = formData.get('url');
+            if (formData.get('notes')) data.notes = formData.get('notes');
+
+            // Get columns
+            data.expected_columns = {};
+            document.querySelectorAll('#columnsContainer .column-entry').forEach(entry => {
+                const name = entry.querySelector('input').value;
+                const type = entry.querySelector('select').value;
+                if (name) data.expected_columns[name] = type;
+            });
+
+            // Generate Nickel
+            let nickel = `{
+  filepath = {
+    filename = "${data.filepath.filename}",
+    directory = "${data.filepath.directory}",
+    filetype = '${data.filepath.filetype},
+  },
+  
+  title = "${data.title}",
+  state = '${data.state},
+  year = [${data.year.join(", ")}],
+  granularity_level = [${data.granularity_level.map(g => `'${g}`).join(", ")}],
+  source_type = '${data.source_type},
+  source_name = "${data.source_name}",`;
+            
+            if (data.table_id) {
+                nickel += `\n  table_id = "${data.table_id}",`;
+            }
+            
+            nickel += `\n  
+  expected_columns = {`;
+            for (const [col, type] of Object.entries(data.expected_columns)) {
+                nickel += `\n    "${col}" = '${type},`;
+            }
+            nickel += `\n  },
+  
+  processor_type = '${data.processor_type},`;
+            
+            if (data.validation_rules && data.validation_rules.length > 0) {
+                nickel += `\n  validation_rules = [${data.validation_rules.map(r => `'${r}`).join(", ")}],`;
+            }
+            
+            if (data.url) {
+                nickel += `\n  url = "${data.url}",`;
+            }
+            if (data.notes) {
+                nickel += `\n  notes = "${data.notes}",`;
+            }
+            
+            nickel += `\n}`;
+
+            // Display results
+            document.getElementById('output').style.display = 'block';
+            document.getElementById('json-output').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('nickel-output').textContent = nickel;
+        });
+    </script>
+</body>
+</html>
