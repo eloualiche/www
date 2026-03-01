@@ -21,9 +21,9 @@
 <link rel="manifest" href="/blog/manifest.json">
 <link rel="icon" href="/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/">
-<link rel="stylesheet" href="/blog/book.min.78ac3dfcbefb2b8da8f0d9a4c47f3dbc62c601bd4f65965eef67ba16007b7357.css" integrity="sha256-eKw9/L77K42o8NmkxH89vGLGAb1PZZZe72e6FgB7c1c=" crossorigin="anonymous">
+<link rel="stylesheet" href="/blog/book.min.a5b759d29c01019ce9d8f9849c2172a6845ea59962ec60771af9db639ccbbfe1.css" integrity="sha256-pbdZ0pwBAZzp2PmEnCFypoRepZli7GB3GvnbY5zLv&#43;E=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.8c9ae29be4f241c4df5517cc7e4f806d8089bc29d461855acbcd67b2b5c65d27.js" integrity="sha256-jJrim&#43;TyQcTfVRfMfk&#43;AbYCJvCnUYYVay81nsrXGXSc=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.1dcc6283e4d8b14d6c56b31d21d265ae8503b10e62ba1f5dc49afcafc1159c9d.js" integrity="sha256-Hcxig&#43;TYsU1sVrMdIdJlroUDsQ5iuh9dxJr8r8EVnJ0=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 <!--
@@ -154,11 +154,11 @@ https://github.com/alex-shpak/hugo-book
 
 
 <p>This was a joint effort with 
-  <a href="https://www.matthieugomez.com">Matthieu Gomez</a> who created and maintain the high-dimensional fixed effect regression package for julia <code>FixedEffectModels.jl</code>.
+  <a href="https://www.matthieugomez.com">Matthieu Gomez</a> who created and maintains the high-dimensional fixed effect regression package for julia <code>FixedEffectModels.jl</code>.
 Valentin Haddad and myself uncovered this bug while working on 
   <a href="https://loualiche.com/abstract/competitive_stockmkt_HHL.html">our project</a> on passive investing and market competition.</p>
 <p>This post describes how the Kleibergen-Paap first-stage F-statistics can be misleading when using <code>ivreg2</code> and <code>ivreghdfe</code> in stata.</p>
-<p>In julia the <code>FixedEffectModels</code> package deals with this type of regressions and usually mimicks stata.
+<p>In julia the <code>FixedEffectModels</code> package deals with this type of regressions and usually mimics stata.
 We found the issue was due to a specific case in the Kleibergen-Paap original paper and were able to patch it here.
 We find that the issue appears with instruments interacted with fixed effects.</p>
 <p><strong>tl;dr;</strong> We found potential mistakes in stata&rsquo;s <code>ivreg2</code> and <code>ivreghdfe</code> for special cases.
@@ -185,7 +185,7 @@ We are interested in a two-stage-least-squares regression of \(Y\) on \(X\)  usi
 We start by setting up the packages and creating a small dataset (20 rows) with two identifiers.</p>
 <p>First we import the packages (sorry no checkpointing here apart from for the core package).</p>
 <p>If you want to run this in isolation you can create a new directory and run it from there with <code>julia --project=.</code> and then activate the directory <code>using Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate()</code></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Pkg;
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Pkg;
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(name<span style="color:#666">=</span><span style="color:#b44">&#34;FixedEffectModels&#34;</span>, version<span style="color:#666">=</span><span style="color:#b44">&#34;1.4.2&#34;</span>); <span style="color:#080;font-style:italic"># this new version has the fix</span>
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(name<span style="color:#666">=</span><span style="color:#b44">&#34;Vcov&#34;</span>, version<span style="color:#666">=</span><span style="color:#b44">&#34;0.4.2&#34;</span>);              <span style="color:#080;font-style:italic"># this new version has the fix</span>
 </span></span><span style="display:flex;"><span>
@@ -199,7 +199,7 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;RCall&#34;</span>);
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(url<span style="color:#666">=</span><span style="color:#b44">&#34;https://github.com/jmboehm/StataCall.jl#master&#34;</span>);
 </span></span></code></pre></div><p>And then load them for our session</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Printf
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Printf
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Revise, Suppressor
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CategoricalArrays, DataFrames, CSV, Random
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Plots, LaTeXStrings; pgfplotsx(size<span style="color:#666">=</span>(<span style="color:#666">600</span>, <span style="color:#666">400</span>));
@@ -213,7 +213,7 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 <p>The following function generates the dataset.
 We introduce a small \(\epsilon \)  to add noise to the instrument.
 This will be useful later as we show that the problem fails locally but not once we perturb the data.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> gen_df(ϵ; seed<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">Int</span><span style="color:#666">=</span><span style="color:#666">107</span>, N_rows<span style="color:#666">=</span><span style="color:#666">10</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> gen_df(ϵ; seed<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">Int</span><span style="color:#666">=</span><span style="color:#666">107</span>, N_rows<span style="color:#666">=</span><span style="color:#666">10</span>)
 </span></span><span style="display:flex;"><span>  Random<span style="color:#666">.</span>seed!(seed)
 </span></span><span style="display:flex;"><span>  N_id   <span style="color:#666">=</span> <span style="color:#666">2</span>;
 </span></span><span style="display:flex;"><span>  i <span style="color:#666">=</span> <span style="color:#666">1</span>
@@ -247,7 +247,7 @@ This will be useful later as we show that the problem fails locally but not once
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>;
 </span></span></code></pre></div><p>And you can generate and view the data as follows:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> df_example <span style="color:#666">=</span> gen_df(<span style="color:#666">0.01</span>, seed<span style="color:#666">=</span><span style="color:#666">107</span>, N_rows<span style="color:#666">=</span><span style="color:#666">10</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> df_example <span style="color:#666">=</span> gen_df(<span style="color:#666">0.01</span>, seed<span style="color:#666">=</span><span style="color:#666">107</span>, N_rows<span style="color:#666">=</span><span style="color:#666">10</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#666">$</span> show(df_example, display_size<span style="color:#666">=</span>(<span style="color:#666">19</span>, <span style="color:#666">200</span>))
 </span></span><span style="display:flex;"><span><span style="color:#666">20</span><span style="color:#666">×</span><span style="color:#666">11</span> DataFrame
@@ -276,10 +276,10 @@ $$
 Z_{i,k}^{\epsilon} = Z_{i,k} + \epsilon \cdot \text{Uniform}
 $$
 What is interesting is how the Kleibergen-Paap statistics stay close as we perturb the data slightly.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>r1 <span style="color:#666">=</span> reg(df_example, <span style="color:#a2f">@formula</span>(Y <span style="color:#666">~</span> fe(id) <span style="color:#666">+</span> (X1 <span style="color:#666">+</span> X2 <span style="color:#666">~</span> Z1 <span style="color:#666">+</span> Z2) ), Vcov<span style="color:#666">.</span>robust() );
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>r1 <span style="color:#666">=</span> reg(df_example, <span style="color:#a2f">@formula</span>(Y <span style="color:#666">~</span> fe(id) <span style="color:#666">+</span> (X1 <span style="color:#666">+</span> X2 <span style="color:#666">~</span> Z1 <span style="color:#666">+</span> Z2) ), Vcov<span style="color:#666">.</span>robust() );
 </span></span><span style="display:flex;"><span>r2 <span style="color:#666">=</span> reg(df_example, <span style="color:#a2f">@formula</span>(Y <span style="color:#666">~</span> fe(id) <span style="color:#666">+</span> (X1 <span style="color:#666">+</span> X2 <span style="color:#666">~</span> Z1eps <span style="color:#666">+</span> Z2eps) ), Vcov<span style="color:#666">.</span>robust() );
 </span></span></code></pre></div><p>And to view the results</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> regtable(r1,r2; regression_statistics <span style="color:#666">=</span> [<span style="color:#b8860b">:f_kp</span>])
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> regtable(r1,r2; regression_statistics <span style="color:#666">=</span> [<span style="color:#b8860b">:f_kp</span>])
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#666">---------------------------------------------</span>
 </span></span><span style="display:flex;"><span>                                   Y
@@ -296,7 +296,7 @@ What is interesting is how the Kleibergen-Paap statistics stay close as we pertu
 </span></span><span style="display:flex;"><span>First<span style="color:#666">-</span>stage F statistic     <span style="color:#666">12.231</span>     <span style="color:#666">12.432</span>
 </span></span><span style="display:flex;"><span><span style="color:#666">---------------------------------------------</span>
 </span></span></code></pre></div><p>To check the smoothness of the statistic and that the knife-edge case has actually been fixed, we look at how the F-stat varies for different values of the perturbation.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>ϵ_vec <span style="color:#666">=</span> range(<span style="color:#666">-</span><span style="color:#666">0.025</span>, <span style="color:#666">0.025</span>, length<span style="color:#666">=</span><span style="color:#666">25</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>ϵ_vec <span style="color:#666">=</span> range(<span style="color:#666">-</span><span style="color:#666">0.025</span>, <span style="color:#666">0.025</span>, length<span style="color:#666">=</span><span style="color:#666">25</span>)
 </span></span><span style="display:flex;"><span>F_vec <span style="color:#666">=</span> similar(ϵ_vec)
 </span></span><span style="display:flex;"><span>iter_ϵ <span style="color:#666">=</span> <span style="color:#666">1</span>
 </span></span><span style="display:flex;"><span>
@@ -319,16 +319,16 @@ What is interesting is how the Kleibergen-Paap statistics stay close as we pertu
 </h1>
 <p>We use the StataCall package to run commands in stata. To set it up you need to make sure that julia has access to your path, see the repo for more details on how to do it for your system.</p>
 <p>It might be easier to save the file and then load directly in stata.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>df_example <span style="color:#666">=</span> gen_df(<span style="color:#666">0.01</span>, seed<span style="color:#666">=</span><span style="color:#666">107</span>, N_rows<span style="color:#666">=</span><span style="color:#666">10</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>df_example <span style="color:#666">=</span> gen_df(<span style="color:#666">0.01</span>, seed<span style="color:#666">=</span><span style="color:#666">107</span>, N_rows<span style="color:#666">=</span><span style="color:#666">10</span>);
 </span></span><span style="display:flex;"><span>CSV<span style="color:#666">.</span>write(<span style="color:#b44">&#34;./stata_data.csv&#34;</span>, df_example);
 </span></span></code></pre></div><p>If you go the StataCall route, you will simply pass the regression commands as strings:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dfOut <span style="color:#666">=</span> StataCall<span style="color:#666">.</span>stataCall(
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dfOut <span style="color:#666">=</span> StataCall<span style="color:#666">.</span>stataCall(
 </span></span><span style="display:flex;"><span>    [<span style="color:#b44">&#34;ivreg2 Y (X1 X2 = Z1 Z2) id, robust&#34;</span>; <span style="color:#b44">&#34;gen F = e(rkf)&#34;</span>;
 </span></span><span style="display:flex;"><span>     <span style="color:#b44">&#34;ivreg2 Y (X1 X2 = Z1eps Z2eps) id, robust&#34;</span>; <span style="color:#b44">&#34;gen Feps = e(rkf)&#34;</span>;   ],
 </span></span><span style="display:flex;"><span>    df_example, <span style="color:#a2f">true</span>, <span style="color:#a2f">true</span>, <span style="color:#a2f">true</span>); <span style="color:#080;font-style:italic"># replace the last argument by false to see the stata-log</span>
 </span></span><span style="display:flex;"><span><span style="color:#0b0;font-weight:bold">Float64</span>(dfOut<span style="color:#666">.</span>F[<span style="color:#666">1</span>]), <span style="color:#0b0;font-weight:bold">Float64</span>(dfOut<span style="color:#666">.</span>Feps[<span style="color:#666">1</span>]); <span style="color:#080;font-style:italic"># returns the F-stats</span>
 </span></span></code></pre></div><p>We can confirm that the results are not smooth</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> msg <span style="color:#666">=</span>  <span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">F-statistics estimated with ivreg2 and exact instruments: F = &#34;</span> <span style="color:#666">*</span> <span style="color:#a2f">@sprintf</span>(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">%.2f</span><span style="color:#b44">&#34;</span>, dfOut<span style="color:#666">.</span>F[<span style="color:#666">1</span>]) <span style="color:#666">*</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> msg <span style="color:#666">=</span>  <span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">F-statistics estimated with ivreg2 and exact instruments: F = &#34;</span> <span style="color:#666">*</span> <span style="color:#a2f">@sprintf</span>(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">%.2f</span><span style="color:#b44">&#34;</span>, dfOut<span style="color:#666">.</span>F[<span style="color:#666">1</span>]) <span style="color:#666">*</span>
 </span></span><span style="display:flex;"><span>       <span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">F-statistics estimated with ivreg2 and ϵ-perturbed instruments: F = &#34;</span> <span style="color:#666">*</span> <span style="color:#a2f">@sprintf</span>(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">%.2f</span><span style="color:#b44">&#34;</span>, dfOut<span style="color:#666">.</span>Feps[<span style="color:#666">1</span>]);
 </span></span><span style="display:flex;"><span><span style="color:#666">$</span> <span style="color:#a2f">@info</span> msg
 </span></span><span style="display:flex;"><span>┌ Info<span style="color:#666">:</span>
@@ -338,14 +338,14 @@ What is interesting is how the Kleibergen-Paap statistics stay close as we pertu
 We also checked whether the trick of perturbing the instruments might help and confirm the results above found in the julia code: the F-stat is <code>12.43</code> which corresponds to the desired estimate.</p>
 <p>We try using <code>ivreghdfe</code> which suffers from similar issues.
 Note that <code>ivreghdfe</code> at least throws a warning (about collinearity) and does not return a number for the statistic.
-The peturbation still works well.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dfOut <span style="color:#666">=</span> StataCall<span style="color:#666">.</span>stataCall(
+The perturbation still works well.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dfOut <span style="color:#666">=</span> StataCall<span style="color:#666">.</span>stataCall(
 </span></span><span style="display:flex;"><span>    [<span style="color:#b44">&#34;ivreghdfe Y (X1 X2 = Z1 Z2), absorb(id) robust&#34;</span>; <span style="color:#b44">&#34;gen F = e(rkf)&#34;</span>;
 </span></span><span style="display:flex;"><span>     <span style="color:#b44">&#34;ivreghdfe Y (X1 X2 = Z1eps Z2eps), absorb(id) robust&#34;</span>; <span style="color:#b44">&#34;gen Feps = e(rkf)&#34;</span>;   ],
 </span></span><span style="display:flex;"><span>    df_example, <span style="color:#a2f">true</span>, <span style="color:#a2f">true</span>, <span style="color:#a2f">true</span>); <span style="color:#080;font-style:italic"># replace the last argument by false to see the stata-log</span>
 </span></span><span style="display:flex;"><span>Fout <span style="color:#666">=</span> map(x<span style="color:#666">-&gt;</span> ismissing(x) <span style="color:#666">?</span> string(x) <span style="color:#666">:</span> <span style="color:#a2f">@sprintf</span>(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">%.2f</span><span style="color:#b44">&#34;</span>, x), [dfOut<span style="color:#666">.</span>F[<span style="color:#666">1</span>], <span style="color:#0b0;font-weight:bold">Float64</span>(dfOut<span style="color:#666">.</span>Feps[<span style="color:#666">1</span>])] ) <span style="color:#080;font-style:italic"># returns the F-stats</span>
 </span></span></code></pre></div><p>Same as before:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> msg <span style="color:#666">=</span>  <span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">F-statistics estimated with ivreghdfe and exact instruments: F = &#34;</span> <span style="color:#666">*</span> Fout[<span style="color:#666">1</span>] <span style="color:#666">*</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#666">$</span> msg <span style="color:#666">=</span>  <span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">F-statistics estimated with ivreghdfe and exact instruments: F = &#34;</span> <span style="color:#666">*</span> Fout[<span style="color:#666">1</span>] <span style="color:#666">*</span>
 </span></span><span style="display:flex;"><span>       <span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">F-statistics estimated with ivreghdfe and ϵ-perturbed instruments: F = &#34;</span> <span style="color:#666">*</span> Fout[<span style="color:#666">2</span>]
 </span></span><span style="display:flex;"><span><span style="color:#666">$</span> <span style="color:#a2f">@info</span> msg
 </span></span><span style="display:flex;"><span>┌ Info<span style="color:#666">:</span>
@@ -359,7 +359,7 @@ The peturbation still works well.</p>
   <a class="anchor" href="#running-the-regression-r">#</a>
 </h1>
 <p>We use the <code>RCall</code> package to run commands in R within julia just as with StataCall (to run it make sure that your R environment is in the path, and of course install the relevant packages).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load all relevant libraries to R (make sure they are installed in your R)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load all relevant libraries to R (make sure they are installed in your R)</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rput</span> df_example
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@suppress</span> <span style="color:#a2f;font-weight:bold">begin</span>
 </span></span><span style="display:flex;"><span><span style="color:#b44">R</span><span style="color:#b44">&#34;&#34;&#34;
@@ -373,7 +373,7 @@ The peturbation still works well.</p>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span><span style="display:flex;"><span><span style="color:#0b0;font-weight:bold">RObject</span>{<span style="color:#0b0;font-weight:bold">VecSxp</span>}
 </span></span></code></pre></div><p>It is hard to make sense of the results of felm here (note that I included id clustering, otherwise the estimation throws an error probably because of an zero inversion).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># @suppress begin</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># @suppress begin</span>
 </span></span><span style="display:flex;"><span><span style="color:#b44">R</span><span style="color:#b44">&#34;&#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">     est_felm      &lt;- felm(Y ~ X1 + X2 | id | (X1 + X2 ~ Z1 + Z2) | id, dt_reg)
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">     est_felm_eps  &lt;- felm(Y ~ X1 + X2 | id | (X1 + X2 ~ Z1eps + Z2eps) | id, dt_reg)
@@ -384,7 +384,7 @@ The peturbation still works well.</p>
 </span></span><span style="display:flex;"><span>print(res_s)
 </span></span></code></pre></div><p><del>The feols function detects collinearity in X1 and X2 which I do not understand, and stops there.</del>
 Edit: this seems to gives us the correct results here.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@suppress</span> <span style="color:#a2f;font-weight:bold">begin</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@suppress</span> <span style="color:#a2f;font-weight:bold">begin</span>
 </span></span><span style="display:flex;"><span><span style="color:#b44">R</span><span style="color:#b44">&#34;&#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">    est_feols     &lt;- feols(Y ~ 1 | id | X1 + X2 ~ Z1 + Z2, dt_reg)
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">    est_feols_eps &lt;- feols(Y ~ 1 | id | X1 + X2 ~ Z1eps + Z2eps, dt_reg)

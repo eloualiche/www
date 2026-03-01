@@ -21,9 +21,9 @@
 <link rel="manifest" href="/blog/manifest.json">
 <link rel="icon" href="/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.com/blog/posts/2023-07-DataFrames-and-datatable/">
-<link rel="stylesheet" href="/blog/book.min.78ac3dfcbefb2b8da8f0d9a4c47f3dbc62c601bd4f65965eef67ba16007b7357.css" integrity="sha256-eKw9/L77K42o8NmkxH89vGLGAb1PZZZe72e6FgB7c1c=" crossorigin="anonymous">
+<link rel="stylesheet" href="/blog/book.min.a5b759d29c01019ce9d8f9849c2172a6845ea59962ec60771af9db639ccbbfe1.css" integrity="sha256-pbdZ0pwBAZzp2PmEnCFypoRepZli7GB3GvnbY5zLv&#43;E=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.8c9ae29be4f241c4df5517cc7e4f806d8089bc29d461855acbcd67b2b5c65d27.js" integrity="sha256-jJrim&#43;TyQcTfVRfMfk&#43;AbYCJvCnUYYVay81nsrXGXSc=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.1dcc6283e4d8b14d6c56b31d21d265ae8503b10e62ba1f5dc49afcafc1159c9d.js" integrity="sha256-Hcxig&#43;TYsU1sVrMdIdJlroUDsQ5iuh9dxJr8r8EVnJ0=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 <!--
@@ -141,7 +141,7 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#introduction">#</a>
 </h1>
 <p>This is meant as a resource for people trying to move between R and Julia who are using data.table on the one hand and DataFrames.jl on the other.
-I have gathered function I tend to use frequently or that I find frustrating to look for when I need them.
+I have gathered functions I tend to use frequently or that I find frustrating to look for when I need them.
 There are probably glaring omissions.
 Feel free to open an issue 
   <a href="https://gitlab.com/Loualiche/www/issues">here</a>.</p>
@@ -179,7 +179,7 @@ Feel free to open an issue
 <li>Email me at 
   <a href="mailto:eloualic@umn.edu">eloualic@umn.edu</a></li>
 <li>File an issue on 
-  <a href="https://gitlab.com/Loualiche/www/issues">gitlab here</a> if you want to start a dicussion or have ideas of things to add/change</li>
+  <a href="https://gitlab.com/Loualiche/www/issues">gitlab here</a> if you want to start a discussion or have ideas of things to add/change</li>
 <li><em>Last updated on 2024-09-09</em></li>
 </ul>
 <h1 id="installation">
@@ -221,7 +221,7 @@ I recommend that you look at the
   
   
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Pkg
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> Pkg
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;DataFrames&#34;</span>)
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;DataFramesMeta&#34;</span>)
 </span></span><span style="display:flex;"><span>
@@ -234,7 +234,7 @@ I recommend that you look at the
 
   
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;data.table&#34;</span>)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;data.table&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># latest development version that has passed all tests:</span>
 </span></span><span style="display:flex;"><span>data.table<span style="color:#666">::</span><span style="color:#00a000">update_dev_pkg</span>()
 </span></span><span style="display:flex;"><span>
@@ -256,7 +256,7 @@ I use the pipe macro in Julia and the magrittr package in R to compose commands 
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Install the packages</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Install the packages</span>
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;CSV&#34;</span>)
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;ShiftedArrays&#34;</span>) <span style="color:#080;font-style:italic"># lead/lag operators</span>
 </span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;HTTP&#34;</span>) <span style="color:#080;font-style:italic"># download utilities</span>
@@ -270,7 +270,7 @@ I use the pipe macro in Julia and the magrittr package in R to compose commands 
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Install the packages</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Install the packages</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;car&#34;</span>)       <span style="color:#080;font-style:italic"># RDataset</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;magrittr&#34;</span>)  <span style="color:#080;font-style:italic"># pipes</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">install.packages</span>(<span style="color:#b44">&#34;statar&#34;</span>)    <span style="color:#080;font-style:italic"># stata-style data utilities</span>
@@ -292,7 +292,7 @@ I use the pipe macro in Julia and the magrittr package in R to compose commands 
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> HTTP
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CSV
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Dates
@@ -311,7 +311,7 @@ I use the pipe macro in Julia and the magrittr package in R to compose commands 
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load the packages</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(car)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(magrittr)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">library</span>(statar) 
@@ -370,7 +370,7 @@ I have found that csv is both fast and idioproof and lends itself to quick manip
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Flights data</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Flights data</span>
 </span></span><span style="display:flex;"><span>url_flights <span style="color:#666">=</span> <span style="color:#b44">&#34;https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv&#34;</span>
 </span></span><span style="display:flex;"><span>url_get <span style="color:#666">=</span> HTTP<span style="color:#666">.</span>get(url_flights);
 </span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(url_get<span style="color:#666">.</span>body, DataFrame)
@@ -389,7 +389,7 @@ I have found that csv is both fast and idioproof and lends itself to quick manip
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Flights data</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Flights data</span>
 </span></span><span style="display:flex;"><span>url_flights <span style="color:#666">=</span> <span style="color:#b44">&#34;https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> <span style="color:#00a000">fread</span>(url_flights)
@@ -440,12 +440,12 @@ I have found that csv is both fast and idioproof and lends itself to quick manip
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>CSV<span style="color:#666">.</span>write(<span style="color:#b44">&#34;./data.csv&#34;</span>, dat)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>CSV<span style="color:#666">.</span>write(<span style="color:#b44">&#34;./data.csv&#34;</span>, dat)
 </span></span><span style="display:flex;"><span>CSV<span style="color:#666">.</span>write(<span style="color:#b44">&#34;./data.csv.gz&#34;</span>, dat; compress<span style="color:#666">=</span><span style="color:#a2f">true</span>)
 </span></span></code></pre></div><p>If you want to set up a different compression algorithm (faster or more efficient) use 
   <a href="https://github.com/JuliaIO/TranscodingStreams.jl"><code>TranscodingStreams.jl</code></a> with the appropriate codec.
 For example if you want to use zst you would do</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;CodecZstd&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>add(<span style="color:#b44">&#34;CodecZstd&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CodecZstd
 </span></span><span style="display:flex;"><span>open(ZstdCompressorStream, <span style="color:#b44">&#34;./data.csv.zst&#34;</span>, <span style="color:#b44">&#34;w&#34;</span>) <span style="color:#a2f;font-weight:bold">do</span> stream
 </span></span><span style="display:flex;"><span>    CSV<span style="color:#666">.</span>write(stream, dat)
@@ -461,7 +461,7 @@ For example if you want to use zst you would do</p>
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">fwrite</span>(dat, <span style="color:#b44">&#34;./data.csv&#34;</span>)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">fwrite</span>(dat, <span style="color:#b44">&#34;./data.csv&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">fwrite</span>(dat, <span style="color:#b44">&#34;./data.csv.gz&#34;</span>, compress<span style="color:#666">=</span><span style="color:#b44">&#34;gzip&#34;</span>) <span style="color:#080;font-style:italic"># with compression</span>
 </span></span></code></pre></div>
 </div>
@@ -503,7 +503,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
 
 <div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
   <div class="column-content" style="align-self: start;">
-    Similarly <code>data.table</code> provides a write function with optional compression
+    In <code>data.table</code>, use <code>setorder</code> (in-place) or <code>order</code> to sort.
   </div>
 </div>
 
@@ -518,7 +518,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>sort!(dat, <span style="color:#b8860b">:air_time</span>)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>sort!(dat, <span style="color:#b8860b">:air_time</span>)
 </span></span><span style="display:flex;"><span>sort!(dat, [<span style="color:#b8860b">:air_time</span>, <span style="color:#b8860b">:dest</span>])
 </span></span><span style="display:flex;"><span>sort!(dat, <span style="color:#b8860b">:air_time</span>; rev<span style="color:#666">=</span><span style="color:#a2f">true</span>)
 </span></span><span style="display:flex;"><span>sort!(dat, [order(<span style="color:#b8860b">:air_time</span>, rev<span style="color:#666">=</span><span style="color:#a2f">true</span>), <span style="color:#b8860b">:dest</span>])
@@ -531,7 +531,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, air_time) 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, air_time) 
 </span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, air_time, dest) 
 </span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, <span style="color:#666">-</span>air_time)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat, <span style="color:#666">-</span>air_time, dest)
@@ -557,14 +557,14 @@ What are the most delayed flights, what about the most delayed flight on a speci
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>select!(dat, [<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>], Not([<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>]))
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>select!(dat, [<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>], Not([<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>]))
 </span></span></code></pre></div>
 </div>
 
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setcolorder</span>(dat, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>))
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setcolorder</span>(dat, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>))
 </span></span></code></pre></div>
 </div>
 
@@ -589,9 +589,10 @@ What are the most delayed flights, what about the most delayed flight on a speci
 </div>
 
 
-
-<div class="code-column" style="">
-    Similarly <code>data.table</code> provides a write function with optional compression
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    In <code>data.table</code>, use <code>setnames</code> to rename columns in-place.
+  </div>
 </div>
 
 
@@ -605,7 +606,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rename!</span>(dat, <span style="color:#b8860b">:new_arr_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:arr_delay</span>)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rename!</span>(dat, <span style="color:#b8860b">:new_arr_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:arr_delay</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rename!</span>(dat, <span style="color:#b8860b">:new_carrier</span> <span style="color:#666">=</span> <span style="color:#b8860b">:carrier</span>, <span style="color:#b8860b">:new_origin</span>  <span style="color:#666">=</span> <span style="color:#666">$</span><span style="color:#b44">&#34;origin&#34;</span>) 
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rename</span>(dat, <span style="color:#b8860b">:new_arr_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:arr_delay</span>) <span style="color:#080;font-style:italic"># not in place</span>
 </span></span><span style="display:flex;"><span>
@@ -616,7 +617,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat, <span style="color:#b44">&#34;new_arr_delay&#34;</span>, <span style="color:#b44">&#34;arrival_delay&#34;</span>) 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat, <span style="color:#b44">&#34;new_arr_delay&#34;</span>, <span style="color:#b44">&#34;arrival_delay&#34;</span>) 
 </span></span><span style="display:flex;"><span><span style="color:#00a000">setnames</span>(dat, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;carrier&#34;</span>,<span style="color:#b44">&#34;origin&#34;</span>), <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;new_carrier&#34;</span>,<span style="color:#b44">&#34;new_origin&#34;</span>)) 
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -639,7 +640,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>describe(dat)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>describe(dat)
 </span></span><span style="display:flex;"><span>describe(dat, <span style="color:#b8860b">:arr_delay</span>)
 </span></span><span style="display:flex;"><span>describe(dat, <span style="color:#b8860b">:min</span>, <span style="color:#b8860b">:detailed</span>, cols<span style="color:#666">=</span><span style="color:#b8860b">:arr_delay</span>) 
 </span></span></code></pre></div>
@@ -648,7 +649,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat) <span style="color:#080;font-style:italic"># from statar package</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat) <span style="color:#080;font-style:italic"># from statar package</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat, arr_delay)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">sum_up</span>(dat, arr_delay, d <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
 </span></span></code></pre></div>
@@ -669,7 +670,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>summary_var <span style="color:#666">=</span> <span style="color:#b8860b">:carrier</span> <span style="color:#080;font-style:italic"># or [:carrier, :origin]</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>summary_var <span style="color:#666">=</span> <span style="color:#b8860b">:carrier</span> <span style="color:#080;font-style:italic"># or [:carrier, :origin]</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, summary_var) <span style="color:#666">|&gt;</span>
 </span></span><span style="display:flex;"><span>    combine(_, nrow <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:Freq</span>, proprow <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:Percent</span>) <span style="color:#666">|&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform</span>(_, <span style="color:#b8860b">:Cum</span> <span style="color:#666">=</span> cumsum(<span style="color:#b8860b">:Percent</span>))
@@ -679,7 +680,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">tab</span>(dat, carrier) <span style="color:#080;font-style:italic"># from statar package</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">tab</span>(dat, carrier) <span style="color:#080;font-style:italic"># from statar package</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">tab</span>(dat, carrier, origin)
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># data.table version</span>
 </span></span><span style="display:flex;"><span>dat[, .N, by <span style="color:#666">=</span> .(carrier, origin)][,
@@ -734,7 +735,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">200</span>, <span style="color:#666">:</span>]
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">200</span>, <span style="color:#666">:</span>]
 </span></span><span style="display:flex;"><span>subset(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">-&gt;</span> x <span style="color:#666">.&gt;</span> <span style="color:#666">5</span> <span style="color:#666">.&amp;</span> x <span style="color:#666">.&lt;</span> <span style="color:#666">10</span>) <span style="color:#080;font-style:italic"># from dataframes base</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@subset</span>(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">.&gt;</span> <span style="color:#666">5</span> <span style="color:#666">.&amp;</span> <span style="color:#b8860b">:day</span> <span style="color:#666">.&lt;</span> <span style="color:#666">10</span>) <span style="color:#080;font-style:italic"># note the `.` for broadcasting</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:day</span> <span style="color:#666">&gt;</span> <span style="color:#666">5</span> <span style="color:#666">&amp;</span> <span style="color:#b8860b">:day</span> <span style="color:#666">&lt;</span> <span style="color:#666">10</span>)  <span style="color:#080;font-style:italic"># note the `r` for change by row</span>
@@ -750,7 +751,7 @@ What are the most delayed flights, what about the most delayed flight on a speci
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[1<span style="color:#666">:</span><span style="color:#666">200</span>] 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[1<span style="color:#666">:</span><span style="color:#666">200</span>] 
 </span></span><span style="display:flex;"><span>dat[day <span style="color:#666">&gt;</span> <span style="color:#666">5</span> <span style="color:#666">&amp;</span> day <span style="color:#666">&lt;</span> <span style="color:#666">10</span>]        <span style="color:#080;font-style:italic"># filtering only</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -780,7 +781,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>subset(dat_missing, <span style="color:#b8860b">:Population</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">-&gt;</span> x <span style="color:#666">.&lt;</span> <span style="color:#666">1000</span>; skipmissing<span style="color:#666">=</span><span style="color:#a2f">true</span>)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>subset(dat_missing, <span style="color:#b8860b">:Population</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">-&gt;</span> x <span style="color:#666">.&lt;</span> <span style="color:#666">1000</span>; skipmissing<span style="color:#666">=</span><span style="color:#a2f">true</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat_missing, <span style="color:#b8860b">:Population</span> <span style="color:#666">.&lt;</span> <span style="color:#666">1000</span>) <span style="color:#080;font-style:italic"># treats missing values as false by default</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rsubset</span>(dat_missing, isequal(<span style="color:#b8860b">:Population</span>, <span style="color:#a2f">missing</span>) )
 </span></span></code></pre></div>
@@ -789,7 +790,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_missing[ population <span style="color:#666">&lt;</span> <span style="color:#666">1000</span> ]
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_missing[ population <span style="color:#666">&lt;</span> <span style="color:#666">1000</span> ]
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>dat_missing<span style="color:#00a000">[is.na</span>(population)]
 </span></span></code></pre></div>
@@ -814,7 +815,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>unique(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:first</span>)  <span style="color:#080;font-style:italic"># default</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>unique(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:first</span>)  <span style="color:#080;font-style:italic"># default</span>
 </span></span><span style="display:flex;"><span>unique!(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:first</span>) <span style="color:#080;font-style:italic"># in place</span>
 </span></span><span style="display:flex;"><span>unique(dat; keep<span style="color:#666">=</span><span style="color:#b8860b">:noduplicates</span>) <span style="color:#080;font-style:italic"># :last also an option</span>
 </span></span><span style="display:flex;"><span>unique(dat, [<span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>])
@@ -825,7 +826,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">unique</span>(dat) 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">unique</span>(dat) 
 </span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> <span style="color:#00a000">unique</span>(dat) 
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">unique</span>(dat, by <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>))
@@ -847,7 +848,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dropmissing(dat_missing)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dropmissing(dat_missing)
 </span></span><span style="display:flex;"><span>dropmissing!(dat_missing) <span style="color:#080;font-style:italic"># in place</span>
 </span></span><span style="display:flex;"><span>dropmissing(dat_missing, <span style="color:#b8860b">:Population</span>)
 </span></span><span style="display:flex;"><span>dropmissing(dat_missing, [<span style="color:#b8860b">:Population</span>, <span style="color:#b8860b">:Density</span>])
@@ -861,7 +862,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">na.omit</span>(dat_missing) 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">na.omit</span>(dat_missing) 
 </span></span><span style="display:flex;"><span>dat_missing <span style="color:#666">=</span> <span style="color:#00a000">na.omit</span>(dat_missing) 
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>dat_missing[<span style="color:#666">!</span><span style="color:#00a000">is.na</span>(population)]
@@ -884,7 +885,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select columns</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select columns</span>
 </span></span><span style="display:flex;"><span>select(dat, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)
 </span></span><span style="display:flex;"><span>select!(dat, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)   <span style="color:#080;font-style:italic"># in place</span>
 </span></span><span style="display:flex;"><span>select(dat, <span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>) <span style="color:#080;font-style:italic"># also works</span>
@@ -901,7 +902,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select columns</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select columns</span>
 </span></span><span style="display:flex;"><span>dat[, .(month, day, carrier)] 
 </span></span><span style="display:flex;"><span>dat <span style="color:#666">=</span> dat[, .(month, day, carrier)] <span style="color:#080;font-style:italic"># &#34;in place&#34;</span>
 </span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;month&#34;</span>, <span style="color:#b44">&#34;day&#34;</span>, <span style="color:#b44">&#34;carrier&#34;</span>)] <span style="color:#080;font-style:italic"># same but programmatic</span>
@@ -930,7 +931,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@select</span>(<span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:origin</span><span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>), 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@select</span>(<span style="color:#a2f">@rsubset</span>(dat, <span style="color:#b8860b">:origin</span><span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>), 
 </span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> <span style="color:#a2f">@rsubset</span>(_, <span style="color:#b8860b">:origin</span><span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>) <span style="color:#666">|&gt;</span> 
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f">@select</span>(_, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>, <span style="color:#b8860b">:carrier</span>)
@@ -940,7 +941,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[origin<span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>, .(month, day, carrier)]
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[origin<span style="color:#666">==</span><span style="color:#b44">&#34;LGA&#34;</span>, .(month, day, carrier)]
 </span></span></code></pre></div>
 </div>
 
@@ -965,7 +966,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(dat, <span style="color:#b8860b">:tot_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:dep_delay</span> <span style="color:#666">+</span> <span style="color:#b8860b">:arr_delay</span>)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(dat, <span style="color:#b8860b">:tot_delay</span> <span style="color:#666">=</span> <span style="color:#b8860b">:dep_delay</span> <span style="color:#666">+</span> <span style="color:#b8860b">:arr_delay</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:segment</span> <span style="color:#666">=</span> <span style="color:#b8860b">:origin</span> <span style="color:#666">*</span> <span style="color:#b8860b">:dest</span>) <span style="color:#080;font-style:italic"># rowwise operation</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Programmatic version</span>
@@ -991,7 +992,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>dat[, tot_delay <span style="color:#666">:=</span> dep_delay <span style="color:#666">+</span> arr_delay] 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>dat[, tot_delay <span style="color:#666">:=</span> dep_delay <span style="color:#666">+</span> arr_delay] 
 </span></span><span style="display:flex;"><span>dat[, segment <span style="color:#666">:=</span> <span style="color:#00a000">paste0</span>(origin, dest) ]
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Programmatic version</span>
@@ -1025,7 +1026,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, <span style="color:#b8860b">:carrier</span>) <span style="color:#666">|&gt;</span> 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, <span style="color:#b8860b">:carrier</span>) <span style="color:#666">|&gt;</span> 
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform!</span>(_, <span style="color:#b8860b">:avg_arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>)) <span style="color:#080;font-style:italic"># in place</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@pipe</span> dat <span style="color:#666">|&gt;</span> groupby(_, <span style="color:#b8860b">:carrier</span>) <span style="color:#666">|&gt;</span> 
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f">@combine</span>(_, <span style="color:#b8860b">:avg_arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>))
@@ -1035,9 +1036,9 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[, avg_arr_delay <span style="color:#666">:=</span> <span style="color:#00a000">mean</span>(arr_delay), by<span style="color:#666">=</span>carrier] 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[, avg_arr_delay <span style="color:#666">:=</span> <span style="color:#00a000">mean</span>(arr_delay), by<span style="color:#666">=</span>carrier] 
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>dat[, .(avg_arr_delay <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(arr_delay, na.rm<span style="color:#666">=</span>T)), by<span style="color:#666">=</span>carrier]  <span style="color:#080;font-style:italic"># collapse see aggregation section below</span>
+</span></span><span style="display:flex;"><span>dat[, .(avg_arr_delay <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(arr_delay, na.rm<span style="color:#666">=</span><span style="color:#a2f">T</span>)), by<span style="color:#666">=</span>carrier]  <span style="color:#080;font-style:italic"># collapse see aggregation section below</span>
 </span></span></code></pre></div>
 </div>
 
@@ -1084,7 +1085,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> combine(
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> combine(
 </span></span><span style="display:flex;"><span>    groupby(dat, [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:month</span>]), 
 </span></span><span style="display:flex;"><span>    nrow <span style="color:#666">=&gt;</span> <span style="color:#b8860b">:N</span>)
 </span></span><span style="display:flex;"><span>sort!(dat_shift, [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:month</span>])    
@@ -1109,7 +1110,7 @@ Note that to find the missings julia uses the <code>isequal</code> function (bec
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> dat[, .N, by <span style="color:#666">=</span> .(origin, month)]
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> dat[, .N, by <span style="color:#666">=</span> .(origin, month)]
 </span></span><span style="display:flex;"><span><span style="color:#00a000">setorder</span>(dat_shift, origin, month)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -1142,7 +1143,7 @@ The correct date function should check that &ldquo;shifting&rdquo; by three mont
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date</span> <span style="color:#666">=</span> Date(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>) )
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date</span> <span style="color:#666">=</span> Date(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>) )
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Including time</span>
@@ -1157,7 +1158,7 @@ The correct date function should check that &ldquo;shifting&rdquo; by three mont
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Make a date variable using data.table built-in IDate</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Make a date variable using data.table built-in IDate</span>
 </span></span><span style="display:flex;"><span>dat[, date <span style="color:#666">:=</span> <span style="color:#00a000">as.IDate</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#39;-&#39;</span>))] 
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is usually faster to use lubridate parser </span>
 </span></span><span style="display:flex;"><span>dat[, date <span style="color:#666">:=</span> <span style="color:#00a000">parse_date_time2</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#39;-&#39;</span>), <span style="color:#b44">&#34;Y-m-d&#34;</span>)]
@@ -1211,7 +1212,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date</span> <span style="color:#666">=</span> Date(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>) )
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:date</span> <span style="color:#666">=</span> Date(<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>, <span style="color:#b8860b">:day</span>) )
 </span></span><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> <span style="color:#a2f">@combine</span>(groupby(dat, [<span style="color:#b8860b">:origin</span>, <span style="color:#b8860b">:date</span>]), <span style="color:#b8860b">:arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>) )
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># I could not find a built-in function, but julia is amenable to loops</span>
@@ -1236,7 +1237,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> dat[, .(arr_delay <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(arr_delay, na.rm<span style="color:#666">=</span>T)), 
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat_shift <span style="color:#666">=</span> dat[, .(arr_delay <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(arr_delay, na.rm<span style="color:#666">=</span><span style="color:#a2f">T</span>)), 
 </span></span><span style="display:flex;"><span>    by <span style="color:#666">=</span> .(origin, date<span style="color:#666">=</span><span style="color:#00a000">parse_date_time2</span>(<span style="color:#00a000">paste</span>(year, month, day, sep<span style="color:#666">=</span><span style="color:#b44">&#34;-&#34;</span>), <span style="color:#b44">&#34;Y-m-d&#34;</span>))]
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>dat_shift[, l3m_arr_delay <span style="color:#666">:=</span> <span style="color:#00a000">tlag</span>(arr_delay, n<span style="color:#666">=</span><span style="color:#00a000">months</span>(<span style="color:#666">3</span>), time<span style="color:#666">=</span>date), by <span style="color:#666">=</span> .(origin) ]
@@ -1288,14 +1289,14 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Loops</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Loops</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> col <span style="color:#a2f;font-weight:bold">in</span> (<span style="color:#b8860b">:tot_delay</span>, <span style="color:#b8860b">:dep_delay</span>) 
 </span></span><span style="display:flex;"><span>    dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span>, col] <span style="color:#666">=</span> <span style="color:#666">-</span> dat[<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span>, col]
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Control flows </span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:arr_delay_penaly</span> <span style="color:#666">=</span> ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;</span><span style="color:#666">12</span>, <span style="color:#666">1</span>, <span style="color:#666">-</span><span style="color:#666">1</span>) )
-</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:arr_delay_penaly</span> <span style="color:#666">=</span> ifelse( <span style="color:#080;font-style:italic"># no case function in julia</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:arr_delay_penalty</span> <span style="color:#666">=</span> ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;</span><span style="color:#666">12</span>, <span style="color:#666">1</span>, <span style="color:#666">-</span><span style="color:#666">1</span>) )
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@rtransform!</span>(dat, <span style="color:#b8860b">:arr_delay_penalty</span> <span style="color:#666">=</span> ifelse( <span style="color:#080;font-style:italic"># no case function in julia</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;=</span><span style="color:#666">15</span>, <span style="color:#666">3</span>, 
 </span></span><span style="display:flex;"><span>    ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;=</span><span style="color:#666">6</span>, <span style="color:#666">2</span>, 
 </span></span><span style="display:flex;"><span>    ifelse(<span style="color:#b8860b">:arr_delay</span><span style="color:#666">&gt;=</span><span style="color:#666">0</span>, <span style="color:#666">1</span>, <span style="color:#666">0</span>) ) ) )     
@@ -1327,14 +1328,14 @@ What is nice with julia is that you can simply loop over the data and do exactly
  
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Loops</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Loops</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> (j <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#34;tot_delay&#34;</span>, <span style="color:#b44">&#34;dep_delay&#34;</span>)){ <span style="color:#080;font-style:italic"># (faster) loops </span>
 </span></span><span style="display:flex;"><span>    <span style="color:#00a000">set</span>(dat, <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span>, j<span style="color:#666">=</span>j, value<span style="color:#666">=-</span>dat[1<span style="color:#666">:</span><span style="color:#666">10</span>][[j]])
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Control flows</span>
-</span></span><span style="display:flex;"><span>dat[, arr_delay_penaly <span style="color:#666">:=</span> <span style="color:#00a000">fifelse</span>(arr_delay<span style="color:#666">&gt;</span><span style="color:#666">12</span>, <span style="color:#666">1</span>, <span style="color:#666">-1</span>) ]
-</span></span><span style="display:flex;"><span>dat[, arr_delay_penaly <span style="color:#666">:=</span> <span style="color:#00a000">fcase</span>(arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">15</span>, <span style="color:#666">3</span>, 
+</span></span><span style="display:flex;"><span>dat[, arr_delay_penalty <span style="color:#666">:=</span> <span style="color:#00a000">fifelse</span>(arr_delay<span style="color:#666">&gt;</span><span style="color:#666">12</span>, <span style="color:#666">1</span>, <span style="color:#666">-1</span>) ]
+</span></span><span style="display:flex;"><span>dat[, arr_delay_penalty <span style="color:#666">:=</span> <span style="color:#00a000">fcase</span>(arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">15</span>, <span style="color:#666">3</span>, 
 </span></span><span style="display:flex;"><span>                                arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">6</span>,  <span style="color:#666">2</span>,
 </span></span><span style="display:flex;"><span>                                arr_delay<span style="color:#666">&gt;=</span><span style="color:#666">0</span>,  <span style="color:#666">1</span>,
 </span></span><span style="display:flex;"><span>                                default <span style="color:#666">=</span> <span style="color:#666">0</span>) ]
@@ -1382,7 +1383,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Regressions by groups</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Regressions by groups</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># using FixedEffectModels</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> subdf <span style="color:#a2f;font-weight:bold">in</span> groupby(dat, [<span style="color:#b8860b">:year</span>, <span style="color:#b8860b">:month</span>])
 </span></span><span style="display:flex;"><span>    reg_res <span style="color:#666">=</span> reg(subdf, <span style="color:#a2f">@formula</span>(tot_delay <span style="color:#666">~</span> air_time))
@@ -1396,7 +1397,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Regressions by groups</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Regressions by groups</span>
 </span></span><span style="display:flex;"><span>dat_reg <span style="color:#666">=</span> dat[, .(
 </span></span><span style="display:flex;"><span>    {
 </span></span><span style="display:flex;"><span>        y <span style="color:#666">=</span> <span style="color:#00a000">as.matrix</span>(.SD[[<span style="color:#b44">&#34;tot_delay&#34;</span>]]) 
@@ -1429,10 +1430,10 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#b8860b">:mean_dep_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:dep_delay</span>))
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#b8860b">:mean_dep_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:dep_delay</span>))
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#b8860b">:mean_dep_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:dep_delay</span>), <span style="color:#b8860b">:mean_arr_delay</span> <span style="color:#666">=</span> mean(<span style="color:#b8860b">:arr_delay</span>))
-</span></span><span style="display:flex;"><span>combine(dat, [<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] <span style="color:#666">.=&gt;</span> mean <span style="color:#666">.=&gt;</span> [<span style="color:#b8860b">:mean_dep_delay</span>, <span style="color:#b8860b">:mean_arr_elay</span>])
+</span></span><span style="display:flex;"><span>combine(dat, [<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] <span style="color:#666">.=&gt;</span> mean <span style="color:#666">.=&gt;</span> [<span style="color:#b8860b">:mean_dep_delay</span>, <span style="color:#b8860b">:mean_arr_delay</span>])
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#666">$</span>AsTable <span style="color:#666">=</span> mean<span style="color:#666">.</span>([<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>]))
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@combine</span>(dat, <span style="color:#666">$</span>([<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] <span style="color:#666">.=&gt;</span> mean) )
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># More complex but useful for quantiles</span>
@@ -1444,7 +1445,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[, <span style="color:#00a000">mean</span>(dep_delay)] <span style="color:#080;font-style:italic"># returns a scalar</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat[, <span style="color:#00a000">mean</span>(dep_delay)] <span style="color:#080;font-style:italic"># returns a scalar</span>
 </span></span><span style="display:flex;"><span>dat[, .(mean_ddel <span style="color:#666">=</span> <span style="color:#00a000">mean</span>(dep_delay))] <span style="color:#080;font-style:italic"># returns a data.table</span>
 </span></span><span style="display:flex;"><span>dat[, .(mean_ddel<span style="color:#666">=</span><span style="color:#00a000">mean</span>(dep_delay), mean_adel<span style="color:#666">=</span><span style="color:#00a000">mean</span>(arr_delay))]
 </span></span><span style="display:flex;"><span>dat[, <span style="color:#00a000">lapply</span>(.SD, mean), .SDcols<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#39;arr_delay&#39;</span>,<span style="color:#b44">&#39;dep_delay&#39;</span>)] 
@@ -1498,7 +1499,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is easier if we give all the flights a unique identifier </span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is easier if we give all the flights a unique identifier </span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f">@transform!</span>(dat, <span style="color:#b8860b">:uid</span> <span style="color:#666">=</span> <span style="color:#666">1</span><span style="color:#666">:</span>nrow(dat))
 </span></span><span style="display:flex;"><span>stack(dat, [<span style="color:#b8860b">:dep_delay</span>, <span style="color:#b8860b">:arr_delay</span>] )
 </span></span><span style="display:flex;"><span>stack(dat, <span style="color:#b44">r</span><span style="color:#b68">&#34;_delay&#34;</span>)
@@ -1511,7 +1512,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is easier if we give all the flights a unique identifier</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># It is easier if we give all the flights a unique identifier</span>
 </span></span><span style="display:flex;"><span>dat[, uid <span style="color:#666">:=</span> <span style="color:#00a000">seq</span>(<span style="color:#666">1</span>, .N) ]
 </span></span><span style="display:flex;"><span><span style="color:#00a000">melt</span>(dat, measure<span style="color:#666">=</span><span style="color:#00a000">c</span>(<span style="color:#b44">&#34;dep_delay&#34;</span>, <span style="color:#b44">&#34;arr_delay&#34;</span>))
 </span></span><span style="display:flex;"><span><span style="color:#00a000">melt</span>(dat, measure<span style="color:#666">=</span><span style="color:#00a000">patterns</span>(<span style="color:#b44">&#39;_delay&#39;</span>))
@@ -1534,9 +1535,10 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 <div class="grid" style="">
   
-
-<div class="code-column" style="">
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
     Julia uses <code>unstack</code> for going from long to wide.
+  </div>
 </div>
 
 <div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
@@ -1556,7 +1558,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We start with the long data from above</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We start with the long data from above</span>
 </span></span><span style="display:flex;"><span>dat_wide <span style="color:#666">=</span> unstack(dat_long)
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># If you only want to keep the id &amp; *_delay cols</span>
 </span></span><span style="display:flex;"><span>unstack(dat_long, <span style="color:#b8860b">:uid</span>, <span style="color:#b8860b">:variable</span>, <span style="color:#b8860b">:value</span>)
@@ -1566,7 +1568,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We start with the long data from above</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># We start with the long data from above</span>
 </span></span><span style="display:flex;"><span>dat_wide <span style="color:#666">=</span> <span style="color:#00a000">dcast</span>(dat_long, <span style="color:#a2f;font-weight:bold">...</span> <span style="color:#666">~</span> variable)
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># If you only want to keep the id &amp; *_delay cols</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">dcast</span>(dat_long, uid <span style="color:#666">~</span> variable)
@@ -1594,7 +1596,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load second dataset</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load second dataset</span>
 </span></span><span style="display:flex;"><span>dat_airports <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(
 </span></span><span style="display:flex;"><span>    HTTP<span style="color:#666">.</span>get(<span style="color:#b44">&#34;https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv&#34;</span>)<span style="color:#666">.</span>body,
 </span></span><span style="display:flex;"><span>    DataFrame) 
@@ -1633,7 +1635,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load second dataset</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load second dataset</span>
 </span></span><span style="display:flex;"><span>dat_airports <span style="color:#666">=</span> <span style="color:#00a000">fread</span>(
 </span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv&#34;</span>) 
 </span></span><span style="display:flex;"><span>
@@ -1683,7 +1685,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat3 <span style="color:#666">=</span> DataFrame(carrier <span style="color:#666">=</span> [<span style="color:#b44">&#34;AA&#34;</span>, <span style="color:#b44">&#34;UA&#34;</span>],
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>dat3 <span style="color:#666">=</span> DataFrame(carrier <span style="color:#666">=</span> [<span style="color:#b44">&#34;AA&#34;</span>, <span style="color:#b44">&#34;UA&#34;</span>],
 </span></span><span style="display:flex;"><span>    start_month <span style="color:#666">=</span> [<span style="color:#666">1</span>, <span style="color:#666">4</span>], end_month <span style="color:#666">=</span> [<span style="color:#666">3</span>, <span style="color:#666">6</span>]) 
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Conditional join that catches everything between the distinct</span>
@@ -1698,7 +1700,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat3 <span style="color:#666">=</span> <span style="color:#00a000">data.table</span>(carrier     <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#39;AA&#39;</span>, <span style="color:#b44">&#39;UA&#39;</span>),
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span>dat3 <span style="color:#666">=</span> <span style="color:#00a000">data.table</span>(carrier     <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#b44">&#39;AA&#39;</span>, <span style="color:#b44">&#39;UA&#39;</span>),
 </span></span><span style="display:flex;"><span>                  start_month <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#666">1</span>, <span style="color:#666">4</span>),
 </span></span><span style="display:flex;"><span>                  end_month   <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#666">3</span>, <span style="color:#666">6</span>)) 
 </span></span><span style="display:flex;"><span>
@@ -1725,7 +1727,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># using FlexiJoins, Distances</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># using FlexiJoins, Distances</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># A finance example </span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># ...  measurement ...</span>
 </span></span><span style="display:flex;"><span>df1 <span style="color:#666">=</span> DataFrame(
@@ -1766,7 +1768,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># ...  measurement ...</span>
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># ...  measurement ...</span>
 </span></span><span style="display:flex;"><span>dt1 <span style="color:#666">&lt;-</span> <span style="color:#00a000">data.table</span>(
 </span></span><span style="display:flex;"><span>  date <span style="color:#666">=</span> <span style="color:#00a000">as.Date</span>(<span style="color:#00a000">c</span>(<span style="color:#b44">&#34;2024-01-01&#34;</span>, <span style="color:#b44">&#34;2024-01-03&#34;</span>, <span style="color:#b44">&#34;2024-01-05&#34;</span>, <span style="color:#b44">&#34;2024-01-07&#34;</span>, <span style="color:#b44">&#34;2024-01-10&#34;</span>)),
 </span></span><span style="display:flex;"><span>  price <span style="color:#666">=</span> <span style="color:#00a000">c</span>(<span style="color:#666">100</span>, <span style="color:#666">102</span>, <span style="color:#666">104</span>, <span style="color:#666">106</span>, <span style="color:#666">108</span>)
@@ -1799,7 +1801,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
   
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>vcat(dat, dat)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>vcat(dat, dat)
 </span></span><span style="display:flex;"><span>vcat(dat, dat, cols<span style="color:#666">=</span><span style="color:#b8860b">:union</span>)
 </span></span><span style="display:flex;"><span>reduce(vcat, [dat, dat])
 </span></span><span style="display:flex;"><span>reduce(vcat, [dat, dat], cols<span style="color:#666">=</span><span style="color:#b8860b">:union</span>)
@@ -1809,7 +1811,7 @@ What is nice with julia is that you can simply loop over the data and do exactly
 
 
 <div class="code-column" style="">
-    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">rbind</span>(dat, dat)
+    <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-R" data-lang="R"><span style="display:flex;"><span><span style="color:#00a000">rbind</span>(dat, dat)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">rbind</span>(dat, dat, fill <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)
 </span></span><span style="display:flex;"><span><span style="color:#00a000">rbindlist</span>(<span style="color:#00a000">list</span>(dat, dat)) <span style="color:#080;font-style:italic"># useful if working with list (purrr)</span>
 </span></span><span style="display:flex;"><span><span style="color:#00a000">rbindlist</span>(<span style="color:#00a000">list</span>(dat, dat), fill <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">TRUE</span>)

@@ -21,9 +21,9 @@
 <link rel="manifest" href="/blog/manifest.json">
 <link rel="icon" href="/images/favicon.ico" >
 <link rel="canonical" href="https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/">
-<link rel="stylesheet" href="/blog/book.min.78ac3dfcbefb2b8da8f0d9a4c47f3dbc62c601bd4f65965eef67ba16007b7357.css" integrity="sha256-eKw9/L77K42o8NmkxH89vGLGAb1PZZZe72e6FgB7c1c=" crossorigin="anonymous">
+<link rel="stylesheet" href="/blog/book.min.a5b759d29c01019ce9d8f9849c2172a6845ea59962ec60771af9db639ccbbfe1.css" integrity="sha256-pbdZ0pwBAZzp2PmEnCFypoRepZli7GB3GvnbY5zLv&#43;E=" crossorigin="anonymous">
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.8c9ae29be4f241c4df5517cc7e4f806d8089bc29d461855acbcd67b2b5c65d27.js" integrity="sha256-jJrim&#43;TyQcTfVRfMfk&#43;AbYCJvCnUYYVay81nsrXGXSc=" crossorigin="anonymous"></script>
+  <script defer src="/blog/en.search.min.1dcc6283e4d8b14d6c56b31d21d265ae8503b10e62ba1f5dc49afcafc1159c9d.js" integrity="sha256-Hcxig&#43;TYsU1sVrMdIdJlroUDsQ5iuh9dxJr8r8EVnJ0=" crossorigin="anonymous"></script>
 
   <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
 <!--
@@ -168,29 +168,28 @@ Once downloaded, I reuploaded all the data to a s3 bucket where I have easy acce
 <li>The number of processors available: <code>nprocs=128</code></li>
 <li>The memory available <code>mem_alloc=512</code> (for example if you have 512G of ram available)</li>
 <li>A directory with lots of space (~1Tb) where you can expand and work with the data: <code>TAQ_HOME=&quot;/big_space_disk/&quot;</code></li>
-<li></li>
 </ol>
 <h2 id="download-and-expand-the-data">
   Download and expand the data 
   <a class="anchor" href="#download-and-expand-the-data">#</a>
 </h2>
 <p>First I download the data from the s3 bucket using <code>s5cmd</code> as:<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">input_file</span><span style="color:#666">=</span><span style="color:#b44">&#34;TAQ_name_</span><span style="color:#b8860b">$DATEY</span><span style="color:#b44">&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">input_file</span><span style="color:#666">=</span><span style="color:#b44">&#34;TAQ_name_</span><span style="color:#b8860b">$DATEY</span><span style="color:#b44">&#34;</span>
 </span></span><span style="display:flex;"><span>s5cmd cp s3://my-bucket/TAQ/<span style="color:#b8860b">$input_file</span>.csv.gz <span style="color:#b8860b">$TAQ_HOME</span>/
 </span></span></code></pre></div><p>Then I expand the data; I take advantage of multicore expansion using <code>pigz</code>.</p>
-<p>First I peak at the data to check that the data has the correct columns and that the year is correct:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz | head -n <span style="color:#666">5</span>
+<p>First I peek at the data to check that the data has the correct columns and that the year is correct:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz | head -n <span style="color:#666">5</span>
 </span></span><span style="display:flex;"><span>SYMBOL,DATE,TIME,PRICE,SIZE,G127,CORR,COND,EX
 </span></span><span style="display:flex;"><span>A,2006-01-03,8:00:07,33.29,30000,0,0,U,T
 </span></span><span style="display:flex;"><span>A,2006-01-03,8:08:01,33.29,8300,0,0,T,T
 </span></span><span style="display:flex;"><span>A,2006-01-03,8:17:28,33.29,8600,0,0,T,T
 </span></span><span style="display:flex;"><span>A,2006-01-03,9:30:22,33.4,96200,40,0,,N
 </span></span></code></pre></div><p>Once I have confirmed that I am looking at the right thing I expand the whole file:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv.gz
-</span></span></code></pre></div><p>For efficiency (untested), I have actually use the binaries from <code>xsv</code><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> to select only the columns from the file that I needed.
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv
+</span></span></code></pre></div><p>For efficiency (untested), I have actually used the binaries from <code>xsv</code><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> to select only the columns from the file that I needed.
 Simply replace the previous command with:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz | <span style="color:#b62;font-weight:bold">\
-</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    xsv <span style="color:#a2f;font-weight:bold">select</span> <span style="color:#b44">&#34;SYMBOL,DATE,TIME,PRICE,SIZE&#34;</span> &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pigz -cd <span style="color:#b8860b">$TAQ_HOME</span>/<span style="color:#b8860b">$input_file</span>.csv.gz | <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span>    xsv <span style="color:#a2f;font-weight:bold">select</span> <span style="color:#b44">&#34;SYMBOL,DATE,TIME,PRICE,SIZE&#34;</span> &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv 
 </span></span></code></pre></div><p>Note that this is fairly slow and can take upwards of 20 minutes even reading the file from the ram disk.</p>
 <h2 id="sort-the-data">
   Sort the data 
@@ -204,9 +203,9 @@ It is a lot easier to do once the data is ordered by symbol!</p>
 The one thing to watch for is memory usage (this will eat pretty much of all your memory and get your job killed if you don&rsquo;t watch it).
 So we define an upper bound for memory usage.
 Given the memory allocation defined above, we restrict <code>sort</code> to only use 80% of it:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">mem_for_sort</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span><span style="color:#a2f">echo</span> <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">mem_alloc</span>%G<span style="color:#b68;font-weight:bold">}</span><span style="color:#b44"> * 0.8 / 1&#34;</span> | bc<span style="color:#a2f;font-weight:bold">)</span> <span style="color:#080;font-style:italic"># bc is the bash calculator</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/usr/bin/time tail -n +2 <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv | <span style="color:#b62;font-weight:bold">\
-</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    sort -t, -k1,1 --buffer-size<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">mem_for_sort</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">G&#34;</span> --parallel<span style="color:#666">=</span><span style="color:#b8860b">$nprocs</span> --temporary-directory<span style="color:#666">=</span><span style="color:#b8860b">$TAQ_HOME</span>  &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_sorted.csv
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">mem_for_sort</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span><span style="color:#a2f">echo</span> <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">mem_alloc</span>%G<span style="color:#b68;font-weight:bold">}</span><span style="color:#b44"> * 0.8 / 1&#34;</span> | bc<span style="color:#a2f;font-weight:bold">)</span> <span style="color:#080;font-style:italic"># bc is the bash calculator</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/usr/bin/time tail -n +2 <span style="color:#b8860b">$TAQ_HOME</span>/taq_select.csv | <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span>    sort -t, -k1,1 --buffer-size<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">mem_for_sort</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">G&#34;</span> --parallel<span style="color:#666">=</span><span style="color:#b8860b">$nprocs</span> --temporary-directory<span style="color:#666">=</span><span style="color:#b8860b">$TAQ_HOME</span>  &gt; <span style="color:#b8860b">$TAQ_HOME</span>/taq_sorted.csv
 </span></span></code></pre></div><p>This can take a while. I have waited close to one hour for the largest files (128 cores, 490Gb of memory allocated).</p>
 <p>Note: you can clean up the non sorted file to save a little bit of space at this stage <code>rm $TAQ_HOME/taq_select.csv</code></p>
 <h2 id="split-the-data">
@@ -216,11 +215,11 @@ Given the memory allocation defined above, we restrict <code>sort</code> to only
 <p>Last of the preprocessing, we split the data in chunks: one chunk for each symbol/stock.
 Given the sorted nature of the data, this is a straightforward (I only spent a day figuring it out using chatGPT) application of <code>awk</code></p>
 <p>First we make some room for the chunks by giving them their own directory</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">TAQ_CHUNKS</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$TAQ_HOME</span><span style="color:#b44">/chunks/&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b8860b">TAQ_CHUNKS</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$TAQ_HOME</span><span style="color:#b44">/chunks/&#34;</span>
 </span></span><span style="display:flex;"><span>mkdir -p <span style="color:#b8860b">$TAQ_CHUNKS</span>
 </span></span></code></pre></div><p>Then we process the whole thing using awk</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#b8860b">$TAQ_HOME</span>/taq_sorted.csv | <span style="color:#b62;font-weight:bold">\
-</span></span></span><span style="display:flex;"><span><span style="color:#b62;font-weight:bold"></span>    awk -v <span style="color:#b8860b">chunkDir</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$TAQ_CHUNKS</span><span style="color:#b44">&#34;</span> -F, <span style="color:#b44">&#39;
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#b8860b">$TAQ_HOME</span>/taq_sorted.csv | <span style="color:#b62;font-weight:bold">\
+</span></span></span><span style="display:flex;"><span>    awk -v <span style="color:#b8860b">chunkDir</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$TAQ_CHUNKS</span><span style="color:#b44">&#34;</span> -F, <span style="color:#b44">&#39;
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">    {
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">        if (last != $1) {
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">            if (last != &#34;&#34;) close(chunkDir &#34;/chunk_&#34; last &#34;.csv&#34;);
@@ -237,31 +236,31 @@ The created files are named based on the first column.</p>
 </h1>
 <p>We have close to 10,000 files in <code>$TAQ_CHUNKS</code> ready to be read one by one and processed.
 For this we are going to do some standard data processing in julia &mdash; I compute OIB here, but this would for everything else that is at the stock-level.</p>
-<p>If you have access to multiple cores, it makes sense to process this in paralle.
+<p>If you have access to multiple cores, it makes sense to process this in parallel.
 It is fairly easy to implement; you still need to be careful not to trigger segfaults though.</p>
 <h2 id="preamble">
   Preamble 
   <a class="anchor" href="#preamble">#</a>
 </h2>
 <p>My preamble is pretty standard and only use basic julia <code>DataFrame</code> stuff.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CSV
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> CSV
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> DataFrames, DataFramesMeta
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Dates, PeriodicalDates
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> <span style="color:#0b0;font-weight:bold">Pipe</span><span style="color:#666">:</span> <span style="color:#a2f">@pipe</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> ShiftedArrays<span style="color:#666">:</span> lag
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Statistics
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> StatsBase<span style="color:#666">:</span> std
-</span></span><span style="display:flex;"><span><span style="color:#a2f">@info</span> Threads<span style="color:#666">.</span>nthreads() <span style="color:#080;font-style:italic"># usefule for parallelism later on</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">@info</span> Threads<span style="color:#666">.</span>nthreads() <span style="color:#080;font-style:italic"># useful for parallelism later on</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># To ingest the command line parameter I pass to the script</span>
 </span></span><span style="display:flex;"><span>datey <span style="color:#666">=</span> <span style="color:#a2f">ARGS</span>[<span style="color:#666">1</span>]
 </span></span><span style="display:flex;"><span>TAQ_CHUNKS <span style="color:#666">=</span> <span style="color:#a2f">ARGS</span>[<span style="color:#666">2</span>] <span style="color:#080;font-style:italic"># TAQ_CHUNKS=&#34;/scratch.global/eloualic/taq/chunks&#34;</span>
 </span></span></code></pre></div><p>We are going to process each symbol one by one and store the statistics in a table.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>file_list<span style="color:#666">=</span>readdir(TAQ_CHUNKS);
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>file_list<span style="color:#666">=</span>readdir(TAQ_CHUNKS);
 </span></span><span style="display:flex;"><span>n_files <span style="color:#666">=</span> length(file_list)
 </span></span><span style="display:flex;"><span>df_oib_vol_array <span style="color:#666">=</span> <span style="color:#0b0;font-weight:bold">Vector</span>{<span style="color:#0b0;font-weight:bold">Union</span>{<span style="color:#0b0;font-weight:bold">DataFrame</span>, <span style="color:#0b0;font-weight:bold">Nothing</span>}}(<span style="color:#a2f">nothing</span>, n_files);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Threads<span style="color:#666">.</span><span style="color:#a2f">@threads</span> <span style="color:#a2f;font-weight:bold">for</span> i_f <span style="color:#666">=</span> <span style="color:#666">1</span><span style="color:#666">:</span>n_files
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span>Threads<span style="color:#666">.</span><span style="color:#a2f">@threads</span> <span style="color:#a2f;font-weight:bold">for</span> i_f <span style="color:#666">=</span> <span style="color:#666">1</span><span style="color:#666">:</span>n_files
 </span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># read the file for one stock</span>
-</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> ingest_file(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">$TAQ_CHUNKS</span><span style="color:#b44">/</span><span style="color:#b68;font-weight:bold">$file_in</span><span style="color:#b44">&#34;</span>; verbose<span style="color:#666">=</span>verbose)
+</span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> read_file(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">$TAQ_CHUNKS</span><span style="color:#b44">/</span><span style="color:#b68;font-weight:bold">$file_in</span><span style="color:#b44">&#34;</span>; verbose<span style="color:#666">=</span>verbose)
 </span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># create the trade sign flag</span>
 </span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> create_trade_sign!(df_taq_symbol)
 </span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># create the order imbalance statistic</span>
@@ -271,14 +270,14 @@ It is fairly easy to implement; you still need to be careful not to trigger segf
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>The most important step is how we read the file.
 Since this is happening inside a parallel loop, we need to make sure <code>CSV.read</code> only happens on a single thread.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> read_file(file_in<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">AbstractString</span>; verbose<span style="color:#666">=</span><span style="color:#a2f">false</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> read_file(file_in<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">AbstractString</span>; verbose<span style="color:#666">=</span><span style="color:#a2f">false</span>)
 </span></span><span style="display:flex;"><span>    df_taq_symbol <span style="color:#666">=</span> CSV<span style="color:#666">.</span>read(file_in, DataFrame, header<span style="color:#666">=</span><span style="color:#a2f">false</span>, ntasks<span style="color:#666">=</span><span style="color:#666">1</span>);
 </span></span><span style="display:flex;"><span>    rename!(df_taq_symbol, [<span style="color:#b8860b">:symbol</span>, <span style="color:#b8860b">:date</span>, <span style="color:#b8860b">:time</span>, <span style="color:#b8860b">:price</span>, <span style="color:#b8860b">:size</span>]);
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>Next we follow Chordia et al. to estimate whether the trade is a buy or a sell order.
 Basically we compare the current price to previous prices (up to a lag of 5).
 This is the step that is the slowest when working with the whole dataset at a time.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_trade_sign!(df_taq_symbol<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">DataFrame</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_trade_sign!(df_taq_symbol<span style="color:#666">::</span><span style="color:#0b0;font-weight:bold">DataFrame</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f">@transform!</span>(groupby(df_taq_symbol, <span style="color:#b8860b">:symbol</span>),
 </span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:l1_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>), <span style="color:#b8860b">:l2_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">2</span>), 
 </span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:l3_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">3</span>), <span style="color:#b8860b">:l4_price</span><span style="color:#666">=</span>lag(<span style="color:#b8860b">:price</span>, <span style="color:#666">4</span>), 
@@ -298,7 +297,7 @@ This is the step that is the slowest when working with the whole dataset at a ti
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> df_taq_symbol
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>The other two functions are fairly straightforward and not particularly interesting</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_oib(df) <span style="color:#080;font-style:italic">#; to::TimerOutput=to)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_oib(df) <span style="color:#080;font-style:italic">#; to::TimerOutput=to)</span>
 </span></span><span style="display:flex;"><span>    symbol_var<span style="color:#666">=</span>df[<span style="color:#666">1</span>,<span style="color:#b8860b">:symbol</span>]
 </span></span><span style="display:flex;"><span>    dropmissing!(df, <span style="color:#b8860b">:trd_sgn</span>)
 </span></span><span style="display:flex;"><span>    nrow(df)<span style="color:#666">==</span><span style="color:#666">0</span> <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f;font-weight:bold">return</span> DataFrame(symbol<span style="color:#666">=</span>symbol_var, date<span style="color:#666">=</span><span style="color:#a2f">missing</span>)  <span style="color:#080;font-style:italic"># some do not have valid signed trades</span>
@@ -312,7 +311,7 @@ This is the step that is the slowest when working with the whole dataset at a ti
 </span></span><span style="display:flex;"><span>        <span style="color:#b8860b">:symbol</span><span style="color:#666">=</span>symbol_var)
 </span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> df_oib
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_oib_vol(df) <span style="color:#080;font-style:italic">#; to::TimerOutput=to)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">function</span> create_oib_vol(df) <span style="color:#080;font-style:italic">#; to::TimerOutput=to)</span>
 </span></span><span style="display:flex;"><span>    symbol_var<span style="color:#666">=</span>df[<span style="color:#666">1</span>,<span style="color:#b8860b">:symbol</span>]
 </span></span><span style="display:flex;"><span>    dropmissing!(df, <span style="color:#b8860b">:date</span>)
 </span></span><span style="display:flex;"><span>    nrow(df)<span style="color:#666">==</span><span style="color:#666">0</span> <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f;font-weight:bold">return</span> DataFrame(symbol<span style="color:#666">=</span>symbol_var, 
@@ -325,7 +324,7 @@ This is the step that is the slowest when working with the whole dataset at a ti
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">end</span>
 </span></span></code></pre></div><p>I don&rsquo;t run the code interactively (see the arguments passed above).
 The command I pass reads:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -t <span style="color:#b8860b">$nprocs</span> import_taq_chunks.jl <span style="color:#b8860b">$DATEY</span> <span style="color:#b8860b">$TAQ_CHUNKS</span> &amp;&gt; import_taq_chunks.log.jl
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -t <span style="color:#b8860b">$nprocs</span> import_taq_chunks.jl <span style="color:#b8860b">$DATEY</span> <span style="color:#b8860b">$TAQ_CHUNKS</span> &amp;&gt; import_taq_chunks.log.jl
 </span></span></code></pre></div><h1 id="slurm-specifics">
   SLURM Specifics 
   <a class="anchor" href="#slurm-specifics">#</a>
