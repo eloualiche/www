@@ -1,129 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Some pictures in TikZ for my JF paper on Asset Pricing with Entry and Imperfect Competition: (i) a stylized Hopenhayn model; (ii) a Hotelling-Salop circle; (iii) some demand elasticity curves.">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.com/blog/posts/2020-01-Tikz-Entry-Competition/">
-  <meta property="og:site_name" content="loualiche misc.">
-  <meta property="og:title" content="TikZ-Options">
-  <meta property="og:description" content="Some pictures in TikZ for my JF paper on Asset Pricing with Entry and Imperfect Competition: (i) a stylized Hopenhayn model; (ii) a Hotelling-Salop circle; (iii) some demand elasticity curves.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2021-07-29T00:00:00+00:00">
-    <meta property="article:modified_time" content="2021-07-29T00:00:00+00:00">
-    <meta property="article:tag" content="TeX">
-<title>Using TikZ and PGFPlots for Asset Pricing with Entry | loualiche misc.</title>
-<link rel="manifest" href="/blog/manifest.json">
-<link rel="icon" href="/images/favicon.ico" >
-<link rel="canonical" href="https://loualiche.com/blog/posts/2020-01-Tikz-Entry-Competition/">
-<link rel="stylesheet" href="/blog/book.min.a5b759d29c01019ce9d8f9849c2172a6845ea59962ec60771af9db639ccbbfe1.css" integrity="sha256-pbdZ0pwBAZzp2PmEnCFypoRepZli7GB3GvnbY5zLv&#43;E=" crossorigin="anonymous">
-  <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.1dcc6283e4d8b14d6c56b31d21d265ae8503b10e62ba1f5dc49afcafc1159c9d.js" integrity="sha256-Hcxig&#43;TYsU1sVrMdIdJlroUDsQ5iuh9dxJr8r8EVnJ0=" crossorigin="anonymous"></script>
-
-  <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
-<!--
-Made with Book Theme
-https://github.com/alex-shpak/hugo-book
--->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Some pictures in TikZ for my JF paper on Asset Pricing with Entry and Imperfect Competition: (i) a stylized Hopenhayn model; (ii) a Hotelling-Salop circle; (iii) some demand elasticity curves.">
   <meta name="robots" content="index,follow">
+  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity">
 
-  
-  <meta name="google-site-verification" content="GTM-MB6RT5V">
-  <meta name="google-site-verification" content="Qh9qc4AsLoAOkKpw8lYQZDdlptkeG5WDXHPxaX_aTlI" />
+  <title>TikZ-Options | loualiche misc.</title>
 
-  <meta name="subject" content="Non Academic Webpage of Erik Loualiche, University of Minnesota">
-  <meta name="description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff" />
-  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity" />
-
+  <link rel="icon" href="/blog/images/favicon.ico">
+  <link rel="canonical" href="https://loualiche.com/blog/posts/2020-01-Tikz-Entry-Competition/">
+  <link rel="stylesheet" href="/blog/css/style.css">
 
   
   <meta property="og:title" content="Erik Loualiche | Non Academic Webpage">
   <meta property="og:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
   <meta property="og:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
-  <meta property="og:image:alt" content="Erik Loualiche, University of Minnesota">
   <meta property="og:locale" content="en_GB">
   <meta property="og:type" content="blog">
-  
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@erikloulou">
-  <meta name="twitter:url" content="https://loualiche.com/index.html">
   <meta name="twitter:title" content="Erik Loualiche | Academic Webpage">
   <meta name="twitter:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
   <meta name="twitter:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
-  <meta name="twitter:image:alt" content="Erik Loualiche, University of Minnesota">
-  <meta name="twitter:dnt" content="on">
-
-
-<script>
-  (function() {
-    var script = document.createElement('script');
-    window.counter = 'https://loulou.goatcounter.com/count'
-    script.async = 1;
-    script.src = '//gc.zgo.at/count.js';
-    var ins = document.getElementsByTagName('script')[0];
-    ins.parentNode.insertBefore(script, ins)
-  })();
-</script>
 
   
+  
+  
+  
+  <script defer src="/blog/flexsearch.min.js"></script>
+  <script defer src="/blog/en.search.min.600612f8b2ecbde304d84efa7802c85a5462cc98d5dc1c4c062881b58ba647a7.js"></script>
+  
 
-    
-    
-
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  
+  <script>
+    (function() {
+      var script = document.createElement('script');
+      window.counter = 'https://loulou.goatcounter.com/count'
+      script.async = 1;
+      script.src = '//gc.zgo.at/count.js';
+      var ins = document.getElementsByTagName('script')[0];
+      ins.parentNode.insertBefore(script, ins)
+    })();
   </script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
-</script>
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-<script>
-  MathJax = {
-    tex: {
-      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
-      inlineMath: [['\\(', '\\)']],                  
-      tags: 'ams'
-    }
-  };
-</script>
-
-    
-
-
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        inlineMath: [['\\(', '\\)']],
+        tags: 'ams'
+      }
+    };
+  </script>
+  
 </head>
-<body dir="ltr">
+<body>
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
+
   <main class="container flex">
     
     <div class="book-page">
       <header class="book-header">
+        <div class="flex align-center justify-between">
+          <label for="menu-control">
+            <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+          </label>
+          <strong>TikZ-Options</strong>
+          <label for="toc-control">
+            
+            <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+            
+          </label>
+        </div>
         
-  <div class="flex align-center justify-between">
-  <label for="menu-control">
-    <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
-  </label>
-
-  <strong>Using TikZ and PGFPlots for Asset Pricing with Entry</strong>
-
-  <label for="toc-control">
-    
-    <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
-    
-  </label>
-</div>
-
-
-  
-  <aside class="hidden clearfix">
-    
-  
-<nav id="TableOfContents">
+        <aside class="hidden clearfix">
+          
+  <nav id="TableOfContents">
   <ul>
     <li><a href="#summary-of-the-economy">Summary of the economy</a></li>
     <li><a href="#industry-competition">Industry Competition</a></li>
@@ -131,31 +88,22 @@ https://github.com/alex-shpak/hugo-book
   </ul>
 </nav>
 
-
-
-  </aside>
-  
- 
+        </aside>
+        
       </header>
 
       
-      
 <article class="markdown book-post">
   <h1>
-    <a href="/blog/posts/2020-01-Tikz-Entry-Competition/">Using TikZ and PGFPlots for Asset Pricing with Entry</a>
+    <a href="/blog/posts/2020-01-Tikz-Entry-Competition/">TikZ-Options</a>
   </h1>
   
   <h5>July 29, 2021</h5>
-
-
-
-
-<p>TikZ and PGFPlots in <em>&ldquo;Asset Pricing with Entry and Imperfect Competition&rdquo;</em></p>
-<p>To use the code just insert it into any LaTeX code with the appropriate tikz libraries; see 
-  <a href="/blog/posts/2020-05-Tikz-MWE/">here</a> for examples.</p>
+  <p>TikZ and PGFPlots in <em>&ldquo;Asset Pricing with Entry and Imperfect Competition&rdquo;</em></p>
+<p>To use the code just insert it into any LaTeX code with the appropriate tikz libraries; see <a href="/posts/2020-05-Tikz-MWE/">here</a>
+ for examples.</p>
 <h1 id="summary-of-the-economy">
-  Summary of the economy 
-  <a class="anchor" href="#summary-of-the-economy">#</a>
+  <a href="#summary-of-the-economy">Summary of the economy</a>
 </h1>
 <p>From blueprints, to production across two industries and aggregation of varieties into a final consumption bundle:</p>
 <figure>
@@ -244,8 +192,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
 </span></span></code></pre></div><h1 id="industry-competition">
-  Industry Competition 
-  <a class="anchor" href="#industry-competition">#</a>
+  <a href="#industry-competition">Industry Competition</a>
 </h1>
 <p>Hotelling-Salop model of competition:</p>
 <figure>
@@ -273,8 +220,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
 </span></span></code></pre></div><!-- ----------------------------------------------------------------------------------------------------------------------- -->
 <h1 id="entry-elasticity">
-  Entry Elasticity 
-  <a class="anchor" href="#entry-elasticity">#</a>
+  <a href="#entry-elasticity">Entry Elasticity</a>
 </h1>
 <figure>
   <img src="../../images/tikz_img/entry_elasticity.svg" alt="Elasticity of Entry" />
@@ -351,153 +297,58 @@ https://github.com/alex-shpak/hugo-book
 </span></span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span> (0,0) -- (6.2,0) node[right] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span><span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#a2f">M_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}}</span>;   <span style="color:#080;font-style:italic">% axes
 </span></span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">\draw</span><span style="color:#b44">[-&gt;]</span> (0,0) -- (0,6.2) node[above] <span style="color:#a2f">{</span><span style="color:#a2f;font-weight:bold">\Large</span><span style="color:#a2f">{</span> <span style="color:#b44">$</span><span style="color:#a2f">v_h</span><span style="color:#b44">$</span> <span style="color:#a2f">}}</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#a2f;font-weight:bold">\end</span><span style="color:#a2f">{</span>tikzpicture<span style="color:#a2f">}</span>
-</span></span></code></pre></div><br>
+</span></span></code></pre></div></article>
 
-</br>
-
-</article>
-
- 
-      
 
       <footer class="book-footer">
         
-  <div class="flex flex-wrap justify-between">
-
-
-
-
-
-</div>
-
-
-
-  
-  <div>
-    
-      <a href="/blog/tags/TeX/">TeX</a>
-  </div>
-  
-
-
-
-
-
-  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
-
-
- 
+          
+          <div>
+            
+              <a href="/blog/tags/TeX/">TeX</a>
+          </div>
+          
         
       </footer>
-
-      
-  
- 
 
       <label for="menu-control" class="hidden book-menu-overlay"></label>
     </div>
 
-
     
-
     <aside class="book-menu">
       <div class="book-menu-content">
-        
-  <nav>
-    <h-title-site class="book-brand">
-    <a
-        class="flex align-center"
-        href="/blog/"
-    ><span>loualiche misc.</span>
-        
-    </a>
-</h-title-site>
+        <nav>
+          <h-title-site class="book-brand">
+            <a class="flex align-center" href="/blog/">
+              <span>loualiche misc.</span>
+            </a>
+          </h-title-site>
 
-    
-<div class="book-search">
-  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
-  <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
-</div>
+          
+          <div class="book-search">
+            <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+            <div class="book-search-spinner hidden"></div>
+            <ul id="book-search-results"></ul>
+          </div>
+          
 
-
-    
-    
-    
-
-  
-<ul>
-  
-  <li>
-    <a href="https://loualiche.com/"  target="_blank" rel="noopener">
-        My Website
-      </a>
-  </li>
-  
-  <li>
-    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
-        My Github
-      </a>
-  </li>
-  
-</ul>
-
-
-
-
-
-    
-        
-
-
-
-
-
-
-
-
-    
-    
-
-  
-<ul>
-  
-  <li>
-    <a href="/blog/"  >
-        
-      </a>
-  </li>
-  
-  <li>
-    <a href="/blog/posts/"  >
-        
-      </a>
-  </li>
-  
-</ul>
-
-
-
-
-
-    
-</nav>
-
-
-
-
-<script>
-    (function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()
-</script>
-
-
- 
+          <ul>
+            
+            <li>
+              <a href="https://loualiche.com/" target="_blank" rel="noopener">My Website</a>
+            </li>
+            
+            <li>
+              <a href="https://github.com/eloualiche/" target="_blank" rel="noopener">My Github</a>
+            </li>
+            
+          </ul>
+        </nav>
       </div>
 
       <div class="book-toc-content">
         
-  
-<nav id="TableOfContents">
+  <nav id="TableOfContents">
   <ul>
     <li><a href="#summary-of-the-economy">Summary of the economy</a></li>
     <li><a href="#industry-competition">Industry Competition</a></li>
@@ -505,27 +356,39 @@ https://github.com/alex-shpak/hugo-book
   </ul>
 </nav>
 
-
- 
       </div>
     </aside>
-    
-
 
   </main>
 
   
+  <script>
+  (function () {
+    document.querySelectorAll("pre code").forEach(code => {
+      code.addEventListener("click", function (event) {
+        if (window.getSelection().toString()) { return; }
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(code.parentElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code.parentElement.textContent);
+        }
+      });
+    });
+  })();
+  </script>
+
+  
+  <script>
+  (function() {
+    var menu = document.querySelector("aside .book-menu-content");
+    addEventListener("beforeunload", function(event) {
+      localStorage.setItem("menu.scrollTop", menu.scrollTop);
+    });
+    menu.scrollTop = localStorage.getItem("menu.scrollTop");
+  })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

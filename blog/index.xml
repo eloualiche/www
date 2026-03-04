@@ -6,8 +6,22 @@
     <description>Recent content in Blog on loualiche misc.</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 22 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 04 Mar 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vibecoding Personal Utilities</title>
+      <link>https://loualiche.com/blog/posts/2025-03-Vibecoding-Utilities/</link>
+      <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2025-03-Vibecoding-Utilities/</guid>
+      <description>A snapshot of 3 vibecoded apps in early 2026</description>
+    </item>
+    <item>
+      <title>Vibecoding Single-Use Utilities</title>
+      <link>https://loualiche.com/blog/posts/2025-03-Ninety-Percent/</link>
+      <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2025-03-Ninety-Percent/</guid>
+      <description>Snapshot of 3 vibecoded apps in early 2026</description>
+    </item>
     <item>
       <title>ollama msi hpc</title>
       <link>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</link>
@@ -76,7 +90,7 @@
       <link>https://loualiche.com/blog/posts/2020-05-Tikz-MWE/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2020-05-Tikz-MWE/</guid>
-      <description>A minimal working example to integrate the TikZ and PGFPlots pictures I collected &#xA;  &lt;a href=&#34;https://loualiche.com/blog/tags/TeX/&#34;&gt;here&lt;/a&gt;.</description>
+      <description>A minimal working example to integrate the TikZ and PGFPlots pictures I collected &lt;a href=&#34;https://loualiche.com/blog/tags/TeX/&#34;&gt;here&lt;/a&gt;&#xA;.</description>
     </item>
     <item>
       <title>TikZ-Discussions</title>

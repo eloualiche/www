@@ -1,0 +1,659 @@
+/* === Variables === */
+:root {
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-500: #adb5bd;
+  --color-link: #bc1b32;
+  --color-visited-link: #bc1b32;
+  --body-background: white;
+  --body-font-color: black;
+  --icon-filter: none;
+}
+
+/* === Reset & Base === */
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+  touch-action: manipulation;
+}
+
+body {
+  min-width: 30rem;
+  color: var(--body-font-color);
+  background: var(--body-background);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: normal;
+}
+
+img {
+  vertical-align: baseline;
+}
+
+a {
+  color: var(--color-link);
+}
+
+a:visited {
+  color: var(--color-visited-link);
+}
+
+.hidden {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.clearfix {
+  clear: both;
+}
+
+/* === Layout === */
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.book-page {
+  min-width: 30rem;
+  flex-grow: 1;
+  padding: 1rem;
+}
+
+.book-icon {
+  filter: var(--icon-filter);
+}
+
+/* === Brand === */
+h-title-site {
+  display: block;
+  font-family: "Garamond", serif;
+  font-size: 1.75em;
+  font-style: italic;
+  margin: 5px 0;
+}
+
+h-title-site a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.book-brand {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.book-brand img {
+  height: 1.5em;
+  width: 1.5em;
+  margin-inline-end: 0.5rem;
+}
+
+/* === Menu Sidebar === */
+aside.book-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.book-menu {
+  flex: 0 0 14rem;
+  font-size: 0.875rem;
+}
+
+.book-menu .book-menu-content {
+  width: 14rem;
+  padding: 1rem;
+  background: var(--body-background);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.book-menu a,
+.book-menu label {
+  color: inherit;
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+.book-menu a.active {
+  color: var(--color-link);
+}
+
+aside nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+aside nav ul li {
+  margin: 1em 0;
+  position: relative;
+}
+
+aside nav ul a {
+  display: block;
+}
+
+aside nav ul a:hover {
+  opacity: 0.5;
+}
+
+aside nav ul ul {
+  padding-inline-start: 1rem;
+}
+
+/* === TOC (bottom of sidebar) === */
+.book-toc-content {
+  margin-top: auto;
+  width: 14rem;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  overflow-y: auto;
+  font-size: 0.75rem;
+}
+
+.book-toc-content nav > ul > li:first-child {
+  margin-top: 0;
+}
+
+/* === Search === */
+.book-search {
+  position: relative;
+  margin: 1rem 0;
+  border-bottom: 1px solid transparent;
+}
+
+.book-search input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: var(--gray-100);
+  color: var(--body-font-color);
+}
+
+.book-search input:required + .book-search-spinner {
+  display: block;
+}
+
+.book-search-spinner {
+  position: absolute;
+  top: 0;
+  margin: 0.5rem;
+  margin-inline-start: calc(100% - 1.5rem);
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid transparent;
+  border-top-color: var(--body-font-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.book-search small {
+  opacity: 0.5;
+}
+
+#book-search-results {
+  list-style: none;
+  padding: 0;
+}
+
+#book-search-results li {
+  margin: 0.5em 0;
+}
+
+#book-search-results a {
+  display: block;
+}
+
+#book-search-results small {
+  opacity: 0.5;
+}
+
+/* === Mobile Header === */
+.book-header {
+  display: none;
+  margin-bottom: 1rem;
+}
+
+.book-header label {
+  line-height: 0;
+}
+
+.book-header img.book-icon {
+  height: 1.5em;
+  width: 1.5em;
+}
+
+/* === Page Content === */
+.book-post {
+  margin-bottom: 0;
+}
+
+/* === Footer === */
+.book-footer {
+  padding-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.book-footer img {
+  height: 1em;
+  width: 1em;
+  margin-inline-end: 0.5rem;
+}
+
+/* === Pagination === */
+ul.pagination {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+ul.pagination .page-item a {
+  padding: 1rem;
+}
+
+/* === Section Flat (taxonomy sidebar) === */
+.book-section-flat {
+  margin: 2rem 0;
+}
+
+.book-section-flat > a,
+.book-section-flat > span,
+.book-section-flat > label {
+  font-weight: bolder;
+}
+
+.book-section-flat > ul {
+  padding-inline-start: 0;
+}
+
+/* === Post Listing === */
+.header-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-date-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-container .anchor {
+  display: none;
+}
+
+.header-container h1,
+.header-container h2,
+.header-container h3,
+.header-container h4,
+.header-container h5,
+.header-container h6 {
+  margin: 0;
+  font-size: inherit;
+}
+
+.title-date-container h4 {
+  font-size: 1.05em;
+  font-weight: bold;
+}
+
+.title-date-container h5 {
+  margin-right: 100px;
+}
+
+.post-summary h5 {
+  font-weight: lighter;
+}
+
+.post-summary {
+  font-style: italic;
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+/* === Markdown Content === */
+.markdown {
+  line-height: 1.2;
+}
+
+.markdown > :first-child {
+  margin-top: 0;
+}
+
+.markdown h1 {
+  font-size: 1.6em;
+  font-weight: bold;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.markdown h2 {
+  font-size: 1.35em;
+  font-weight: bold;
+  margin-top: 1.4em;
+  margin-bottom: 0.4em;
+}
+
+.markdown h3 {
+  font-size: 1.15em;
+  font-weight: bold;
+  margin-top: 1.3em;
+  margin-bottom: 0.3em;
+}
+
+.markdown h4 {
+  font-size: 1.05em;
+  font-weight: bold;
+  margin-top: 1.2em;
+  margin-bottom: 0.3em;
+}
+
+.markdown h5 {
+  font-size: 0.95em;
+  font-weight: bold;
+  margin-top: 1.1em;
+  margin-bottom: 0.2em;
+}
+
+.markdown h6 {
+  font-size: 0.85em;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+}
+
+.markdown h1 a,
+.markdown h2 a,
+.markdown h3 a,
+.markdown h4 a,
+.markdown h5 a,
+.markdown h6 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.markdown h1 a:visited,
+.markdown h2 a:visited,
+.markdown h3 a:visited,
+.markdown h4 a:visited,
+.markdown h5 a:visited,
+.markdown h6 a:visited {
+  color: inherit;
+}
+
+.markdown b,
+.markdown optgroup,
+.markdown strong {
+  font-weight: bolder;
+}
+
+.markdown a {
+  text-decoration: none;
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+}
+
+.markdown a:visited {
+  color: var(--color-visited-link);
+}
+
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown code {
+  padding: 0 0.25rem;
+  background: var(--gray-200);
+  border-radius: 0.25rem;
+  font-size: 0.75em;
+}
+
+.markdown pre {
+  padding: 1rem;
+  background: var(--gray-100);
+  border-radius: 0.25rem;
+  overflow-x: auto;
+}
+
+.markdown pre code {
+  padding: 0;
+  background: none;
+}
+
+.markdown p {
+  word-wrap: break-word;
+}
+
+.markdown blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  border-inline-start: 0.25rem solid var(--gray-200);
+  border-radius: 0.25rem;
+}
+
+.markdown blockquote :first-child {
+  margin-top: 0;
+}
+
+.markdown blockquote :last-child {
+  margin-bottom: 0;
+}
+
+.markdown table {
+  font-size: 0.75em;
+  overflow: auto;
+  display: block;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.markdown table tr,
+.markdown table td {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 0.6rem;
+}
+
+.markdown table tr:nth-child(2n) {
+  background: var(--gray-100);
+}
+
+.markdown hr {
+  height: 1px;
+  border: none;
+  background: var(--gray-200);
+}
+
+.markdown ul,
+.markdown ol {
+  padding-inline-start: 2rem;
+  word-wrap: break-word;
+}
+
+.markdown dl dt {
+  font-weight: bolder;
+  margin-top: 1rem;
+}
+
+.markdown dl dd {
+  margin-inline-start: 0;
+  margin-bottom: 1rem;
+}
+
+.markdown .highlight table tr td:nth-child(1) pre {
+  margin: 0;
+  padding-inline-end: 0;
+}
+
+.markdown .highlight table tr td:nth-child(2) pre {
+  margin: 0;
+  padding-inline-start: 0;
+}
+
+.markdown details {
+  padding: 1rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.25rem;
+}
+
+.markdown details summary {
+  line-height: 1;
+  padding: 1rem;
+  margin: -1rem;
+  cursor: pointer;
+}
+
+.markdown details[open] summary {
+  margin-bottom: 0;
+}
+
+.markdown figure {
+  margin: 1rem 0;
+}
+
+.markdown figure figcaption p {
+  margin-top: 0;
+}
+
+/* === Grid / Column Shortcodes === */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.columns {
+  display: flex;
+  align-items: flex-start;
+}
+
+.column pre,
+.column .highlight {
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.code-column {
+  width: 50%;
+  padding-right: 5px;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.sourceCode {
+  background-color: #f8f8f8;
+  border-left: 3px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+/* === Transitions === */
+.book-menu-content,
+.book-toc-content,
+.book-page,
+.book-header aside,
+.markdown {
+  transition: 0.2s ease-in-out;
+  transition-property: transform, margin, opacity, visibility;
+  will-change: transform, margin, opacity;
+}
+
+/* === Responsive / Mobile === */
+input.toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 50rem) {
+  .book-menu {
+    visibility: hidden;
+    margin-inline-start: -14rem;
+    font-size: 15px;
+    z-index: 1;
+  }
+
+  .book-header {
+    display: block;
+  }
+
+  #menu-control:checked ~ main .book-menu {
+    visibility: initial;
+  }
+
+  #menu-control:checked ~ main .book-menu .book-menu-content {
+    transform: translateX(14rem);
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  }
+
+  #menu-control:checked ~ main .book-page {
+    opacity: 0.25;
+  }
+
+  #menu-control:checked ~ main .book-menu-overlay {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #toc-control:checked ~ main .book-header aside {
+    display: block;
+  }
+
+  .code-column {
+    width: 100%;
+  }
+}
+
+/* === Extra padding for big screens === */
+@media screen and (min-width: 80rem) {
+  .book-page,
+  .book-menu .book-menu-content,
+  .book-toc .book-toc-content {
+    padding: 2rem 1rem;
+  }
+}

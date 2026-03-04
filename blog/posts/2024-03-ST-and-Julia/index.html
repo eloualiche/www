@@ -1,109 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="I have been asked how to set up a simple Julia IDE (not VSCode) for people who are already using Sublime Text. There are a few things that need to line up for it to work smoothly. I wrote these steps down.">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.com/blog/posts/2024-03-ST-and-Julia/">
-  <meta property="og:site_name" content="loualiche misc.">
-  <meta property="og:title" content="ST-Julia-IDE">
-  <meta property="og:description" content="I have been asked how to set up a simple Julia IDE (not VSCode) for people who are already using Sublime Text. There are a few things that need to line up for it to work smoothly. I wrote these steps down.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-03-01T00:00:00+00:00">
-    <meta property="article:modified_time" content="2024-03-01T00:00:00+00:00">
-    <meta property="article:tag" content="Julia">
-    <meta property="article:tag" content="IDE">
-<title>Sublime Text and Julia IDE | loualiche misc.</title>
-<link rel="manifest" href="/blog/manifest.json">
-<link rel="icon" href="/images/favicon.ico" >
-<link rel="canonical" href="https://loualiche.com/blog/posts/2024-03-ST-and-Julia/">
-<link rel="stylesheet" href="/blog/book.min.a5b759d29c01019ce9d8f9849c2172a6845ea59962ec60771af9db639ccbbfe1.css" integrity="sha256-pbdZ0pwBAZzp2PmEnCFypoRepZli7GB3GvnbY5zLv&#43;E=" crossorigin="anonymous">
-  <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.1dcc6283e4d8b14d6c56b31d21d265ae8503b10e62ba1f5dc49afcafc1159c9d.js" integrity="sha256-Hcxig&#43;TYsU1sVrMdIdJlroUDsQ5iuh9dxJr8r8EVnJ0=" crossorigin="anonymous"></script>
-
-  <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
-<!--
-Made with Book Theme
-https://github.com/alex-shpak/hugo-book
--->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="I have been asked how to set up a simple Julia IDE (not VSCode) for people who are already using Sublime Text. There are a few things that need to line up for it to work smoothly. I wrote these steps down.">
   <meta name="robots" content="index,follow">
+  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity">
 
-  
-  <meta name="google-site-verification" content="GTM-MB6RT5V">
-  <meta name="google-site-verification" content="Qh9qc4AsLoAOkKpw8lYQZDdlptkeG5WDXHPxaX_aTlI" />
+  <title>ST-Julia-IDE | loualiche misc.</title>
 
-  <meta name="subject" content="Non Academic Webpage of Erik Loualiche, University of Minnesota">
-  <meta name="description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff" />
-  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity" />
-
+  <link rel="icon" href="/blog/images/favicon.ico">
+  <link rel="canonical" href="https://loualiche.com/blog/posts/2024-03-ST-and-Julia/">
+  <link rel="stylesheet" href="/blog/css/style.css">
 
   
   <meta property="og:title" content="Erik Loualiche | Non Academic Webpage">
   <meta property="og:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
   <meta property="og:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
-  <meta property="og:image:alt" content="Erik Loualiche, University of Minnesota">
   <meta property="og:locale" content="en_GB">
   <meta property="og:type" content="blog">
-  
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@erikloulou">
-  <meta name="twitter:url" content="https://loualiche.com/index.html">
   <meta name="twitter:title" content="Erik Loualiche | Academic Webpage">
   <meta name="twitter:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
   <meta name="twitter:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
-  <meta name="twitter:image:alt" content="Erik Loualiche, University of Minnesota">
-  <meta name="twitter:dnt" content="on">
-
-
-<script>
-  (function() {
-    var script = document.createElement('script');
-    window.counter = 'https://loulou.goatcounter.com/count'
-    script.async = 1;
-    script.src = '//gc.zgo.at/count.js';
-    var ins = document.getElementsByTagName('script')[0];
-    ins.parentNode.insertBefore(script, ins)
-  })();
-</script>
 
   
+  
+  
+  
+  <script defer src="/blog/flexsearch.min.js"></script>
+  <script defer src="/blog/en.search.min.600612f8b2ecbde304d84efa7802c85a5462cc98d5dc1c4c062881b58ba647a7.js"></script>
+  
 
-    
+  
+  <script>
+    (function() {
+      var script = document.createElement('script');
+      window.counter = 'https://loulou.goatcounter.com/count'
+      script.async = 1;
+      script.src = '//gc.zgo.at/count.js';
+      var ins = document.getElementsByTagName('script')[0];
+      ins.parentNode.insertBefore(script, ins)
+    })();
+  </script>
 
-
+  
 </head>
-<body dir="ltr">
+<body>
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
+
   <main class="container flex">
     
     <div class="book-page">
       <header class="book-header">
+        <div class="flex align-center justify-between">
+          <label for="menu-control">
+            <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+          </label>
+          <strong>ST-Julia-IDE</strong>
+          <label for="toc-control">
+            
+            <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+            
+          </label>
+        </div>
         
-  <div class="flex align-center justify-between">
-  <label for="menu-control">
-    <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
-  </label>
-
-  <strong>Sublime Text and Julia IDE</strong>
-
-  <label for="toc-control">
-    
-    <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
-    
-  </label>
-</div>
-
-
-  
-  <aside class="hidden clearfix">
-    
-  
-<nav id="TableOfContents">
+        <aside class="hidden clearfix">
+          
+  <nav id="TableOfContents">
   <ul>
     <li><a href="#1-prerequisite">1. Prerequisite</a></li>
     <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a></li>
@@ -111,30 +77,22 @@ https://github.com/alex-shpak/hugo-book
   </ul>
 </nav>
 
-
-
-  </aside>
-  
- 
+        </aside>
+        
       </header>
 
       
-      
 <article class="markdown book-post">
   <h1>
-    <a href="/blog/posts/2024-03-ST-and-Julia/">Sublime Text and Julia IDE</a>
+    <a href="/blog/posts/2024-03-ST-and-Julia/">ST-Julia-IDE</a>
   </h1>
   
   <h5>March 1, 2024</h5>
-
-
-
-
-<p>Sometimes, I am asked how to set up a simple Julia IDE for people who are already using Sublime Text.
+  <p>Sometimes, I am asked how to set up a simple Julia IDE for people who are already using Sublime Text.
 It is simple in theory but many things can go wrong, so I thought this document could be useful.</p>
 <p>I try to provide step by step instructions as much as possible.
-Feel free to 
-  <a href="mailto:eloualic@umn.edu">email</a> me if some of the steps were not as clear as you would have liked.</p>
+Feel free to <a href="mailto:eloualic@umn.edu">email</a>
+ me if some of the steps were not as clear as you would have liked.</p>
 <p><strong>N.B.</strong></p>
 <ul>
 <li>There might be better ways to have a Julia IDE (see VSCode with LSP). I happen to like Sublime, it is simpler and faster than VSCode (but I am also an emacs person).</li>
@@ -142,47 +100,44 @@ Feel free to
 </ul>
 <p>This guide was written on 2024-03-01 for Sublime Text 4 and Julia 1.10.1</p>
 <h1 id="1-prerequisite">
-  1. Prerequisite 
-  <a class="anchor" href="#1-prerequisite">#</a>
+  <a href="#1-prerequisite">1. Prerequisite</a>
 </h1>
 <p>The &ldquo;required&rdquo; software for this guide are: Julia, Sublime Text, and a Terminal application called iterm2.</p>
 <p>First, I would recommend to install (optional but recommended) a nicer terminal application than the built-in macos terminal:</p>
 <ul>
 <li>
-<p>Download 
-  <a href="https://iterm2.com/downloads.html">iterm2</a>.</p>
+<p>Download <a href="https://iterm2.com/downloads.html">iterm2</a>
+.</p>
 <ul>
 <li>This is not strictly necessary but iterm2 has some nice feature that make it work nicely with the Sublime setup here. There are other good terminal applications for macos (e.g. kitty) but I am not as familiar with those.</li>
 <li>Open the iterm2 application which should be in the application folder (note I will use the words <code>iterm2</code> and the terminal interchangeably (technically they are not quite the same thing but it won&rsquo;t matter).</li>
 </ul>
 </li>
 <li>
-<p>Download 
-  <a href="https://www.sublimetext.com/blog/articles/sublime-text-4">Sublime Text 4</a> and follow the instructions to install.</p>
+<p>Download <a href="https://www.sublimetext.com/blog/articles/sublime-text-4">Sublime Text 4</a>
+ and follow the instructions to install.</p>
 </li>
 <li>
-<p>Download 
-  <a href="https://julialang.org/downloads/">julia</a> and follow the instructions to install.</p>
+<p>Download <a href="https://julialang.org/downloads/">julia</a>
+ and follow the instructions to install.</p>
 <ul>
 <li>As I am writing this, you can use juliaup to install Julia by copying and pasting in your terminal the following:
 <code>curl -fsSL https://install.julialang.org | sh</code>
 This allows you to keep your version of Julia up to date (this might be a bad thing if you have old code and are not templating packages)</li>
 <li>Or (simpler imho) download the latest current stable release and install it depending on your platform
 <ul>
-<li>For example for macos with Apple Silicon download the 
-  <a href="https://julialang-s3.julialang.org/bin/mac/aarch64/1.10/julia-1.10.1-macaarch64.dmg">dmg</a> and install it in your application folder</li>
+<li>For example for macos with Apple Silicon download the <a href="https://julialang-s3.julialang.org/bin/mac/aarch64/1.10/julia-1.10.1-macaarch64.dmg">dmg</a>
+ and install it in your application folder</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 <h1 id="2-getting-julia-to-work">
-  2. Getting julia to work! 
-  <a class="anchor" href="#2-getting-julia-to-work">#</a>
+  <a href="#2-getting-julia-to-work">2. Getting julia to work!</a>
 </h1>
 <h2 id="21-basic-installation">
-  2.1 Basic installation 
-  <a class="anchor" href="#21-basic-installation">#</a>
+  <a href="#21-basic-installation">2.1 Basic installation</a>
 </h2>
 <p>If Julia is in your application folder, there are two ways to start a julia session.</p>
 <ol>
@@ -195,19 +150,16 @@ This allows you to keep your version of Julia up to date (this might be a bad th
 </li>
 </ol>
 <h2 id="22-adding-julia-to-your-path">
-  2.2 Adding julia to your path 
-  <a class="anchor" href="#22-adding-julia-to-your-path">#</a>
+  <a href="#22-adding-julia-to-your-path">2.2 Adding julia to your path</a>
 </h2>
 <h4 id="do-you-need-it">
-  Do you need it? 
-  <a class="anchor" href="#do-you-need-it">#</a>
+  <a href="#do-you-need-it">Do you need it?</a>
 </h4>
 <p>If you have installed julia using <code>juliaup</code> (see section 1 above), the julia application was automatically added to your <code>PATH</code>.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>
 I believe this means the next step is not necessary. To see whether you should <em>skip</em> the next step type <code>julia</code> inside of iterm2.
 If julia opens, you are in business, skip 2.2 and go to section 3. If there is some error or julia does not open, follow the instructions in the next section 2.2.</p>
 <h4 id="adding-julia-to-the-path">
-  Adding julia to the path 
-  <a class="anchor" href="#adding-julia-to-the-path">#</a>
+  <a href="#adding-julia-to-the-path">Adding julia to the path</a>
 </h4>
 <p>Typing the full julia path can get annoying pretty quickly, so we will add the directory to the <code>PATH</code> for the terminal (technically for the shell).
 To make this permanent we are going to edit a special file which is read everytime you start your terminal.</p>
@@ -228,19 +180,17 @@ If you are working with a version different than <code>1.10</code> then adjust t
 <p>Save the file. Close the window. Restart the terminal (iterm2).
 Now you should be able to start Julia in the terminal by typing <code>julia</code> from anywhere.</p>
 <h1 id="3-getting-sublime-text-to-play-nice-with-julia">
-  3. Getting Sublime Text to play nice with Julia 
-  <a class="anchor" href="#3-getting-sublime-text-to-play-nice-with-julia">#</a>
+  <a href="#3-getting-sublime-text-to-play-nice-with-julia">3. Getting Sublime Text to play nice with Julia</a>
 </h1>
 <p>Sublime text is an editor that relies on packages for added functionality.
 So next, we will download the necessary packages to get a setup that will let you work with Julia from sublime text.</p>
 <h2 id="31-installing-sublime-packages">
-  3.1. Installing Sublime packages 
-  <a class="anchor" href="#31-installing-sublime-packages">#</a>
+  <a href="#31-installing-sublime-packages">3.1. Installing Sublime packages</a>
 </h2>
 <ul>
 <li>
-<p>First install the package that can install other packages: that is 
-  <a href="https://packagecontrol.io/installation">package control</a>.
+<p>First install the package that can install other packages: that is <a href="https://packagecontrol.io/installation">package control</a>
+.
 The instructions to install it are:</p>
 <ol>
 <li>Open the command palette (<code>cmd+shift+p</code> on macos)</li>
@@ -256,8 +206,8 @@ The instructions to install it are:</p>
 </ol>
 </li>
 <li>
-<p>Last install the 
-  <a href="https://github.com/randy3k/SendCode"><code>SendCode</code></a> package</p>
+<p>Last install the <a href="https://github.com/randy3k/SendCode"><code>SendCode</code></a>
+ package</p>
 <ol>
 <li>Open the command palette (<code>cmd+shift+p</code> on macos)</li>
 <li>Type Package Control: Install, press enter</li>
@@ -266,8 +216,7 @@ The instructions to install it are:</p>
 </li>
 </ul>
 <h2 id="32-setting-up-sublime-packages">
-  3.2 Setting up Sublime packages 
-  <a class="anchor" href="#32-setting-up-sublime-packages">#</a>
+  <a href="#32-setting-up-sublime-packages">3.2 Setting up Sublime packages</a>
 </h2>
 <ol>
 <li>Settings of SendCode
@@ -314,162 +263,67 @@ The instructions to install it are:</p>
 <hr>
 <ol>
 <li id="fn:1">
-<p>Your <code>path</code> is essentially a set of places where the terminal looks for software. So if the directory of Julia gets added to the path, the terminal is aware of the Julia application and you can type directly <code>$ julia</code>. I find Julia Evans&rsquo; guide on 
-  <a href="https://jvns.ca/blog/2025/02/13/how-to-add-a-directory-to-your-path/"><em>how to add a directory to your path</em></a> pretty useful, if you want to understand what you are adding.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Your <code>path</code> is essentially a set of places where the terminal looks for software. So if the directory of Julia gets added to the path, the terminal is aware of the Julia application and you can type directly <code>$ julia</code>. I find Julia Evans&rsquo; guide on <a href="https://jvns.ca/blog/2025/02/13/how-to-add-a-directory-to-your-path/"><em>how to add a directory to your path</em></a>
+ pretty useful, if you want to understand what you are adding.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2">
 <p><code>~</code> represents what is known as your home directory. The actual address is <code>/Users/yourname/</code>. You can find it by doing in the terminal: <code>cd ~</code> to change directory to the home directory, and then <code>pwd</code> to print the directory you are currently in.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
-<br>
-
-</br>
-
 </article>
 
- 
-      
 
       <footer class="book-footer">
         
-  <div class="flex flex-wrap justify-between">
-
-
-
-
-
-</div>
-
-
-
-  
-  <div>
-    
-      <a href="/blog/tags/julia/">Julia</a>, 
-      <a href="/blog/tags/IDE/">IDE</a>
-  </div>
-  
-
-
-
-
-
-  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
-
-
- 
+          
+          <div>
+            
+              <a href="/blog/tags/julia/">julia</a>, 
+              <a href="/blog/tags/IDE/">IDE</a>
+          </div>
+          
         
       </footer>
-
-      
-  
- 
 
       <label for="menu-control" class="hidden book-menu-overlay"></label>
     </div>
 
-
     
-
     <aside class="book-menu">
       <div class="book-menu-content">
-        
-  <nav>
-    <h-title-site class="book-brand">
-    <a
-        class="flex align-center"
-        href="/blog/"
-    ><span>loualiche misc.</span>
-        
-    </a>
-</h-title-site>
+        <nav>
+          <h-title-site class="book-brand">
+            <a class="flex align-center" href="/blog/">
+              <span>loualiche misc.</span>
+            </a>
+          </h-title-site>
 
-    
-<div class="book-search">
-  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
-  <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
-</div>
+          
+          <div class="book-search">
+            <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+            <div class="book-search-spinner hidden"></div>
+            <ul id="book-search-results"></ul>
+          </div>
+          
 
-
-    
-    
-    
-
-  
-<ul>
-  
-  <li>
-    <a href="https://loualiche.com/"  target="_blank" rel="noopener">
-        My Website
-      </a>
-  </li>
-  
-  <li>
-    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
-        My Github
-      </a>
-  </li>
-  
-</ul>
-
-
-
-
-
-    
-        
-
-
-
-
-
-
-
-
-    
-    
-
-  
-<ul>
-  
-  <li>
-    <a href="/blog/"  >
-        
-      </a>
-  </li>
-  
-  <li>
-    <a href="/blog/posts/"  >
-        
-      </a>
-  </li>
-  
-</ul>
-
-
-
-
-
-    
-</nav>
-
-
-
-
-<script>
-    (function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()
-</script>
-
-
- 
+          <ul>
+            
+            <li>
+              <a href="https://loualiche.com/" target="_blank" rel="noopener">My Website</a>
+            </li>
+            
+            <li>
+              <a href="https://github.com/eloualiche/" target="_blank" rel="noopener">My Github</a>
+            </li>
+            
+          </ul>
+        </nav>
       </div>
 
       <div class="book-toc-content">
         
-  
-<nav id="TableOfContents">
+  <nav id="TableOfContents">
   <ul>
     <li><a href="#1-prerequisite">1. Prerequisite</a></li>
     <li><a href="#2-getting-julia-to-work">2. Getting julia to work!</a></li>
@@ -477,27 +331,39 @@ The instructions to install it are:</p>
   </ul>
 </nav>
 
-
- 
       </div>
     </aside>
-    
-
 
   </main>
 
   
+  <script>
+  (function () {
+    document.querySelectorAll("pre code").forEach(code => {
+      code.addEventListener("click", function (event) {
+        if (window.getSelection().toString()) { return; }
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(code.parentElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code.parentElement.textContent);
+        }
+      });
+    });
+  })();
+  </script>
+
+  
+  <script>
+  (function() {
+    var menu = document.querySelector("aside .book-menu-content");
+    addEventListener("beforeunload", function(event) {
+      localStorage.setItem("menu.scrollTop", menu.scrollTop);
+    });
+    menu.scrollTop = localStorage.getItem("menu.scrollTop");
+  })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

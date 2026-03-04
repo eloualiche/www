@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
+  <meta name="description" content="A snapshot of 3 vibecoded apps in early 2026">
   <meta name="robots" content="index,follow">
   <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity">
 
-  <title>404 Page not found | loualiche misc.</title>
+  <title>Vibecoding Personal Utilities | loualiche misc.</title>
 
   <link rel="icon" href="/blog/images/favicon.ico">
-  <link rel="canonical" href="https://loualiche.com/blog/404.html">
+  <link rel="canonical" href="https://loualiche.com/blog/posts/2025-03-Vibecoding-Utilities/">
   <link rel="stylesheet" href="/blog/css/style.css">
 
   
@@ -59,7 +59,7 @@
           <label for="menu-control">
             <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
           </label>
-          <strong>404 Page not found</strong>
+          <strong>Vibecoding Personal Utilities</strong>
           <label for="toc-control">
             
             <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
@@ -69,19 +69,62 @@
         
         <aside class="hidden clearfix">
           
+  <nav id="TableOfContents"></nav>
+
         </aside>
         
       </header>
 
       
-<article class="markdown">
-  <h1>404 — Page Not Found</h1>
-  <p>The page you're looking for doesn't exist. <a href="/blog/">Go back to the homepage</a>.</p>
+<article class="markdown book-post">
+  <h1>
+    <a href="/blog/posts/2025-03-Vibecoding-Utilities/">Vibecoding Personal Utilities</a>
+  </h1>
+  
+  <h5>March 4, 2025</h5>
+  <p><a href="https://wesmckinney.com/blog/why-not/">Wes McKinney&rsquo;s</a>
+ <a href="https://wesmckinney.com/blog/agent-ergonomics/">blog</a>
+ makes a good case for the go programming language as a complement to LLMs.
+Like Wes, I do not know any go, but somehow it worked!</p>
+<p>Right now, people have plenty of opinions and theories on what works best when coding with agents (test-driven development, tight feedback development loops, or some specific prompting frameworks).
+I don&rsquo;t have the engineering experience to predict which of these principles will hold up against the pace of top models.
+But I <em>do</em> have enough experience to know which problems I want computers to solve for me.</p>
+<p>I want to share a snapshot of some bespoke projects that I have achived relatively easily as of March 2026.
+I am curious about the frontier of what is doable now that wasn&rsquo;t before, and whether we&rsquo;re going to see a lot more people will building genuinely useful, DIY software.</p>
+<p>Here are three single-use utilities I recently &ldquo;vibecoded&rdquo;:</p>
+<ol>
+<li>
+<p><strong><a href="https://github.com/eloualiche/podcast-go">podcast-go</a>
+:</strong> I recently started swimming and I like to listen to podcasts while I do. This requires uploading mp3 files to my bone-conduction headphones (a real throwback). Parsing RSS feeds every couple of days to get the latest mp3 is tedious, and podcast hosts don&rsquo;t make direct file access easy. I&rsquo;m sure existing solutions are out there, but that’s the point: I didn&rsquo;t have to look for one. I wrote an app for exactly my use case in a couple of hours with light supervision. This was my first time using Go, which happens to have fantastic Terminal User Interface (TUI) libraries.</p>
+</li>
+<li>
+<p><strong><a href="https://github.com/LouLouLibs/esync">esync</a>
+:</strong> I spend a lot of time writing code locally, but sometimes I need to execute it remotely. I used to keep a bash script to selectively sync files, but eventually, I’d forget to run it, get stuck on a bug, and realize I wasn&rsquo;t even editing the remote code. Yes, there are easier solutions (like Emacs Tramp), but writing this custom utility (a wrapper around <code>fsnotify</code> and <code>rsync</code> inside a Go TUI) removed the friction from my specific workflow.</p>
+</li>
+<li>
+<p><strong><a href="https://github.com/LouLouLibs/wrds-download">wrds-dl</a>
+:</strong> This serves as both a quick explorer tool for WRDS databases (via their Postgres system) and a command-line tool to download the data without writing or loading any Python. I also generated a skill to make it easy to tell Claude: <em>&ldquo;Download the monthly stock file from WRDS between 1980 and 2020 and show me that the <a href="https://loualiche.com/abstract/skewness_GHL">skewness is all gone!</a>
+.&rdquo;</em> This one was honestly more fun than it was strictly useful!</p>
+</li>
+</ol>
+<p>This will affect research in uncertain ways that might not all be fun.
+But I want to be positive and optimistic to what it brings us in building simple things.</p>
+ <br>
+ </br>
+<hr>
+<p><br> </br></p>
+<p><img src="/blog/images/demo-wrds-download.gif" alt="wrds-download demo" />
+</p>
 </article>
 
 
       <footer class="book-footer">
         
+          
+          <div>
+            
+              <a href="/blog/tags/LLM/">LLM</a>
+          </div>
           
         
       </footer>
@@ -123,6 +166,8 @@
 
       <div class="book-toc-content">
         
+  <nav id="TableOfContents"></nav>
+
       </div>
     </aside>
 

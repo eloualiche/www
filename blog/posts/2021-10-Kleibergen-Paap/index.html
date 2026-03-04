@@ -1,130 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/">
-  <meta property="og:site_name" content="loualiche misc.">
-  <meta property="og:title" content="KP-Fstats-Julia">
-  <meta property="og:description" content="There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2021-10-28T00:00:00+00:00">
-    <meta property="article:modified_time" content="2021-10-28T00:00:00+00:00">
-    <meta property="article:tag" content="Julia">
-    <meta property="article:tag" content="Statistics">
-<title>Kleibergen-Paap F-statistics in stata and julia | loualiche misc.</title>
-<link rel="manifest" href="/blog/manifest.json">
-<link rel="icon" href="/images/favicon.ico" >
-<link rel="canonical" href="https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/">
-<link rel="stylesheet" href="/blog/book.min.a5b759d29c01019ce9d8f9849c2172a6845ea59962ec60771af9db639ccbbfe1.css" integrity="sha256-pbdZ0pwBAZzp2PmEnCFypoRepZli7GB3GvnbY5zLv&#43;E=" crossorigin="anonymous">
-  <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.1dcc6283e4d8b14d6c56b31d21d265ae8503b10e62ba1f5dc49afcafc1159c9d.js" integrity="sha256-Hcxig&#43;TYsU1sVrMdIdJlroUDsQ5iuh9dxJr8r8EVnJ0=" crossorigin="anonymous"></script>
-
-  <script defer src="/blog/sw.min.f4bc4151631c92d29816d24dfaacb947aa6b03f91ec1c0cd2738ba8957d04791.js" integrity="sha256-9LxBUWMcktKYFtJN&#43;qy5R6prA/kewcDNJzi6iVfQR5E=" crossorigin="anonymous"></script>
-<!--
-Made with Book Theme
-https://github.com/alex-shpak/hugo-book
--->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="There are (were?) some issues with F-statistics estimation in stata for IV regressions. We simulate data to reproduce the problem and present a fix in the julia FixedEffectModels.jl library.">
   <meta name="robots" content="index,follow">
+  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity">
 
-  
-  <meta name="google-site-verification" content="GTM-MB6RT5V">
-  <meta name="google-site-verification" content="Qh9qc4AsLoAOkKpw8lYQZDdlptkeG5WDXHPxaX_aTlI" />
+  <title>KP-Fstats-Julia | loualiche misc.</title>
 
-  <meta name="subject" content="Non Academic Webpage of Erik Loualiche, University of Minnesota">
-  <meta name="description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff" />
-  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity" />
-
+  <link rel="icon" href="/blog/images/favicon.ico">
+  <link rel="canonical" href="https://loualiche.com/blog/posts/2021-10-Kleibergen-Paap/">
+  <link rel="stylesheet" href="/blog/css/style.css">
 
   
   <meta property="og:title" content="Erik Loualiche | Non Academic Webpage">
   <meta property="og:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
   <meta property="og:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
-  <meta property="og:image:alt" content="Erik Loualiche, University of Minnesota">
   <meta property="og:locale" content="en_GB">
   <meta property="og:type" content="blog">
-  
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@erikloulou">
-  <meta name="twitter:url" content="https://loualiche.com/index.html">
   <meta name="twitter:title" content="Erik Loualiche | Academic Webpage">
   <meta name="twitter:description" content="Non Academic Webpage of Erik Loualiche | Blog Stuff">
   <meta name="twitter:image" content="https://loualiche.com/images/loualiche_pic2.jpg">
-  <meta name="twitter:image:alt" content="Erik Loualiche, University of Minnesota">
-  <meta name="twitter:dnt" content="on">
-
-
-<script>
-  (function() {
-    var script = document.createElement('script');
-    window.counter = 'https://loulou.goatcounter.com/count'
-    script.async = 1;
-    script.src = '//gc.zgo.at/count.js';
-    var ins = document.getElementsByTagName('script')[0];
-    ins.parentNode.insertBefore(script, ins)
-  })();
-</script>
 
   
+  
+  
+  
+  <script defer src="/blog/flexsearch.min.js"></script>
+  <script defer src="/blog/en.search.min.600612f8b2ecbde304d84efa7802c85a5462cc98d5dc1c4c062881b58ba647a7.js"></script>
+  
 
-    
-    
-
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  
+  <script>
+    (function() {
+      var script = document.createElement('script');
+      window.counter = 'https://loulou.goatcounter.com/count'
+      script.async = 1;
+      script.src = '//gc.zgo.at/count.js';
+      var ins = document.getElementsByTagName('script')[0];
+      ins.parentNode.insertBefore(script, ins)
+    })();
   </script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
-</script>
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-<script>
-  MathJax = {
-    tex: {
-      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
-      inlineMath: [['\\(', '\\)']],                  
-      tags: 'ams'
-    }
-  };
-</script>
-
-    
-
-
+  
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        inlineMath: [['\\(', '\\)']],
+        tags: 'ams'
+      }
+    };
+  </script>
+  
 </head>
-<body dir="ltr">
+<body>
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
+
   <main class="container flex">
     
     <div class="book-page">
       <header class="book-header">
+        <div class="flex align-center justify-between">
+          <label for="menu-control">
+            <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+          </label>
+          <strong>KP-Fstats-Julia</strong>
+          <label for="toc-control">
+            
+            <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+            
+          </label>
+        </div>
         
-  <div class="flex align-center justify-between">
-  <label for="menu-control">
-    <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
-  </label>
-
-  <strong>Kleibergen-Paap F-statistics in stata and julia</strong>
-
-  <label for="toc-control">
-    
-    <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
-    
-  </label>
-</div>
-
-
-  
-  <aside class="hidden clearfix">
-    
-  
-<nav id="TableOfContents">
+        <aside class="hidden clearfix">
+          
+  <nav id="TableOfContents">
   <ul>
     <li><a href="#framework">Framework</a></li>
     <li><a href="#setting-up-the-problem">Setting up the problem</a></li>
@@ -134,29 +90,21 @@ https://github.com/alex-shpak/hugo-book
   </ul>
 </nav>
 
-
-
-  </aside>
-  
- 
+        </aside>
+        
       </header>
 
       
-      
 <article class="markdown book-post">
   <h1>
-    <a href="/blog/posts/2021-10-Kleibergen-Paap/">Kleibergen-Paap F-statistics in stata and julia</a>
+    <a href="/blog/posts/2021-10-Kleibergen-Paap/">KP-Fstats-Julia</a>
   </h1>
   
   <h5>October 28, 2021</h5>
-
-
-
-
-<p>This was a joint effort with 
-  <a href="https://www.matthieugomez.com">Matthieu Gomez</a> who created and maintains the high-dimensional fixed effect regression package for julia <code>FixedEffectModels.jl</code>.
-Valentin Haddad and myself uncovered this bug while working on 
-  <a href="https://loualiche.com/abstract/competitive_stockmkt_HHL.html">our project</a> on passive investing and market competition.</p>
+  <p>This was a joint effort with <a href="https://www.matthieugomez.com">Matthieu Gomez</a>
+ who created and maintains the high-dimensional fixed effect regression package for julia <code>FixedEffectModels.jl</code>.
+Valentin Haddad and myself uncovered this bug while working on <a href="https://loualiche.com/abstract/competitive_stockmkt_HHL.html">our project</a>
+ on passive investing and market competition.</p>
 <p>This post describes how the Kleibergen-Paap first-stage F-statistics can be misleading when using <code>ivreg2</code> and <code>ivreghdfe</code> in stata.</p>
 <p>In julia the <code>FixedEffectModels</code> package deals with this type of regressions and usually mimics stata.
 We found the issue was due to a specific case in the Kleibergen-Paap original paper and were able to patch it here.
@@ -164,8 +112,7 @@ We find that the issue appears with instruments interacted with fixed effects.</
 <p><strong>tl;dr;</strong> We found potential mistakes in stata&rsquo;s <code>ivreg2</code> and <code>ivreghdfe</code> for special cases.
 We found a way to fix it in julia&rsquo;s <code>FixedEffectModels</code>; stata developers should look into patching it.</p>
 <h1 id="framework">
-  Framework 
-  <a class="anchor" href="#framework">#</a>
+  <a href="#framework">Framework</a>
 </h1>
 <p>We consider a model with two groups indexed by \(k \in {1,2}\).
 We are interested in the following regression:
@@ -178,8 +125,7 @@ $$
 The \(X\)s are endogenous regressors and the \(Z\)s are instruments.
 We are interested in a two-stage-least-squares regression of \(Y\) on \(X\)  using the exogenous variation of the \(Z\).</p>
 <h1 id="setting-up-the-problem">
-  Setting up the problem 
-  <a class="anchor" href="#setting-up-the-problem">#</a>
+  <a href="#setting-up-the-problem">Setting up the problem</a>
 </h1>
 <p>We set up the problem in julia (v1.6.0) and provide a minimal reproducible example.
 We start by setting up the packages and creating a small dataset (20 rows) with two identifiers.</p>
@@ -207,8 +153,7 @@ We start by setting up the packages and creating a small dataset (20 rows) with 
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> StataCall, RegressionTables
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> RCall
 </span></span></code></pre></div><h2 id="generating-the-dataset">
-  Generating the dataset 
-  <a class="anchor" href="#generating-the-dataset">#</a>
+  <a href="#generating-the-dataset">Generating the dataset</a>
 </h2>
 <p>The following function generates the dataset.
 We introduce a small \(\epsilon \)  to add noise to the instrument.
@@ -267,8 +212,7 @@ This will be useful later as we show that the problem fails locally but not once
 </span></span><span style="display:flex;"><span>  <span style="color:#666">20</span> │    <span style="color:#666">10</span>  <span style="color:#666">2</span>     <span style="color:#666">0.840836</span>  <span style="color:#666">0.973702</span>  <span style="color:#666">2.75698</span>   <span style="color:#666">0.0</span>       <span style="color:#666">0.973702</span>  <span style="color:#666">0.0</span>       <span style="color:#666">0.840836</span>  <span style="color:#666">0.00371209</span>  <span style="color:#666">0.849899</span>
 </span></span><span style="display:flex;"><span>                                                                                                   <span style="color:#666">10</span> rows omitted
 </span></span></code></pre></div><h1 id="running-the-regression-julia">
-  Running the regression: julia 
-  <a class="anchor" href="#running-the-regression-julia">#</a>
+  <a href="#running-the-regression-julia">Running the regression: julia</a>
 </h1>
 <p>We run two sets of regressions. These ones have the bug fix and should run correctly.</p>
 <p>The first regression is the one described above. The second one uses the noisy instruments rather than the original instruments. The noisy instruments are defined as
@@ -314,8 +258,7 @@ What is interesting is how the Kleibergen-Paap statistics stay close as we pertu
 </span></span></code></pre></div><!-- ![KP Smoothness Figure](../../images/KP_smoothness.png) -->
 <img src="../../images/KP_smoothness.png" width="500" height="300">
 <h1 id="running-the-regression-stata">
-  Running the regression: Stata 
-  <a class="anchor" href="#running-the-regression-stata">#</a>
+  <a href="#running-the-regression-stata">Running the regression: Stata</a>
 </h1>
 <p>We use the StataCall package to run commands in stata. To set it up you need to make sure that julia has access to your path, see the repo for more details on how to do it for your system.</p>
 <p>It might be easier to save the file and then load directly in stata.</p>
@@ -351,12 +294,11 @@ The perturbation still works well.</p>
 </span></span><span style="display:flex;"><span>┌ Info<span style="color:#666">:</span>
 </span></span><span style="display:flex;"><span>│ F<span style="color:#666">-</span>statistics estimated with ivreghdfe and exact instruments<span style="color:#666">:</span> F <span style="color:#666">=</span> <span style="color:#666">0.00</span>
 </span></span><span style="display:flex;"><span>└ F<span style="color:#666">-</span>statistics estimated with ivreghdfe and ϵ<span style="color:#666">-</span>perturbed instruments<span style="color:#666">:</span> F <span style="color:#666">=</span> <span style="color:#666">12.43</span>
-</span></span></code></pre></div><p>The fix to the covariance estimator only consisted of a few lines to handle a special case. You can see the commit 
-  <a href="https://github.com/matthieugomez/Vcov.jl/pull/5">here</a>.</p>
+</span></span></code></pre></div><p>The fix to the covariance estimator only consisted of a few lines to handle a special case. You can see the commit <a href="https://github.com/matthieugomez/Vcov.jl/pull/5">here</a>
+.</p>
 <p>Ideally this would be implemented in the stata code as well.</p>
 <h1 id="running-the-regression-r">
-  Running the regression: R 
-  <a class="anchor" href="#running-the-regression-r">#</a>
+  <a href="#running-the-regression-r">Running the regression: R</a>
 </h1>
 <p>We use the <code>RCall</code> package to run commands in R within julia just as with StataCall (to run it make sure that your R environment is in the path, and of course install the relevant packages).</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Load all relevant libraries to R (make sure they are installed in your R)</span>
@@ -405,154 +347,59 @@ Edit: this seems to gives us the correct results here.</p>
 </span></span></code></pre></div><p>Perhaps we are missing other relevant packages that would take care of this issue (<code>AER</code> or <code>estimatr</code>).
 However these two are the fastest and most prevalent when dealing with relatively high-dimensional data.
 At this point it is not clear how to deal with this type of regressions in R.</p>
-<br>
-
-</br>
-
 </article>
 
- 
-      
 
       <footer class="book-footer">
         
-  <div class="flex flex-wrap justify-between">
-
-
-
-
-
-</div>
-
-
-
-  
-  <div>
-    
-      <a href="/blog/tags/julia/">Julia</a>, 
-      <a href="/blog/tags/statistics/">Statistics</a>
-  </div>
-  
-
-
-
-
-
-  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
-
-
- 
+          
+          <div>
+            
+              <a href="/blog/tags/julia/">julia</a>, 
+              <a href="/blog/tags/statistics/">statistics</a>
+          </div>
+          
         
       </footer>
-
-      
-  
- 
 
       <label for="menu-control" class="hidden book-menu-overlay"></label>
     </div>
 
-
     
-
     <aside class="book-menu">
       <div class="book-menu-content">
-        
-  <nav>
-    <h-title-site class="book-brand">
-    <a
-        class="flex align-center"
-        href="/blog/"
-    ><span>loualiche misc.</span>
-        
-    </a>
-</h-title-site>
+        <nav>
+          <h-title-site class="book-brand">
+            <a class="flex align-center" href="/blog/">
+              <span>loualiche misc.</span>
+            </a>
+          </h-title-site>
 
-    
-<div class="book-search">
-  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
-  <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
-</div>
+          
+          <div class="book-search">
+            <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+            <div class="book-search-spinner hidden"></div>
+            <ul id="book-search-results"></ul>
+          </div>
+          
 
-
-    
-    
-    
-
-  
-<ul>
-  
-  <li>
-    <a href="https://loualiche.com/"  target="_blank" rel="noopener">
-        My Website
-      </a>
-  </li>
-  
-  <li>
-    <a href="https://github.com/eloualiche/"  target="_blank" rel="noopener">
-        My Github
-      </a>
-  </li>
-  
-</ul>
-
-
-
-
-
-    
-        
-
-
-
-
-
-
-
-
-    
-    
-
-  
-<ul>
-  
-  <li>
-    <a href="/blog/"  >
-        
-      </a>
-  </li>
-  
-  <li>
-    <a href="/blog/posts/"  >
-        
-      </a>
-  </li>
-  
-</ul>
-
-
-
-
-
-    
-</nav>
-
-
-
-
-<script>
-    (function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()
-</script>
-
-
- 
+          <ul>
+            
+            <li>
+              <a href="https://loualiche.com/" target="_blank" rel="noopener">My Website</a>
+            </li>
+            
+            <li>
+              <a href="https://github.com/eloualiche/" target="_blank" rel="noopener">My Github</a>
+            </li>
+            
+          </ul>
+        </nav>
       </div>
 
       <div class="book-toc-content">
         
-  
-<nav id="TableOfContents">
+  <nav id="TableOfContents">
   <ul>
     <li><a href="#framework">Framework</a></li>
     <li><a href="#setting-up-the-problem">Setting up the problem</a></li>
@@ -562,27 +409,39 @@ At this point it is not clear how to deal with this type of regressions in R.</p
   </ul>
 </nav>
 
-
- 
       </div>
     </aside>
-    
-
 
   </main>
 
   
+  <script>
+  (function () {
+    document.querySelectorAll("pre code").forEach(code => {
+      code.addEventListener("click", function (event) {
+        if (window.getSelection().toString()) { return; }
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(code.parentElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code.parentElement.textContent);
+        }
+      });
+    });
+  })();
+  </script>
+
+  
+  <script>
+  (function() {
+    var menu = document.querySelector("aside .book-menu-content");
+    addEventListener("beforeunload", function(event) {
+      localStorage.setItem("menu.scrollTop", menu.scrollTop);
+    });
+    menu.scrollTop = localStorage.getItem("menu.scrollTop");
+  })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
