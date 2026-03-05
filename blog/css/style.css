@@ -333,7 +333,10 @@ ul.pagination .page-item a {
 }
 
 .title-date-container h5 {
-  margin-right: 100px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  width: 10rem;
+  text-align: right;
 }
 
 .post-summary h5 {
@@ -344,6 +347,7 @@ ul.pagination .page-item a {
   font-style: italic;
   font-weight: lighter;
   margin-bottom: 10px;
+  margin-right: 10rem;
 }
 
 /* === Markdown Content === */
