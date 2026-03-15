@@ -1,1 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Unix on loualiche misc.</title><link>https://loualiche.com/blog/tags/unix/</link><description>Recent content in Unix on loualiche misc.</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sun, 22 Sep 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://loualiche.com/blog/tags/unix/index.xml" rel="self" type="application/rss+xml"/><item><title>ollama msi hpc</title><link>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</link><pubDate>Sun, 22 Sep 2024 00:00:00 +0000</pubDate><guid>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</guid><description>How to get set up with ollama on the Minnesota MSI HPC cluster; from installation to running a model to pulling weights and setting up a model from hugging face.</description></item><item><title>TAQ Consolidated</title><link>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</link><pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate><guid>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</guid><description>For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unix on loualiche misc.</title>
+    <link>https://loualiche.com/blog/tags/unix/</link>
+    <description>Recent content in Unix on loualiche misc.</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 22 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://loualiche.com/blog/tags/unix/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ollama msi hpc</title>
+      <link>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</link>
+      <pubDate>Sun, 22 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2024-09-ollama-on-msi-hpc/</guid>
+      <description>How to get set up with ollama on the Minnesota MSI HPC cluster; from installation to running a model to pulling weights and setting up a model from hugging face.</description>
+    </item>
+    <item>
+      <title>TAQ Consolidated</title>
+      <link>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</link>
+      <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://loualiche.com/blog/posts/2024-03-TAQ-Consolidated-Data/</guid>
+      <description>For a recent revision, I have had to dig into TAQ data; I did not want to use SAS and I thought a combination of command line unix tools and julia would be easy. I learned a few things!</description>
+    </item>
+  </channel>
+</rss>
