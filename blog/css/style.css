@@ -12,7 +12,7 @@
 
 /* === Reset & Base === */
 html {
-  font-size: 17px;
+  font-size: 16px;
   scroll-behavior: smooth;
   touch-action: manipulation;
 }
@@ -341,6 +341,7 @@ ul.pagination .page-item a {
 
 .post-summary h5 {
   font-weight: lighter;
+  font-size: 0.85em;
 }
 
 .post-summary {
