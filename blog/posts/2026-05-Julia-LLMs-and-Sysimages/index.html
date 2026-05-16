@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="How to compile a Julia sysimage so an LLM-driven workflow doesn&rsquo;t pay the time-to-first-plot tax on every script.">
+  <meta name="robots" content="index,follow">
+  <meta name="keywords" content="economic, finance, loualiche, asset pricing, entry, globalization, risk, import competition, buyout, private equity">
+
+  <title>Julia, LLMs, and sysimages | loualiche misc.</title>
+
+  <link rel="icon" href="/blog/images/favicon.ico">
+  <link rel="canonical" href="https://loualiche.com/blog/posts/2026-05-Julia-LLMs-and-Sysimages/">
+  <link rel="stylesheet" href="/blog/css/style.css">
+
+  
+  <meta property="og:title" content="Julia, LLMs, and sysimages">
+  <meta property="og:description" content="How to compile a Julia sysimage so an LLM-driven workflow doesn&rsquo;t pay the time-to-first-plot tax on every script."><meta property="og:image" content="https://loualiche.com/blog/images/og-default.png">
+  <meta property="og:url" content="https://loualiche.com/blog/posts/2026-05-Julia-LLMs-and-Sysimages/">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@erikloulou">
+  <meta name="twitter:title" content="Julia, LLMs, and sysimages">
+  <meta name="twitter:description" content="How to compile a Julia sysimage so an LLM-driven workflow doesn&rsquo;t pay the time-to-first-plot tax on every script.">
+  <meta name="twitter:image" content="https://loualiche.com/blog/images/og-default.png">
+
+  
+  
+  
+  
+  <script defer src="/blog/flexsearch.min.js"></script>
+  <script defer src="/blog/en.search.min.93e188c7c7a9322c2757d5175c94e0cfbde547a87184a629df10e2a596e8c982.js"></script>
+  
+
+  
+  <script>
+    (function() {
+      var script = document.createElement('script');
+      window.counter = 'https://loulou.goatcounter.com/count'
+      script.async = 1;
+      script.src = '//gc.zgo.at/count.js';
+      var ins = document.getElementsByTagName('script')[0];
+      ins.parentNode.insertBefore(script, ins)
+    })();
+  </script>
+
+  
+</head>
+<body>
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+
+  <main class="container flex">
+    
+    <div class="book-page">
+      <header class="book-header">
+        <div class="flex align-center justify-between">
+          <label for="menu-control">
+            <img src="/blog/svg/menu.svg" class="book-icon" alt="Menu" />
+          </label>
+          <strong>Julia, LLMs, and sysimages</strong>
+          <label for="toc-control">
+            
+            <img src="/blog/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+            
+          </label>
+        </div>
+        
+        <aside class="hidden clearfix">
+          
+  <nav id="TableOfContents">
+  <ul>
+    <li></li>
+  </ul>
+</nav>
+
+        </aside>
+        
+      </header>
+
+      
+<article class="markdown book-post">
+  <h1>
+    <a href="/blog/posts/2026-05-Julia-LLMs-and-Sysimages/">Julia sysimage for fast LLM-driven scripting</a>
+  </h1>
+  
+  <h5>May. 16, 2026</h5>
+  <h2 id="using-julia-with-llms">
+  <a href="#using-julia-with-llms">Using julia with LLMs</a>
+</h2>
+<p>There is a lot of debate on which programming language is better suited for AI (I tried a few things myself) but the turf is mostly about software engineering and development, not academic research.</p>
+<p>After using a coding agent for a grand total of one year, here is what has been useful:</p>
+<ul>
+<li>Easy to read: I can review code, skim it and understand its general structure.</li>
+<li>Good tooling: environments, project management, tests, modules, &hellip;</li>
+<li>Portable: can it also run on my coauthors&rsquo; machine without too much fussing</li>
+<li>Easy to run short scripts: claude tends to run lots of short scripts to poke at the data<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> or test out parts of a bigger script.</li>
+<li>Large available codebase for training</li>
+</ul>
+<p>Some of these are idiosyncratic (easy to read? for whom?), the others are pretty much common sense.
+I can hear my stata friends arguing that their ability to read trumps anything else.
+I disagree!</p>
+<p>Practically, julia checks all the boxes (for me).
+Julia is a great language for economics with good libraries for <a href="https://dataframes.juliadata.org/stable/">data</a>
+ and <a href="https://github.com/FixedEffects/FixedEffectModels.jl">statistics</a>
+.
+It is reasonably easy to learn, has good tooling, and it&rsquo;s portable.</p>
+<p>Its downsides come from its relative lack of popularity among the general public (at least relative to its obvious competitor python) leading to a possibly smaller training sample.
+It also suffers from an infamous time-to-first-plot that has to do with its jit nature; so rapid iteration, running small scripts can get a little slower than other languages.</p>
+<p>I can&rsquo;t do much for the first problem, but it turns out there is a solution to the second one.
+Some people propose running a <a href="https://github.com/dmolina/DaemonMode.jl">Daemon</a>
+, but I am not sure its adapted to llm coding.</p>
+<p>Something easier is to compile your own julia image for fast startup of a few essential packages that get reused again and again in a project (CSV, DataFrames. etc&hellip;)<br>
+Honestly, setting this up had never been a priority and it seemed too complicated &hellip; until claude needed it and was willing to figure it out for me.
+Official documentation is available <a href="https://julialang.github.io/PackageCompiler.jl/dev/sysimages.html">here</a>
+.</p>
+<h2 id="a-simple-julia-sysimage">
+  <a href="#a-simple-julia-sysimage">A simple Julia sysimage</a>
+</h2>
+<p>Some packages are large and can take a while to load each time we start a julia instance (<code>DataFrames</code>, <code>CSV</code>, <code>DuckDB</code>, <code>FixedEffectModels</code>, &hellip;).
+At a high level, a custom Julia image bakes these packages into a single shared library that Julia loads at startup.
+After that, <code>using DataFrames</code> is essentially free, and short scripts can be as fast as they would be in a compiled language.</p>
+<p>The setup can be integrated or separated from your project in its own small environment.
+For example I created a <code>sysimage</code> directory with 4 main files:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sysimage/
+</span></span><span style="display:flex;"><span>├── Project.toml      <span style="color:#080;font-style:italic"># deps for the build itself</span>
+</span></span><span style="display:flex;"><span>├── packages.jl       <span style="color:#080;font-style:italic"># the list of packages to bake in</span>
+</span></span><span style="display:flex;"><span>├── precompile.jl     <span style="color:#080;font-style:italic"># a representative workload to trace</span>
+</span></span><span style="display:flex;"><span>└── build.jl          <span style="color:#080;font-style:italic"># the build script</span>
+</span></span></code></pre></div><ul>
+<li>
+<p><strong><code>Project.toml</code></strong> is the standard Julia environment file listing the dependencies needed for the build (the packages to bake in, plus <code>PackageCompiler</code> itself) — without it, <code>Pkg.instantiate()</code> has nothing to install.</p>
+</li>
+<li>
+<p><strong><code>packages.jl</code></strong> is just the list of packages I want baked. Keep it to the heavy, stable ones — skip dev tooling (<code>Revise</code>, <code>OhMyREPL</code>, &hellip;) and project-internal packages that change all the time.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">const</span> SYSIMAGE_PACKAGES <span style="color:#666">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:DataFrames</span>, <span style="color:#b8860b">:DataFramesMeta</span>, <span style="color:#b8860b">:DataPipes</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:CSV</span>, <span style="color:#b8860b">:Parquet2</span>, <span style="color:#b8860b">:DuckDB</span>, <span style="color:#b8860b">:JSON</span>, <span style="color:#b8860b">:XLSX</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:HTTP</span>, <span style="color:#b8860b">:CategoricalArrays</span>, <span style="color:#b8860b">:PrettyTables</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:FixedEffectModels</span>, <span style="color:#b8860b">:RegressionTables</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div></li>
+<li>
+<p><strong><code>precompile.jl</code></strong> is a small script that exercises the packages the way you actually use them: read a CSV, run a <code>@chain</code> pipe, fit a regression, write a parquet. <code>PackageCompiler</code> traces this to decide which methods to AOT-compile. The closer it matches real code, the bigger the speedup.<br>
+You can ask claude to generate it based on what your code base looks like.</p>
+</li>
+<li>
+<p><strong><code>build.jl</code></strong> ties it together:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Pkg
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>instantiate()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> PackageCompiler
+</span></span><span style="display:flex;"><span>include(joinpath(<span style="color:#a2f">@__DIR__</span>, <span style="color:#b44">&#34;packages.jl&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>create_sysimage(
+</span></span><span style="display:flex;"><span>    SYSIMAGE_PACKAGES;
+</span></span><span style="display:flex;"><span>    sysimage_path             <span style="color:#666">=</span> <span style="color:#b44">&#34;munis_sys.dylib&#34;</span>,
+</span></span><span style="display:flex;"><span>    precompile_execution_file <span style="color:#666">=</span> joinpath(<span style="color:#a2f">@__DIR__</span>, <span style="color:#b44">&#34;precompile.jl&#34;</span>),
+</span></span><span style="display:flex;"><span>    incremental               <span style="color:#666">=</span> <span style="color:#a2f">false</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div></li>
+</ul>
+<p>Then compile it from the shell:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project<span style="color:#666">=</span>sysimage -t <span style="color:#666">4</span> sysimage/build.jl
+</span></span></code></pre></div><p>This takes a while (10-20 minutes on my machine).
+The artifact is not portable: it is tied to your CPU and Julia version, so if you work on different hosts you will have to build it for everyone of them.</p>
+<p>To use it, start Julia with the <code>-J</code> flag:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -J sysimage/munis_sys.dylib --project<span style="color:#666">=</span>. my_script.jl
+</span></span></code></pre></div><p>It is faster!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">SCRIPT</span><span style="color:#666">=</span><span style="color:#b44">&#39;using DataFrames, DataFramesMeta, FixedEffectModels, Statistics
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  df = DataFrame(x = rand(10_000), y = rand(10_000), g = rand(1:50, 10_000))
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  s = @chain df begin
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">      groupby(:g)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">      @combine :mx = mean(:x) :my = mean(:y)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  end
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  reg(df, @formula(y ~ x + fe(g)))&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ /usr/bin/time julia -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># 6.16 real         6.00 user         1.96 sys</span>
+</span></span><span style="display:flex;"><span>$ /usr/bin/time julia -J munis_sys.dylib -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># 1.07 real         1.13 user         1.80 sys</span>
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Claude insistence on writing a 30 lines script to find the fields of a csv (or even a json) is the reason I push it to use my <a href="https://github.com/LouLouLibs/dt-cli-tools">cli data tools</a>
+, or run duckdb using the <a href="https://duckdb.org/docs/current/clients/cli/overview">cli</a>
+.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+</article>
+
+
+      <footer class="book-footer">
+        
+          
+          <div>
+            
+              <a href="/blog/tags/julia/">julia</a>, 
+              <a href="/blog/tags/LLM/">LLM</a>
+          </div>
+          
+        
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        <nav>
+          <h-title-site class="book-brand">
+            <a class="flex align-center" href="/blog/">
+              <span>loualiche misc.</span>
+            </a>
+          </h-title-site>
+
+          
+          <div class="book-search">
+            <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+            <div class="book-search-spinner hidden"></div>
+            <ul id="book-search-results"></ul>
+          </div>
+          
+
+          <ul>
+            
+            <li>
+              <a href="https://loualiche.com/" target="_blank" rel="noopener">My Website</a>
+            </li>
+            
+            <li>
+              <a href="https://github.com/eloualiche/" target="_blank" rel="noopener">My Github</a>
+            </li>
+            
+          </ul>
+        </nav>
+      </div>
+
+      <div class="book-toc-content">
+        
+  <nav id="TableOfContents">
+  <ul>
+    <li></li>
+  </ul>
+</nav>
+
+      </div>
+    </aside>
+
+  </main>
+
+  
+  <script>
+  (function () {
+    document.querySelectorAll("pre code").forEach(code => {
+      code.addEventListener("click", function (event) {
+        if (window.getSelection().toString()) { return; }
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(code.parentElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code.parentElement.textContent);
+        }
+      });
+    });
+  })();
+  </script>
+
+  
+  <script>
+  (function() {
+    var menu = document.querySelector("aside .book-menu-content");
+    addEventListener("beforeunload", function(event) {
+      localStorage.setItem("menu.scrollTop", menu.scrollTop);
+    });
+    menu.scrollTop = localStorage.getItem("menu.scrollTop");
+  })();
+  </script>
+</body>
+</html>
