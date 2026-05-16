@@ -30,7 +30,7 @@
   
   
   <script defer src="/blog/flexsearch.min.js"></script>
-  <script defer src="/blog/en.search.min.93e188c7c7a9322c2757d5175c94e0cfbde547a87184a629df10e2a596e8c982.js"></script>
+  <script defer src="/blog/en.search.min.d37fab2c60d248df8874a97931805491124c6b0957b4279d8d3a61df01f69f47.js"></script>
   
 
   
@@ -95,30 +95,30 @@
 <li>Easy to read: I can review code, skim it and understand its general structure.</li>
 <li>Good tooling: environments, project management, tests, modules, &hellip;</li>
 <li>Portable: can it also run on my coauthors&rsquo; machine without too much fussing</li>
-<li>Easy to run short scripts: claude tends to run lots of short scripts to poke at the data<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> or test out parts of a bigger script.</li>
+<li>Easy to run short scripts: Claude tends to run lots of short scripts to poke at the data<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> or test out parts of a bigger script.</li>
 <li>Large available codebase for training</li>
 </ul>
 <p>Some of these are idiosyncratic (easy to read? for whom?), the others are pretty much common sense.
 I can hear my stata friends arguing that their ability to read trumps anything else.
 I disagree!</p>
-<p>Practically, julia checks all the boxes (for me).
+<p>Practically, Julia checks all the boxes (for me).
 Julia is a great language for economics with good libraries for <a href="https://dataframes.juliadata.org/stable/">data</a>
  and <a href="https://github.com/FixedEffects/FixedEffectModels.jl">statistics</a>
 .
 It is reasonably easy to learn, has good tooling, and it&rsquo;s portable.</p>
 <p>Its downsides come from its relative lack of popularity among the general public (at least relative to its obvious competitor python) leading to a possibly smaller training sample.
-It also suffers from an infamous time-to-first-plot that has to do with its jit nature; so rapid iteration, running small scripts can get a little slower than other languages.</p>
+It also suffers from an infamous time-to-first-plot that has to do with its JIT nature; so rapid iteration, running small scripts can get a little slower than other languages.</p>
 <p>I can&rsquo;t do much for the first problem, but it turns out there is a solution to the second one.
 Some people propose running a <a href="https://github.com/dmolina/DaemonMode.jl">Daemon</a>
-, but I am not sure its adapted to llm coding.</p>
-<p>Something easier is to compile your own julia image for fast startup of a few essential packages that get reused again and again in a project (CSV, DataFrames. etc&hellip;)<br>
-Honestly, setting this up had never been a priority and it seemed too complicated &hellip; until claude needed it and was willing to figure it out for me.
+, but I am not sure it&rsquo;s adapted to LLM coding.</p>
+<p>Something easier is to compile your own Julia image for fast startup of a few essential packages that get reused again and again in a project (CSV, DataFrames, etc.).
+Honestly, setting this up had never been a priority and it seemed too complicated &hellip; until Claude needed it and was happy to figure it out for me.
 Official documentation is available <a href="https://julialang.github.io/PackageCompiler.jl/dev/sysimages.html">here</a>
 .</p>
 <h2 id="a-simple-julia-sysimage">
   <a href="#a-simple-julia-sysimage">A simple Julia sysimage</a>
 </h2>
-<p>Some packages are large and can take a while to load each time we start a julia instance (<code>DataFrames</code>, <code>CSV</code>, <code>DuckDB</code>, <code>FixedEffectModels</code>, &hellip;).
+<p>Some packages are large and can take a while to load each time we start a Julia instance (<code>DataFrames</code>, <code>CSV</code>, <code>DuckDB</code>, <code>FixedEffectModels</code>, &hellip;).
 At a high level, a custom Julia image bakes these packages into a single shared library that Julia loads at startup.
 After that, <code>using DataFrames</code> is essentially free, and short scripts can be as fast as they would be in a compiled language.</p>
 <p>The setup can be integrated or separated from your project in its own small environment.
@@ -143,7 +143,7 @@ For example I created a <code>sysimage</code> directory with 4 main files:</p>
 </span></span></code></pre></div></li>
 <li>
 <p><strong><code>precompile.jl</code></strong> is a small script that exercises the packages the way you actually use them: read a CSV, run a <code>@chain</code> pipe, fit a regression, write a parquet. <code>PackageCompiler</code> traces this to decide which methods to AOT-compile. The closer it matches real code, the bigger the speedup.<br>
-You can ask claude to generate it based on what your code base looks like.</p>
+You can ask Claude to generate it based on what your codebase looks like.</p>
 </li>
 <li>
 <p><strong><code>build.jl</code></strong> ties it together:</p>
@@ -155,7 +155,7 @@ You can ask claude to generate it based on what your code base looks like.</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>create_sysimage(
 </span></span><span style="display:flex;"><span>    SYSIMAGE_PACKAGES;
-</span></span><span style="display:flex;"><span>    sysimage_path             <span style="color:#666">=</span> <span style="color:#b44">&#34;munis_sys.dylib&#34;</span>,
+</span></span><span style="display:flex;"><span>    sysimage_path             <span style="color:#666">=</span> <span style="color:#b44">&#34;julia_sysimage.dylib&#34;</span>, <span style="color:#080;font-style:italic"># .so on Linux, .dll on Windows</span>
 </span></span><span style="display:flex;"><span>    precompile_execution_file <span style="color:#666">=</span> joinpath(<span style="color:#a2f">@__DIR__</span>, <span style="color:#b44">&#34;precompile.jl&#34;</span>),
 </span></span><span style="display:flex;"><span>    incremental               <span style="color:#666">=</span> <span style="color:#a2f">false</span>,
 </span></span><span style="display:flex;"><span>)
@@ -164,10 +164,11 @@ You can ask claude to generate it based on what your code base looks like.</p>
 <p>Then compile it from the shell:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project<span style="color:#666">=</span>sysimage -t <span style="color:#666">4</span> sysimage/build.jl
 </span></span></code></pre></div><p>This takes a while (10-20 minutes on my machine).
-The artifact is not portable: it is tied to your CPU and Julia version, so if you work on different hosts you will have to build it for everyone of them.</p>
+The artifact is not portable: it is tied to your CPU, OS, and Julia version (the <code>.dylib</code> extension here is macOS; use <code>.so</code> on Linux, <code>.dll</code> on Windows), so if you work on different hosts you will have to build it for each of them.</p>
 <p>To use it, start Julia with the <code>-J</code> flag:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -J sysimage/munis_sys.dylib --project<span style="color:#666">=</span>. my_script.jl
-</span></span></code></pre></div><p>It is faster!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -J julia_sysimage.dylib --project<span style="color:#666">=</span>. my_script.jl
+</span></span></code></pre></div><p>It is faster!
+After a one-time build cost (~10 min), the same script runs ~6× faster.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">SCRIPT</span><span style="color:#666">=</span><span style="color:#b44">&#39;using DataFrames, DataFramesMeta, FixedEffectModels, Statistics
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">  df = DataFrame(x = rand(10_000), y = rand(10_000), g = rand(1:50, 10_000))
 </span></span></span><span style="display:flex;"><span><span style="color:#b44">  s = @chain df begin
@@ -178,13 +179,13 @@ The artifact is not portable: it is tied to your CPU and Julia version, so if yo
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>$ /usr/bin/time julia -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># 6.16 real         6.00 user         1.96 sys</span>
-</span></span><span style="display:flex;"><span>$ /usr/bin/time julia -J munis_sys.dylib -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
+</span></span><span style="display:flex;"><span>$ /usr/bin/time julia -J julia_sysimage.dylib -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># 1.07 real         1.13 user         1.80 sys</span>
 </span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
-<p>Claude insistence on writing a 30 lines script to find the fields of a csv (or even a json) is the reason I push it to use my <a href="https://github.com/LouLouLibs/dt-cli-tools">cli data tools</a>
+<p>Claude&rsquo;s insistence on writing a 30-line script to find the fields of a csv (or even a json) is the reason I push it to use my <a href="https://github.com/LouLouLibs/dt-cli-tools">cli data tools</a>
 , or run duckdb using the <a href="https://duckdb.org/docs/current/clients/cli/overview">cli</a>
 .&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
