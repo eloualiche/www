@@ -1,0 +1,184 @@
+/* redesign.css — shared styles for homepage variants A, B, C
+   Layered on top of style.css; do not duplicate base typography rules. */
+
+/* ---------- Container ---------- */
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+  font-family: Courier, "PT Mono", "Fira Code", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.05;
+  color: #3a3a3a;
+}
+
+.page hr {
+  border: 0;
+  border-top: 1px solid #c8c8c8;
+  margin: 12px 0;
+}
+
+.page hr.heavy { border-top-width: 2px; }
+
+/* ---------- Banner / masthead ---------- */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+.banner .name {
+  font-family: "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #000;
+  letter-spacing: -0.3px;
+}
+.banner .title {
+  font-family: "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #736F6E;
+  margin-top: 2px;
+}
+.banner .logo img { height: 50px; width: auto; }
+
+/* ---------- Top nav (pre-formatted, monospace) ---------- */
+.topnav {
+  margin: 6px 0;
+  padding: 0;
+}
+
+/* ---------- Nav row ---------- */
+.navrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 6px 0;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
+}
+.navrow a {
+  color: #8B0000;
+  text-transform: uppercase;
+}
+.navrow .sep { color: #c8c8c8; }
+
+/* ---------- Profile-link row (variant B & C) ---------- */
+.profilelinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 12.5px;
+  padding: 4px 0;
+}
+.profilelinks .sep { color: #c8c8c8; }
+
+/* ---------- Variant A: 3-column header ---------- */
+.headerA {
+  display: grid;
+  grid-template-columns: 5fr 3fr 3fr;
+  gap: 24px;
+  padding: 16px 0;
+  align-items: start;
+}
+.headerA .bio { font-size: 13px; line-height: 1.15; }
+.headerA .bio p { margin: 0 0 4px 0; line-height: 1.15; }
+.headerA .photo {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.headerA .photo img { width: 100%; max-width: 180px; height: auto; display: block; }
+.headerA .contact { font-size: 12.5px; line-height: 1.1; }
+.headerA .contact .label { color: #888; }
+.headerA .contact .links { margin-top: 8px; }
+.headerA .contact .links a { display: inline-block; margin-right: 8px; }
+
+/* ---------- Variant C: compact strip ---------- */
+.headerC {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 2px solid #2a2a2a;
+  border-bottom: 2px solid #2a2a2a;
+}
+.headerC .info .line1 {
+  font-family: "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 22px;
+  color: #000;
+  letter-spacing: -0.2px;
+}
+.headerC .info .line1 .sep { color: #c8c8c8; margin: 0 6px; }
+.headerC .info .line2 {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: #3a3a3a;
+}
+.headerC .info .line3 {
+  margin-top: 4px;
+  font-size: 12.5px;
+}
+.headerC .info .line3 .sep { color: #c8c8c8; margin: 0 4px; }
+.headerC .photo img { height: 70px; width: auto; border-radius: 2px; }
+
+/* ---------- Section heading ---------- */
+.section-h {
+  font-family: Courier, "PT Mono", "Fira Code", Consolas, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000;
+  margin: 18px 0 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.section-h .num { color: #8B0000; margin-right: 8px; }
+
+/* ---------- Paper list (single column) ---------- */
+.papers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 4px 0 8px 0;
+}
+.paper {
+  font-size: 12.5px;
+  line-height: 1.1;
+}
+.paper .ptitle {
+  font-weight: bold;
+  color: #000;
+}
+.paper .ptitle a { color: #000; }
+.paper .ptitle a:hover { color: #8B0000; }
+.paper .meta { color: #555; }
+.paper .journal { font-style: italic; color: #555; }
+.paper .award { font-weight: bold; font-style: italic; color: #555; }
+.paper .bullet { color: #8B0000; margin-right: 6px; }
+
+/* ---------- Variant B: contact block (kept from original, restyled) ---------- */
+.contactB {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  padding: 12px 0;
+  align-items: start;
+}
+.contactB .info { font-size: 13px; line-height: 1.15; }
+.contactB .info .label { color: #888; display: inline-block; min-width: 64px; }
+.contactB .photo img { width: 100%; max-width: 200px; height: auto; display: block; }
+
+/* ---------- Other section list ---------- */
+.otherlist { font-size: 13px; line-height: 1.2; }
+.otherlist a { display: inline-block; margin-right: 18px; }
+
+/* ---------- Mobile / narrow ---------- */
+@media (max-width: 800px) {
+  .headerA { grid-template-columns: 1fr; }
+  .contactB { grid-template-columns: 1fr; }
+  .headerC { grid-template-columns: 1fr; }
+  .headerC .info .line1 { font-size: 18px; }
+  .banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
