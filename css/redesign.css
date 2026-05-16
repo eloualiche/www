@@ -3,12 +3,12 @@
 
 /* ---------- Container ---------- */
 .page {
-  max-width: 1100px;
+  max-width: 880px;
   margin: 0 auto;
   padding: 0 24px;
   font-family: Courier, "PT Mono", "Fira Code", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.05;
   color: #3a3a3a;
 }
 
@@ -41,6 +41,12 @@
   margin-top: 2px;
 }
 .banner .logo img { height: 50px; width: auto; }
+
+/* ---------- Top nav (pre-formatted, monospace) ---------- */
+.topnav {
+  margin: 6px 0;
+  padding: 0;
+}
 
 /* ---------- Nav row ---------- */
 .navrow {
@@ -75,9 +81,16 @@
   padding: 16px 0;
   align-items: start;
 }
-.headerA .bio { font-size: 13px; line-height: 1.5; }
-.headerA .photo img { width: 100%; max-width: 180px; height: auto; display: block; margin: 0 auto; }
-.headerA .contact { font-size: 12.5px; line-height: 1.55; }
+.headerA .bio { font-size: 13px; line-height: 1.15; }
+.headerA .bio p { margin: 0 0 4px 0; line-height: 1.15; }
+.headerA .photo {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.headerA .photo img { width: 100%; max-width: 180px; height: auto; display: block; }
+.headerA .contact { font-size: 12.5px; line-height: 1.1; }
 .headerA .contact .label { color: #888; }
 .headerA .contact .links { margin-top: 8px; }
 .headerA .contact .links a { display: inline-block; margin-right: 8px; }
@@ -123,16 +136,16 @@
 }
 .section-h .num { color: #8B0000; margin-right: 8px; }
 
-/* ---------- Two-column paper grid ---------- */
+/* ---------- Paper list (single column) ---------- */
 .papers {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 32px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   padding: 4px 0 8px 0;
 }
 .paper {
   font-size: 12.5px;
-  line-height: 1.5;
+  line-height: 1.1;
 }
 .paper .ptitle {
   font-weight: bold;
@@ -153,17 +166,16 @@
   padding: 12px 0;
   align-items: start;
 }
-.contactB .info { font-size: 13px; line-height: 1.55; }
+.contactB .info { font-size: 13px; line-height: 1.15; }
 .contactB .info .label { color: #888; display: inline-block; min-width: 64px; }
 .contactB .photo img { width: 100%; max-width: 200px; height: auto; display: block; }
 
 /* ---------- Other section list ---------- */
-.otherlist { font-size: 13px; line-height: 1.8; }
+.otherlist { font-size: 13px; line-height: 1.2; }
 .otherlist a { display: inline-block; margin-right: 18px; }
 
 /* ---------- Mobile / narrow ---------- */
 @media (max-width: 800px) {
-  .papers { grid-template-columns: 1fr; }
   .headerA { grid-template-columns: 1fr; }
   .contactB { grid-template-columns: 1fr; }
   .headerC { grid-template-columns: 1fr; }
