@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /data/
+Allow: /data/*.html
+
+Sitemap: https://loualiche.com/sitemap.xml
