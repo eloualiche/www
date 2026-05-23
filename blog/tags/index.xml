@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on loualiche misc.</title>
     <link>https://loualiche.com/blog/tags/</link>
@@ -8,61 +8,78 @@
     <language>en</language>
     <lastBuildDate>Sat, 16 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    
     <item>
       <title>Julia</title>
       <link>https://loualiche.com/blog/tags/julia/</link>
       <pubDate>Sat, 16 May 2026 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/julia/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>LLM</title>
       <link>https://loualiche.com/blog/tags/LLM/</link>
       <pubDate>Sat, 16 May 2026 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/LLM/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>Ollama</title>
       <link>https://loualiche.com/blog/tags/ollama/</link>
       <pubDate>Sun, 22 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/ollama/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>Unix</title>
       <link>https://loualiche.com/blog/tags/unix/</link>
       <pubDate>Sun, 22 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/unix/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>IDE</title>
       <link>https://loualiche.com/blog/tags/IDE/</link>
       <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/IDE/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>R</title>
       <link>https://loualiche.com/blog/tags/R/</link>
       <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/R/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>Statistics</title>
       <link>https://loualiche.com/blog/tags/statistics/</link>
       <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/statistics/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
     <item>
       <title>TeX</title>
       <link>https://loualiche.com/blog/tags/TeX/</link>
       <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/tags/TeX/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
+    
   </channel>
 </rss>

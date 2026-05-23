@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>LLM on loualiche misc.</title>
     <link>https://loualiche.com/blog/tags/LLM/</link>
@@ -8,33 +8,278 @@
     <language>en</language>
     <lastBuildDate>Sat, 16 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://loualiche.com/blog/tags/LLM/index.xml" rel="self" type="application/rss+xml" />
+    
     <item>
       <title>Julia, LLMs, and sysimages</title>
       <link>https://loualiche.com/blog/posts/2026-05-Julia-LLMs-and-Sysimages/</link>
       <pubDate>Sat, 16 May 2026 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2026-05-Julia-LLMs-and-Sysimages/</guid>
       <description>How to compile a Julia sysimage so an LLM-driven workflow doesn&amp;rsquo;t pay the time-to-first-plot tax on every script.</description>
+      <content:encoded><![CDATA[<h2 id="using-julia-with-llms">
+  <a href="#using-julia-with-llms">Using julia with LLMs</a>
+</h2>
+<p>There is a lot of debate on which programming language is better suited for AI (I tried a few things myself) but the turf is mostly about software engineering and development, not academic research.</p>
+<p>After using a coding agent for a grand total of one year, here is what has been useful:</p>
+<ul>
+<li>Easy to read: I can review code, skim it and understand its general structure.</li>
+<li>Good tooling: environments, project management, tests, modules, &hellip;</li>
+<li>Portable: can it also run on my coauthors&rsquo; machine without too much fussing</li>
+<li>Easy to run short scripts: Claude tends to run lots of short scripts to poke at the data<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> or test out parts of a bigger script.</li>
+<li>Large available codebase for training</li>
+</ul>
+<p>Some of these are idiosyncratic (easy to read? for whom?), the others are pretty much common sense.
+I can hear my stata friends arguing that their ability to read trumps anything else.
+I disagree!</p>
+<p>Practically, Julia checks all the boxes (for me).
+Julia is a great language for economics with good libraries for <a href="https://dataframes.juliadata.org/stable/">data</a>
+ and <a href="https://github.com/FixedEffects/FixedEffectModels.jl">statistics</a>
+.
+It is reasonably easy to learn, has good tooling, and it&rsquo;s portable.</p>
+<p>Its downsides come from its relative lack of popularity among the general public (at least relative to its obvious competitor python) leading to a possibly smaller training sample.
+It also suffers from an infamous time-to-first-plot that has to do with its JIT nature; so rapid iteration, running small scripts can get a little slower than other languages.</p>
+<p>I can&rsquo;t do much for the first problem, but it turns out there is a solution to the second one.
+Some people propose running a <a href="https://github.com/dmolina/DaemonMode.jl">Daemon</a>
+, but I am not sure it&rsquo;s adapted to LLM coding.</p>
+<p>Something easier is to compile your own Julia image for fast startup of a few essential packages that get reused again and again in a project (CSV, DataFrames, etc.).
+Honestly, setting this up had never been a priority and it seemed too complicated &hellip; until Claude needed it and was happy to figure it out for me.
+Official documentation is available <a href="https://julialang.github.io/PackageCompiler.jl/dev/sysimages.html">here</a>
+.</p>
+<h2 id="a-simple-julia-sysimage">
+  <a href="#a-simple-julia-sysimage">A simple Julia sysimage</a>
+</h2>
+<p>Some packages are large and can take a while to load each time we start a Julia instance (<code>DataFrames</code>, <code>CSV</code>, <code>DuckDB</code>, <code>FixedEffectModels</code>, &hellip;).
+At a high level, a custom Julia image bakes these packages into a single shared library that Julia loads at startup.
+After that, <code>using DataFrames</code> is essentially free, and short scripts can be as fast as they would be in a compiled language.</p>
+<p>The setup can be integrated or separated from your project in its own small environment.
+For example I created a <code>sysimage</code> directory with 4 main files:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sysimage/
+</span></span><span style="display:flex;"><span>├── Project.toml      <span style="color:#080;font-style:italic"># deps for the build itself</span>
+</span></span><span style="display:flex;"><span>├── packages.jl       <span style="color:#080;font-style:italic"># the list of packages to bake in</span>
+</span></span><span style="display:flex;"><span>├── precompile.jl     <span style="color:#080;font-style:italic"># a representative workload to trace</span>
+</span></span><span style="display:flex;"><span>└── build.jl          <span style="color:#080;font-style:italic"># the build script</span>
+</span></span></code></pre></div><ul>
+<li>
+<p><strong><code>Project.toml</code></strong> is the standard Julia environment file listing the dependencies needed for the build (the packages to bake in, plus <code>PackageCompiler</code> itself) — without it, <code>Pkg.instantiate()</code> has nothing to install.</p>
+</li>
+<li>
+<p><strong><code>packages.jl</code></strong> is just the list of packages I want baked. Keep it to the heavy, stable ones — skip dev tooling (<code>Revise</code>, <code>OhMyREPL</code>, &hellip;) and project-internal packages that change all the time.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">const</span> SYSIMAGE_PACKAGES <span style="color:#666">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:DataFrames</span>, <span style="color:#b8860b">:DataFramesMeta</span>, <span style="color:#b8860b">:DataPipes</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:CSV</span>, <span style="color:#b8860b">:Parquet2</span>, <span style="color:#b8860b">:DuckDB</span>, <span style="color:#b8860b">:JSON</span>, <span style="color:#b8860b">:XLSX</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:HTTP</span>, <span style="color:#b8860b">:CategoricalArrays</span>, <span style="color:#b8860b">:PrettyTables</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b8860b">:FixedEffectModels</span>, <span style="color:#b8860b">:RegressionTables</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div></li>
+<li>
+<p><strong><code>precompile.jl</code></strong> is a small script that exercises the packages the way you actually use them: read a CSV, run a <code>@chain</code> pipe, fit a regression, write a parquet. <code>PackageCompiler</code> traces this to decide which methods to AOT-compile. The closer it matches real code, the bigger the speedup.<br>
+You can ask Claude to generate it based on what your codebase looks like.</p>
+</li>
+<li>
+<p><strong><code>build.jl</code></strong> ties it together:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> Pkg
+</span></span><span style="display:flex;"><span>Pkg<span style="color:#666">.</span>instantiate()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">using</span> PackageCompiler
+</span></span><span style="display:flex;"><span>include(joinpath(<span style="color:#a2f">@__DIR__</span>, <span style="color:#b44">&#34;packages.jl&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>create_sysimage(
+</span></span><span style="display:flex;"><span>    SYSIMAGE_PACKAGES;
+</span></span><span style="display:flex;"><span>    sysimage_path             <span style="color:#666">=</span> <span style="color:#b44">&#34;julia_sysimage.dylib&#34;</span>, <span style="color:#080;font-style:italic"># .so on Linux, .dll on Windows</span>
+</span></span><span style="display:flex;"><span>    precompile_execution_file <span style="color:#666">=</span> joinpath(<span style="color:#a2f">@__DIR__</span>, <span style="color:#b44">&#34;precompile.jl&#34;</span>),
+</span></span><span style="display:flex;"><span>    incremental               <span style="color:#666">=</span> <span style="color:#a2f">false</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div></li>
+</ul>
+<p>Then compile it from the shell:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia --project<span style="color:#666">=</span>sysimage -t <span style="color:#666">4</span> sysimage/build.jl
+</span></span></code></pre></div><p>This takes a while (10-20 minutes on my machine).
+The artifact is not portable: it is tied to your CPU, OS, and Julia version (the <code>.dylib</code> extension here is macOS; use <code>.so</code> on Linux, <code>.dll</code> on Windows), so if you work on different hosts you will have to build it for each of them.</p>
+<p>To use it, start Julia with the <code>-J</code> flag:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ julia -J julia_sysimage.dylib --project<span style="color:#666">=</span>. my_script.jl
+</span></span></code></pre></div><p>It is faster!
+After a one-time build cost (~10 min), the same script runs ~6× faster.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#b8860b">SCRIPT</span><span style="color:#666">=</span><span style="color:#b44">&#39;using DataFrames, DataFramesMeta, FixedEffectModels, Statistics
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  df = DataFrame(x = rand(10_000), y = rand(10_000), g = rand(1:50, 10_000))
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  s = @chain df begin
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">      groupby(:g)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">      @combine :mx = mean(:x) :my = mean(:y)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  end
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">  reg(df, @formula(y ~ x + fe(g)))&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ /usr/bin/time julia -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># 6.16 real         6.00 user         1.96 sys</span>
+</span></span><span style="display:flex;"><span>$ /usr/bin/time julia -J julia_sysimage.dylib -e <span style="color:#b44">&#34;</span><span style="color:#b8860b">$SCRIPT</span><span style="color:#b44">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># 1.07 real         1.13 user         1.80 sys</span>
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Claude&rsquo;s insistence on writing a 30-line script to find the fields of a csv (or even a json) is the reason I push it to use my <a href="https://github.com/LouLouLibs/dt-cli-tools">cli data tools</a>
+, or run duckdb using the <a href="https://duckdb.org/docs/current/clients/cli/overview">cli</a>
+.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded>
     </item>
+    
     <item>
       <title>Excel Command Line Utilities</title>
       <link>https://loualiche.com/blog/posts/2026-03-Excel-Utilities/</link>
       <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2026-03-Excel-Utilities/</guid>
       <description>Utilities to deal with spreadsheets without calling the cavalry</description>
+      <content:encoded><![CDATA[<p>I am still not running Claude in dangerous mode.
+In the process of frantically approving things, I realized Claude keeps checking the content of spreadsheets by calling Python.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run --project ./my_project python -c <span style="color:#b44">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">   import openpyxl
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">   ...
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">   &#34;</span>
+</span></span></code></pre></div><p>I am not yet at the stage where I let Claude write arbitrary Python scripts.
+I vibecoded some tools to do basic things with spreadsheets in a fast and predictable way.
+The constraints: compiled command line utilities, with limited side effects that I can trust Claude to use without my approval.</p>
+<ol>
+<li><a href="https://github.com/LouLouLibs/go-xldiff"><code>go-xldiff</code></a>
+: when making changes to a spreadsheet, even when we track them with version control, it&rsquo;s hard to tell what the changes were. This converts two sheets to csv, compares the cells, and returns a diff. Simple but effective when making small changes and the coding agent is always looking for what just changed.</li>
+<li><a href="https://github.com/LouLouLibs/xl-cli-tools"><code>xl-cli-tools</code></a>
+: provides two commands. <code>xlcat</code> gives a snippet of sheets to the command line in markdown. <code>xlset</code> allows modifying specific cells in a spreadsheet.</li>
+</ol>
+<p>I also had Claude <a href="https://github.com/LouLouLibs/claude-skills/blob/main/skills/xldiff/SKILL.md">write</a>
+ <a href="https://github.com/LouLouLibs/claude-skills/blob/main/skills/xlcat/SKILL.md">some</a>
+ <a href="https://github.com/LouLouLibs/claude-skills/blob/main/skills/xlset/SKILL.md">skills</a>
+ to use them.
+I think it&rsquo;s working.</p>
+<hr>
+<p><br> </br></p>
+<table style="border: none;">
+<tr style="border: none;">
+<td align="center" width="50%" style="border: none;"><strong>xlcat</strong> — view</td>
+<td align="center" width="50%" style="border: none;"><strong>xlset</strong> — edit</td>
+</tr>
+<tr style="border: none;">
+<td style="border: none;"><a href="https://github.com/LouLouLibs/xl-cli-tools"><img src="https://raw.githubusercontent.com/LouLouLibs/xl-cli-tools/main/demo/xlcat.gif" alt="xlcat demo" /></a></td>
+<td style="border: none;"><a href="https://github.com/LouLouLibs/xl-cli-tools"><img src="https://raw.githubusercontent.com/LouLouLibs/xl-cli-tools/main/demo/xlset.gif" alt="xlset demo" /></a></td>
+</tr>
+</table>
+]]></content:encoded>
     </item>
+    
     <item>
       <title>Ninety Percent Coding</title>
       <link>https://loualiche.com/blog/posts/2026-03-Ninety-Percent/</link>
       <pubDate>Sat, 07 Mar 2026 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2026-03-Ninety-Percent/</guid>
       <description>Speculation on the impact of LLMs on economic research</description>
+      <content:encoded><![CDATA[<img src="/blog/images/submission_flood.jpeg" alt="Submissions flood but slots are fixed" style="max-width: 60%; display: block; margin-right: auto;" />
+<p>Ben Moll linked to a <a href="https://causalinf.substack.com/p/claude-code-27-research-and-publishing">Causal Inference blog post</a>
+ with this graphic raising questions of supply and demand imbalances.</p>
+<p>Others have chimed in. It is fun to speculate on the future of our field at the onset of a small revolution.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>
+I couldn&rsquo;t find the source, but it is by now enough of a cliche among software engineers to think about a 90/10 model of coding: agents get 90% of the job done, but humans are still needed to orchestrate and handle the finicky last 10%.</p>
+<div class="columns">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    <img src="/blog/images/ninety_percent_engineering.png" alt="The 90/10 model in software engineering" />
+  </div>
+</div>
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    <img src="/blog/images/ninety_percent_academic.png" alt="Academic projects" />
+  </div>
+</div>
+
+
+</div>
+
+<p>Academics have different objective functions.
+Most of the time they are their own clients of the data pipeline or model they are coding, and most of the projects are single use.
+My point is that most of the time, my work falls well within the 90% that LLMs handle comfortably.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>So how does this change things?
+When the cost of producing a certain type of research drops, we get more of it.
+But the the consumption of research is fixed right now.
+Rather than an increase in the quantity, we probably should expect a change in the type of research coming out.</p>
+<p>I have two models in mind that define a broad spectrum of what could happen.</p>
+<ul>
+<li>We start trying more things. A thousand blooming flowers. We discover more things in the process. Quality stays roughly the same. We don&rsquo;t feel compelled to publish tepid stuff.</li>
+<li>We do harder things. Maybe we add one more state variable (or two) in a macrofinance model or we just push existing projects a little further. One idea I like: we turn our code into libraries for others to use. We move from single-use research process to something more collaborative. The cost of polishing code so someone else can actually use it is now low.<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></li>
+</ul>
+<div class="columns">
+  
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    <img src="/blog/images/ninety_percent_parallel.png" alt="Parallel LLM explorations" />
+  </div>
+</div>
+
+<div class="column" style="flex: 1; padding: 0 10px; display: grid; flex-direction: column;">
+  <div class="column-content" style="align-self: start;">
+    <img src="/blog/images/ninety_percent_harder.png" alt="LLM enabling harder projects" />
+  </div>
+</div>
+
+
+</div>
+
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Scott Cunningham&rsquo;s blog is paywalled, so I am doomed to live in the fear of badly paraphrasing his wisdom.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>I am speaking for my field of financial economics, maybe economics more broadly, which is heavily empirical. If you are studying theoretical computer science, this probably does not apply or does in surprising ways.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Replication packages are so uptight that they are not really good at fostering code reuse and libraries. They are literally containers that run a paper.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded>
     </item>
+    
     <item>
       <title>Vibecoding Personal Utilities</title>
       <link>https://loualiche.com/blog/posts/2026-03-Vibecoding-Utilities/</link>
       <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
       <guid>https://loualiche.com/blog/posts/2026-03-Vibecoding-Utilities/</guid>
       <description>A snapshot of 3 vibecoded apps in early 2026</description>
+      <content:encoded><![CDATA[<p><a href="https://wesmckinney.com/blog/why-not/">Wes McKinney&rsquo;s</a>
+ <a href="https://wesmckinney.com/blog/agent-ergonomics/">blog</a>
+ makes a good case for the go programming language as a complement to LLMs.
+Like Wes, I do not know any go, but somehow it worked!</p>
+<p>Right now, people have plenty of opinions and theories on what works best when coding with agents (test-driven development, tight feedback development loops, or some specific prompting frameworks).
+I don&rsquo;t have the engineering experience to predict which of these principles will hold up against the pace of top models.
+But I <em>do</em> have enough experience to know which problems I want computers to solve for me.</p>
+<p>I want to share a snapshot of some bespoke projects that I have achived relatively easily as of March 2026.
+I am curious about the frontier of what is doable now that wasn&rsquo;t before, and whether we&rsquo;re going to see a lot more people will building genuinely useful, DIY software.</p>
+<p>Here are three single-use utilities I recently &ldquo;vibecoded&rdquo;:</p>
+<ol>
+<li>
+<p><strong><a href="https://github.com/eloualiche/podcast-go">podcast-go</a>
+:</strong> I recently started swimming and I like to listen to podcasts while I do. This requires uploading mp3 files to my bone-conduction headphones (a real throwback). Parsing RSS feeds every couple of days to get the latest mp3 is tedious, and podcast hosts don&rsquo;t make direct file access easy. I&rsquo;m sure existing solutions are out there, but that’s the point: I didn&rsquo;t have to look for one. I wrote an app for exactly my use case in a couple of hours with light supervision. This was my first time using Go, which happens to have fantastic Terminal User Interface (TUI) libraries.</p>
+</li>
+<li>
+<p><strong><a href="https://github.com/LouLouLibs/esync">esync</a>
+:</strong> I spend a lot of time writing code locally, but sometimes I need to execute it remotely. I used to keep a bash script to selectively sync files, but eventually, I’d forget to run it, get stuck on a bug, and realize I wasn&rsquo;t even editing the remote code. Yes, there are easier solutions (like Emacs Tramp), but writing this custom utility (a wrapper around <code>fsnotify</code> and <code>rsync</code> inside a Go TUI) removed the friction from my specific workflow.</p>
+</li>
+<li>
+<p><strong><a href="https://github.com/LouLouLibs/wrds-download">wrds-dl</a>
+:</strong> This serves as both a quick explorer tool for WRDS databases (via their Postgres system) and a command-line tool to download the data without writing or loading any Python. I also generated a skill to make it easy to tell Claude: <em>&ldquo;Download the monthly stock file from WRDS between 1980 and 2020 and show me that the <a href="https://loualiche.com/abstract/skewness_GHL">skewness is all gone!</a>
+.&rdquo;</em> This one was honestly more fun than it was strictly useful!</p>
+</li>
+</ol>
+<p>This will affect research in uncertain ways that might not all be fun.
+But I want to be positive and optimistic to what it brings us in building simple things.</p>
+ <br>
+ </br>
+<hr>
+<p><br> </br></p>
+<p><a href="https://github.com/LouLouLibs/wrds-download"><img src="/blog/images/demo-wrds-download.gif" alt="wrds-download demo" />
+</a>
+</p>
+]]></content:encoded>
     </item>
+    
   </channel>
 </rss>
