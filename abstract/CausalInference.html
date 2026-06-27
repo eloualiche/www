@@ -93,7 +93,7 @@
 (with <a href="https://www.anderson.ucla.edu/faculty-and-research/finance/faculty/haddad">Valentin Haddad</a>, <a href="https://zhiguohe.net">Zhiguo He</a>, <a href="https://www.paulhuebner.com">Paul Huebner</a>, and <a href="https://www.peterkondor.net">Peter Kondor</a>)
 
 First version: Fall 2024
-This version:  Spring 2026
+This version:  Summer 2026
 
 
 <a href="../docs/causal_inference_HHHKL.pdf">Download the paper</a>
@@ -101,19 +101,19 @@ This version:  Spring 2026
 <hr>
 <strong>Abstract:</strong>
 
-This paper provides a guide for using causal inference with asset prices and quantities.
-Our framework revolves around an elementary assumption about portfolio demand: ho-
-mogeneous substitution conditional on observables. Under this assumption, standard
-cross-sectional instrumental variables or difference-in-difference regressions identify the
-relative demand elasticity between assets with the same observables, the difference be-
-tween own-price and cross-price elasticity. In contrast, identifying aggregate elasticities
-and substitution along specific characteristics requires joint estimation using multiple
-sources of exogenous time-series variation. The same principles apply to the estimation
-of multipliers measuring the price impact of supply or demand shocks. Our assumption
-maps to familiar restrictions on covariance matrices in classical asset pricing models,
-encompass demand models such as logit, and accommodate rich substitution patterns
-even outside of these models. We discuss how to design experiments satisfying this
-condition and offer diagnostics to validate it.
+Portfolio choice involves substituting across many assets at once, 
+complicating inference about asset demand. An elementary condition 
+often captures this behavior in theory and practice: homogeneous 
+substitution conditional on observables (e.g., factor loadings, 
+maturity, credit ratings). We characterize natural experiments identifying 
+demand elasticity and price impact under this condition. Cross-sectional 
+IV and difference-in-differences identify relative elasticity, 
+own- minus cross-price elasticity for assets sharing observables.
+But a missing-coefficient problem leaves substitution unidentified: 
+the coefficients on observables mechanically absorb it. Identifying 
+substitution requires time-series regressions on portfolios sorted 
+on observables. We apply the framework to corporate bonds, comparing 
+alternative Fed asset-purchase programs.
 
 <hr>
 Outstanding Paper Award from the <a href="https://www.sfi.ch/en/about-us/news/sfi-outstanding-paper-award-2025">Swiss Finance Institute (2025)</a>
